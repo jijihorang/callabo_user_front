@@ -1,4 +1,4 @@
-import banner from "../../../assets/img/차쥐뿔.png";
+import banner from "../../../assets/img/차쥐뿔.png";
 import profile from "../../../assets/img/pro1.webp";
 import { Link } from "react-router-dom";
 
