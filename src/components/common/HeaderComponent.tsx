@@ -47,11 +47,12 @@ function HeaderComponent() {
                     />
                 </Link>
                 {/* 사용자 아이콘 */}
-                <img
-                    src={user}
-                    alt="사용자"
-                    className="w-6 h-6 cursor-pointer"
-                />
+                <Link to="/login">
+                    <img
+                        src={user}
+                        alt="사용자"
+                        className="w-6 h-6 cursor-pointer"/>
+                </Link>
             </div>
 
         </div>

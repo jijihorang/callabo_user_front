@@ -1,4 +1,4 @@
-import banner from "../../assets/img/차쥐뿔.png";
+import banner from "../../assets/img/차쥐뿔.png";
 import profile from "../../assets/img/pro1.webp";
 import product1 from "../../assets/img/prod1.png"
 import product2 from "../../assets/img/prod2.png";
