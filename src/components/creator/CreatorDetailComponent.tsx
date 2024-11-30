@@ -1,7 +1,7 @@
 import ProductImageSlider from "../slider/ProductImageSlider.tsx";
 import ProductInfoComponent from "./detail/ProductInfoComponent.tsx";
 import ProductDescriptionComponent from "./detail/ProductDescriptionComponent.tsx";
-import banner from "../../assets/img/차쥐뿔.png";
+import banner from "../../assets/img/차쥐뿔.png";
 
 function CreatorDetailComponent() {
     return (

@@ -38,7 +38,6 @@ function HeaderComponent() {
                     alt="찜하기"
                     className="w-6 h-6 cursor-pointer"
                 />
-
                 {/* 쇼핑카트 아이콘 */}
                 <Link to="/cart">
                     <img
@@ -55,6 +54,7 @@ function HeaderComponent() {
                         className="w-6 h-6 cursor-pointer"
                     />
             </div>
+
         </div>
     );
 }
