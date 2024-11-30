@@ -1,5 +1,5 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
+import {Navigation, Pagination} from "swiper/modules";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
@@ -22,7 +22,7 @@ function ProductImageSlider() {
         <div className="w-full max-w-2xl mx-auto">
             {/* Swiper Slider */}
             <Swiper
-                modules={[Navigation]}
+                modules={[Navigation, Pagination]}
                 navigation
                 pagination={{ clickable: true }}
                 loop={true}

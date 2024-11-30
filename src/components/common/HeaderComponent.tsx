@@ -4,7 +4,7 @@ import logo from "../../assets/icons/atom.png";
 
 import heart from "../../assets/icons/heart.png";
 import cart from "../../assets/icons/cart.png";
-import user from "../../assets/icons/user.png";
+import user from "../../assets/icons/info.png";
 
 function HeaderComponent() {
     return (
@@ -38,6 +38,7 @@ function HeaderComponent() {
                     alt="찜하기"
                     className="w-6 h-6 cursor-pointer"
                 />
+
                 {/* 쇼핑카트 아이콘 */}
                 <Link to="/cart">
                     <img
@@ -46,14 +47,14 @@ function HeaderComponent() {
                         className="w-6 h-6 cursor-pointer"
                     />
                 </Link>
-                {/* 사용자 아이콘 */}
-                <img
-                    src={user}
-                    alt="사용자"
-                    className="w-6 h-6 cursor-pointer"
-                />
-            </div>
 
+                {/* 사용자 아이콘 */}
+                    <img
+                        src={user}
+                        alt="사용자"
+                        className="w-6 h-6 cursor-pointer"
+                    />
+            </div>
         </div>
     );
 }

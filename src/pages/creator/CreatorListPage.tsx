@@ -1,9 +1,9 @@
-import CreatorComponent from "../../components/creator/CreatorComponent.tsx";
+import CreatorListComponent from "../../components/creator/CreatorListComponent.tsx";
 
 function CreatorListPage() {
     return (
         <div>
-            <CreatorComponent />
+            <CreatorListComponent />
         </div>
     );
 }

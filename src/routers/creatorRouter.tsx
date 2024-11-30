@@ -23,7 +23,7 @@ const creatorRouter = {
             element: <Suspense fallback={Loading}><CreateList/></Suspense>
         },
         {
-            path: "read",
+            path: "read/:creatorId",
             element: <Suspense fallback={Loading}><CreateRead/></Suspense>
         },
         {
