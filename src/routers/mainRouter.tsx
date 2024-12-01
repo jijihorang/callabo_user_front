@@ -5,11 +5,13 @@ import creatorRouter from "./creatorRouter.tsx";
 
 const MainPage = lazy(() => import("../pages/MainPage.tsx"))
 
-const LoginPage = lazy(() => import("../pages/LoginPage.tsx"))
+const LoginPage = lazy(() => import("../pages/login/LoginPage.tsx"))
 
 const CartPage = lazy(() => import("../pages/cart/CartPage.tsx"))
 
 const WishListPage = lazy(() => import("../pages/wishlist/WishlistPage.tsx"))
+
+const KakaoCallbackPage = lazy(() => import("../pages/login/KakaoCallbackPage.tsx"))
 
 export const Loading = <LoadingPage></LoadingPage>
 
@@ -33,6 +35,10 @@ const mainRouter = createBrowserRouter([
     {
         path: "/login",
         element: <Suspense fallback={Loading}><LoginPage/></Suspense>
+    },
+    {
+        path: "/kakao",
+        element: <Suspense fallback={Loading}><KakaoCallbackPage /></Suspense>, // Kakao 인증 Callback
     },
     creatorRouter
 ])

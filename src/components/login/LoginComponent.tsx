@@ -1,6 +1,6 @@
-import close from "../assets/icons/close.png";
-import kakao_logo from "../assets/login/kakao.png"
-import profile from "../assets/login/profile.png"
+import close from "../../assets/icons/close.png";
+import kakao_logo from "../../assets/login/kakao.png"
+import profile from "../../assets/login/profile.png"
 import {useNavigate} from "react-router-dom";
 
 function LoginComponent() {
@@ -10,6 +10,14 @@ function LoginComponent() {
     const handleClose = () => {
         navigate("/"); // 메인 화면으로 리다이렉션
     };
+
+    const CLIENT_ID = import.meta.env.VITE_KAKAO_CLIENT_ID;
+    const REDIRECT_URI = import.meta.env.VITE_KAKAO_REDIRECT_URI;
+
+    const handleLogin = () => {
+        const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+        window.location.href = KAKAO_AUTH_URL;
+    }
 
     return (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-40">
@@ -34,7 +42,8 @@ function LoginComponent() {
 
                     {/* 카카오 로그인 버튼 */}
                     <button
-                        className="mt-10 px-6 py-2 rounded-lg flex items-center">
+                        className="mt-10 px-6 py-2 rounded-lg flex items-center"
+                        onClick={handleLogin}>
                         <img src={kakao_logo} alt="카카오 로고"/>
                     </button>
                 </div>
