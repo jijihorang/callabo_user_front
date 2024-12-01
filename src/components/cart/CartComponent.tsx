@@ -36,11 +36,11 @@ function CartPage() {
 
                 {/* 주문 버튼 */}
                 <div className="flex justify-center mt-4">
-                    <button className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-500 font-semibold">
+                    <button className="bg-blue-600 text-white px-6  py-3 rounded-md hover:bg-blue-500 font-semibold">
                         주문서 작성 (5)
                     </button>
                 </div>
-            </div>
+            </div>x
 
             {/* 상품 목록 영역 */}
             <div className="p-8 space-y-6" style={{textAlign: 'center'}}>
