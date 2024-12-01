@@ -9,6 +9,8 @@ const LoginPage = lazy(() => import("../pages/LoginPage.tsx"))
 
 const CartPage = lazy(() => import("../pages/cart/CartPage.tsx"))
 
+const OrderPage = lazy(() => import("../pages/order/OrderPage.tsx"))
+
 export const Loading = <LoadingPage></LoadingPage>
 
 const mainRouter = createBrowserRouter([
@@ -27,6 +29,10 @@ const mainRouter = createBrowserRouter([
     {
         path: "/cart",
         element: <Suspense fallback={Loading}><CartPage/></Suspense>
+    },
+    {
+        path: "/order",
+        element: <Suspense fallback={Loading}><OrderPage/></Suspense>
     },
     creatorRouter
 ])
