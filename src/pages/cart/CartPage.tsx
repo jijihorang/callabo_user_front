@@ -1,11 +1,13 @@
-
 import CartComponent from "../../components/cart/CartComponent.tsx";
+import BasicLayout from "../../layouts/BasicLayout.tsx";
 
 function CartPage() {
     return (
-        <div>
-            <CartComponent/>
-        </div>
+        <BasicLayout>
+            <div>
+                <CartComponent/>
+            </div>
+        </BasicLayout>
     );
 }
 

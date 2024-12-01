@@ -92,7 +92,7 @@ function CreatorReadComponent() {
                             key={product.productNo}
                             className="relative p-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
                         >
-                            <Link to={`/creator/detail/${product.productNo}`}>
+                            <Link to={`/creator/detail`}>
                                 <div className="w-full h-48 overflow-hidden rounded-md mb-4">
                                     <img
                                         src={

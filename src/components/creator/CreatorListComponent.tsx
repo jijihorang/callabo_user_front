@@ -76,7 +76,6 @@ function CreatorListComponent() {
                                         <li
                                             key={creator.creatorId}
                                             className="flex items-center justify-between gap-3 p-3 rounded-lg hover:shadow-md transition-shadow cursor-pointer"
-                                            onClick={() => handleCreatorSelect(creator)}
                                         >
                                             {/* 왼쪽 콘텐츠 */}
                                             <div className="flex items-center gap-3">
@@ -87,14 +86,20 @@ function CreatorListComponent() {
                                                         className="w-full h-full object-cover"
                                                     />
                                                 </div>
-                                                <span className="text-lg font-semibold text-gray-700">
+                                                <span className="text-lg font-semibold text-gray-700" onClick={() => handleCreatorSelect(creator)}>
                                                     {creator.creatorName}
                                                 </span>
                                             </div>
 
                                             {/* 팔로우 버튼 */}
-                                            <button className="rounded-full bg-indigo-700 text-white px-3 py-1">
-                                                {creator.followStatus ? "팔로우" : "팔로잉"}
+                                            <button
+                                                className={`rounded-full px-3 py-1 text-white ${
+                                                    creator.followStatus
+                                                        ? "bg-blue-500 hover:bg-indigo-600" // 팔로우 상태: 이쁜 색상
+                                                        : "bg-gray-400 hover:bg-gray-200" // 팔로잉 상태: 회색
+                                                }`}
+                                            >
+                                                {creator.followStatus ? "팔로잉" : "팔로우"}
                                             </button>
                                         </li>
                                     ))}

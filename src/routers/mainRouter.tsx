@@ -9,6 +9,8 @@ const LoginPage = lazy(() => import("../pages/LoginPage.tsx"))
 
 const CartPage = lazy(() => import("../pages/cart/CartPage.tsx"))
 
+const WishListPage = lazy(() => import("../pages/wishlist/WishlistPage.tsx"))
+
 export const Loading = <LoadingPage></LoadingPage>
 
 const mainRouter = createBrowserRouter([
@@ -21,12 +23,16 @@ const mainRouter = createBrowserRouter([
         element: <Navigate to="main" replace={true}></Navigate>
     },
     {
-        path: "/login",
-        element: <Suspense fallback={Loading}><LoginPage/></Suspense>
+        path: "/wishlist",
+        element: <Suspense fallback={Loading}><WishListPage/></Suspense>
     },
     {
         path: "/cart",
         element: <Suspense fallback={Loading}><CartPage/></Suspense>
+    },
+    {
+        path: "/login",
+        element: <Suspense fallback={Loading}><LoginPage/></Suspense>
     },
     creatorRouter
 ])

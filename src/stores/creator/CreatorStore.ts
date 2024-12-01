@@ -10,7 +10,7 @@ interface CreatorStore {
     searchQuery: string; // 검색 쿼리
     setSearchQuery: (query: string) => void;
 
-    selectedCreator: ICreator | null; // 선택된 제작자
+    selectedCreator: ICreator | null; // 제작자 선택
     setSelectedCreator: (creator: ICreator | null) => void;
 
     isInitialized: boolean; // 초기화 여부

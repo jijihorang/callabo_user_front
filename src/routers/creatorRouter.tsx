@@ -6,6 +6,7 @@ const CreateIndex = lazy(() => import("../pages/creator/CreatorIndexPage.tsx"));
 const CreateList = lazy(() => import("../pages/creator/CreatorListPage.tsx"));
 const CreateRead = lazy(() => import("../pages/creator/CreatorReadPage.tsx"));
 const CreateDetail = lazy(() => import("../pages/creator/CreatorDetailPage.tsx"));
+const CreateAllList = lazy(() => import("../pages/CreatorAllListPage.tsx"));
 
 export const Loading = <LoadingPage></LoadingPage>
 
@@ -29,6 +30,10 @@ const creatorRouter = {
         {
             path: "detail",
             element: <Suspense fallback={Loading}><CreateDetail/></Suspense>
+        },
+        {
+            path: "list/all",
+            element: <Suspense fallback={Loading}><CreateAllList/></Suspense>
         }
     ]
 }

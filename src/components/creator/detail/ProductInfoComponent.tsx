@@ -17,6 +17,7 @@ function ProductInfoComponent() {
 
                 {/* 가격 */}
                 <p className="text-2xl font-bold text-gray-800 mt-4">21,000원</p>
+                <p className="mt-2">19개 리뷰보기</p>
             </div>
 
 

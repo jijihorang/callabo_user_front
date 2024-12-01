@@ -10,9 +10,9 @@ import "swiper/css";
 import "swiper/css/pagination";
 
 import product1 from "../../assets/img/prod1.png";
-import product2 from "../../assets/img/prod2.png";
+import product2 from "../../assets/img/prod1.png";
 import product3 from "../../assets/img/prod1.png";
-import product4 from "../../assets/img/prod2.png";
+import product4 from "../../assets/img/prod1.png";
 
 
 function ProductImageSlider() {
