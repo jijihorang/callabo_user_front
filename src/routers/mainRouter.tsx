@@ -13,6 +13,8 @@ const WishListPage = lazy(() => import("../pages/wishlist/WishlistPage.tsx"))
 
 const KakaoCallbackPage = lazy(() => import("../pages/login/KakaoCallbackPage.tsx"))
 
+const OrderPage = lazy(() => import("../pages/order/OrderPage.tsx"))
+
 export const Loading = <LoadingPage></LoadingPage>
 
 const mainRouter = createBrowserRouter([
@@ -39,6 +41,10 @@ const mainRouter = createBrowserRouter([
     {
         path: "/kakao",
         element: <Suspense fallback={Loading}><KakaoCallbackPage /></Suspense>, // Kakao 인증 Callback
+    },
+    {
+        path: "/order",
+        element: <Suspense fallback={Loading}><OrderPage/></Suspense>
     },
     creatorRouter
 ])
