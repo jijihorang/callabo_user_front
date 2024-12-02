@@ -2,6 +2,8 @@ import {createBrowserRouter, Navigate} from "react-router-dom";
 import LoadingPage from "../pages/common/LoadingPage.tsx";
 import {lazy, Suspense} from "react";
 import creatorRouter from "./creatorRouter.tsx";
+import OfflineStorePage from "../pages/offlinestore/OfflineStorePage.tsx";
+import WeekRankingPage from "../pages/weekranking/WeekRankingPage.tsx";
 
 const MainPage = lazy(() => import("../pages/MainPage.tsx"))
 
@@ -35,6 +37,14 @@ const mainRouter = createBrowserRouter([
     {
         path: "/cart",
         element: <Suspense fallback={Loading}><CartPage/></Suspense>
+    },
+    {
+        path: "weekranking",
+        element: <Suspense fallback={Loading}><WeekRankingPage/></Suspense>
+    },
+    {
+        path: "/offlinestore",
+        element: <Suspense fallback={Loading}><OfflineStorePage/></Suspense>
     },
     {
         path: "/order",
