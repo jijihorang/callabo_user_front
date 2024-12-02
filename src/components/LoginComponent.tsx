@@ -1,49 +1,54 @@
-import kakao from "../assets/login/kakao_logo.png"
+import close from "../assets/icons/close.png";
+import kakao_logo from "../assets/login/kakao.png"
 import profile from "../assets/login/profile.png"
+import {useNavigate} from "react-router-dom";
 
 function LoginComponent() {
+
+    const navigate = useNavigate();
+
+    const handleClose = () => {
+        navigate("/"); // 메인 화면으로 리다이렉션
+    };
+
     return (
-        // <div className="box w-full h-screen w-3/12 h-32  bg-blue-500 border-2 border-gray-300 flex items-center">
-        //     <div className="w-32 h-32 bg-yellow-500 mx-auto mt-20">
-        //         <p className="text-center font-bold ">로그인 </p>
-        //     </div>
-        // </div>
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-40">
-            <div className="bg-white rounded-lg shadow-lg w-4/12 max-w-2xl p-6 relative">
-                {/* 흰색 배경의 팝업 창으로, 모서리가 둥글고 그림자있는 상자. */}
-                <button className="text-gray-400 hover:text-gray-500 text-2xl font-bold" aria-label="닫기"
-                >
-                    X
+            <div className="bg-white rounded-lg shadow-lg w-[400px] min-h-[500px] p-6 relative flex flex-col">
+
+                {/* 닫기 버튼 */}
+                <button className="absolute top-4 right-4 text-gray-400 hover:text-gray-500">
+                    <img src={close} alt="닫기 이미지" className="w-5 h-5" onClick={() => handleClose()} />
                 </button>
 
-                <div className="flex flex-col items-center">
+                {/* 중앙 콘텐츠 */}
+                <div className="flex flex-col items-center justify-center flex-1">
 
-                    <div className="flex items-center justify-center text-black">
-                        <img src={profile} alt="이미지 사진" className="w-24 h-24 object-cover"/>
+                    <div>
+                        <img src={profile} alt="프로필 이미지" className="w-24 h-24 mb-9" />
                     </div>
 
+                    <h2 className="text-4xl text-black font-bold">로그인</h2>
+                    <p className="text-black text-sm mt-3 text-center">
+                        로그인 하고 신상품들을 만나보세요!
+                    </p>
 
-                    <div className="text-4xl text-black mt-8 font-bold">
-                        로그인
-                    </div>
+                    {/* 카카오 로그인 버튼 */}
+                    <button
+                        className="mt-10 px-6 py-2 rounded-lg flex items-center">
+                        <img src={kakao_logo} alt="카카오 로고"/>
+                    </button>
+                </div>
 
-                    <div className="text-black text-sm mt-3">
-                        로그인을 하시고 신상품들을 만나보세요!
-                    </div>
-
-                    <div className="flex items-center justify-center text-black w-11/12 max-w-4xl p-6 relative mt-4">
-                        <img src={kakao} alt="이미지 사진"/>
-                    </div>
-
-                    <div className="border-t" >
-                        <div className="text-gray-600 text-xs mt-3 text-center">
-                            로그인은 개인 정보 보호 정책 및 서비스 약관에 동의 하는것을 의미하며,<br/>
-                            서비스 이용을 위해 이름,프로필 이미지를 수집합니다.
-                        </div>
-                    </div>
+                {/* 개인정보 보호 정책 */}
+                <div className="border-t pt-4">
+                    <p className="text-gray-600 text-xs text-center">
+                        개인 정보 보호 정책 및 서비스 약관에 동의 하는것을 의미하며,<br/>
+                        서비스 이용을 위해 '이름, 프로필, 이메일' 수집합니다.
+                    </p>
                 </div>
             </div>
         </div>
+
     );
 }
 

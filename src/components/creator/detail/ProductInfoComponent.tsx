@@ -1,10 +1,25 @@
+
+import wheart from "../../../assets/icons/whiteheart.png"
+
 function ProductInfoComponent() {
     return (
         <div className="w-full max-w-md mx-auto text-gray-800">
-            {/* 카테고리 및 상품명 */}
-            <p className="text-sm text-gray-500 mb-1">리빙 &gt; 유리컵/머그컵</p>
-            <h1 className="text-3xl font-bold mb-4">망나니 잔</h1>
-            <p className="text-2xl font-bold text-gray-800 mb-6">21,000원</p>
+            <div className="mb-6">
+                {/* 카테고리 및 제목 */}
+                <p className="text-sm text-gray-500 mb-1">리빙 &gt; 유리컵/머그컵</p>
+                <div className="flex items-center justify-between">
+                    <h1 className="text-3xl font-bold">망나니 잔</h1>
+                    {/* 찜 버튼 */}
+                    <button className="p-2 transition">
+                        <img src={wheart} alt="상품 찜" className="w-6 h-6"/>
+                    </button>
+                </div>
+
+                {/* 가격 */}
+                <p className="text-2xl font-bold text-gray-800 mt-4">21,000원</p>
+                <p className="mt-2">19개 리뷰보기</p>
+            </div>
+
 
             {/* 수량 선택 */}
             <div className="mb-4">

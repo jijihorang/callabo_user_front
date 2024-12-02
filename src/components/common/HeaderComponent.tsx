@@ -4,7 +4,7 @@ import logo from "../../assets/icons/atom.png";
 
 import heart from "../../assets/icons/heart.png";
 import cart from "../../assets/icons/cart.png";
-import user from "../../assets/icons/user.png";
+import info from "../../assets/icons/info.png";
 
 function HeaderComponent() {
     return (
@@ -29,29 +29,33 @@ function HeaderComponent() {
                 </nav>
             </div>
 
-
             {/* 오른쪽 아이콘 */}
             <div className="flex items-center space-x-5 gap-1">
                 {/* 하트 아이콘 */}
-                <img
-                    src={heart}
-                    alt="찜하기"
-                    className="w-6 h-6 cursor-pointer"
-                />
+                <Link to="/wishlist">
+                    <img
+                        src={heart}
+                        alt="찜하기"
+                        className="w-6 h-6 cursor-pointer"
+                    />
+                </Link>
+
                 {/* 쇼핑카트 아이콘 */}
                 <Link to="/cart">
                     <img
                         src={cart}
                         alt="장바구니"
-                        className="w-6 h-6 cursor-pointer"
+                        className="w-7 h-7 cursor-pointer"
                     />
                 </Link>
+
                 {/* 사용자 아이콘 */}
                 <Link to="/login">
                     <img
-                        src={user}
+                        src={info}
                         alt="사용자"
-                        className="w-6 h-6 cursor-pointer"/>
+                        className="w-7 h-7 cursor-pointer"
+                    />
                 </Link>
             </div>
 
