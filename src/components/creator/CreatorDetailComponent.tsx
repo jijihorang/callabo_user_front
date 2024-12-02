@@ -1,20 +1,10 @@
 import ProductImageSlider from "../slider/ProductImageSlider.tsx";
 import ProductInfoComponent from "./detail/ProductInfoComponent.tsx";
 import ProductDescriptionComponent from "./detail/ProductDescriptionComponent.tsx";
-import banner from "../../assets/img/차쥐뿔.png";
 
 function CreatorDetailComponent() {
     return (
-        <div className="container mx-auto mt-5 pb-10"> {/* 컨테이너에 하단 여백 추가 */}
-
-            {/* 배너 */}
-            <div className="relative w-full h-[300px] rounded-xl overflow-hidden mb-5">
-                <img
-                    src={banner}
-                    alt="배너 이미지"
-                    className="w-full h-full object-cover"
-                />
-            </div>
+        <div className="container mx-auto mt-5 pb-5"> {/* 컨테이너에 하단 여백 추가 */}
 
             {/* 상품 이미지 및 정보 섹션 */}
             <div className="flex flex-col lg:flex-row items-stretch gap-2">

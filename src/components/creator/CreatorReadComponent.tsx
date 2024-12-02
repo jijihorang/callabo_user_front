@@ -1,40 +1,58 @@
-import banner from "../../assets/img/차쥐뿔.png";
-import profile from "../../assets/img/pro1.webp";
-import product1 from "../../assets/img/prod1.png"
-import product2 from "../../assets/img/prod2.png";
-import product3 from "../../assets/img/prod3.png";
-import product4 from "../../assets/img/prod4.png";
-
+import wheart from "../../assets/icons/whiteheart.png";
 import cart2 from "../../assets/icons/cart.png";
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
+import { useEffect, useState } from "react";
+import { IProduct } from "../../types/product/product";
+import { ICreator } from "../../types/creator/creator";
+import { getProductList } from "../../apis/product/productAPI";
+import { getCreatorList } from "../../apis/creator/creatorAPI";
 
 function CreatorReadComponent() {
+    const { creatorId } = useParams(); // URL에서 creatorId 추출
+    const [products, setProducts] = useState<IProduct[]>([]);
+    const [creator, setCreator] = useState<ICreator | null>(null);
 
-    const products = [
-        { id: 1, name: "맥주잔 세트", price: "21,000원", image: product1 },
-        { id: 2, name: "소주잔 세트", price: "21,000원", image: product2 },
-        { id: 3, name: "스페셜 백", price: "28,000원", image: product3 },
-        { id: 4, name: "유리잔", price: "15,000원", image: product4 },
-        { id: 5, name: "맥주잔 세트", price: "21,000원", image: product1 },
-        { id: 6, name: "소주잔 세트", price: "21,000원", image: product2 },
-        { id: 7, name: "스페셜 백", price: "28,000원", image: product3 },
-        { id: 8, name: "유리잔", price: "15,000원", image: product4 },
-        { id: 9, name: "맥주잔 세트", price: "21,000원", image: product1 },
-        { id: 10, name: "소주잔 세트", price: "21,000원", image: product2 },
-        { id: 11, name: "스페셜 백", price: "28,000원", image: product3 },
-        { id: 12, name: "유리잔", price: "15,000원", image: product4 },
-        { id: 13, name: "맥주잔 세트", price: "21,000원", image: product1 },
-        { id: 14, name: "소주잔 세트", price: "21,000원", image: product2 },
-        { id: 15, name: "스페셜 백", price: "28,000원", image: product3 },
-        { id: 16, name: "유리잔", price: "15,000원", image: product4 },
-    ];
+    // 데이터 로드
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                if (creatorId) {
+                    const data = await getProductList(creatorId); // creatorId로 필터링된 상품 목록 가져오기
+                    setProducts(data);
+                }
+            } catch (error) {
+                console.error("상품 데이터를 가져오는 중 에러 발생:", error);
+            }
+        };
+
+        const fetchCreatorInfo = async () => {
+            try {
+                const data = await getCreatorList();
+                const selectedCreator = data.find((c: ICreator) => c.creatorId === creatorId); // creatorId로 필터링
+                setCreator(selectedCreator || null);
+                if (!selectedCreator) {
+                    console.warn(`제작자 ${creatorId}를 찾을 수 없습니다.`);
+                }
+            } catch (error) {
+                console.error("제작자 정보를 가져오는 중 에러 발생:", error);
+            }
+        };
+
+        fetchCreatorInfo();
+        fetchProducts();
+    }, [creatorId]); // creatorId 변경 시 재호출
+
+    // 데이터 로딩 중 상태
+    if (!creator) {
+        return <p className="text-center">제작자 정보를 불러오는 중입니다...</p>;
+    }
 
     return (
         <div className="container mx-auto mb-20">
             {/* 배너 */}
             <div className="relative w-full h-[300px] rounded-xl overflow-hidden mb-5">
                 <img
-                    src={banner}
+                    src={creator.backgroundImg || "https://via.placeholder.com/300x150"}
                     alt="배너 이미지"
                     className="w-full h-full object-cover"
                 />
@@ -43,14 +61,25 @@ function CreatorReadComponent() {
             {/* 제작자 정보 */}
             <div className="text-center mb-8">
                 <div
-                    className="relative inline-block w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow-md -mt-12">
+                    className="relative inline-block w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow-md -mt-12"
+                >
                     <img
-                        src={profile}
+                        src={creator.logoImg || "https://via.placeholder.com/96x96"}
                         alt="제작자 프로필"
                         className="w-full h-full object-cover"
                     />
                 </div>
-                <h2 className="text-2xl font-bold mt-4">차린건쥐뿔도없지만</h2>
+                <h2 className="text-2xl font-bold mt-4">
+                    {creator.creatorName || "제작자 이름 없음"}
+                </h2>
+                <button
+                    className="flex items-center mx-auto mt-4 bg-gray-100 rounded-full px-4 py-2 shadow-md hover:shadow-lg transition-shadow"
+                >
+                    <img src={wheart} alt="찜" className="w-5 h-5 text-blue-500" />
+                    <span className="ml-2 text-gray-700 font-medium text-sm">
+                        1,600
+                    </span>
+                </button>
             </div>
 
             {/* 상품 리스트 */}
@@ -60,44 +89,40 @@ function CreatorReadComponent() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {products.map((product) => (
                         <div
-                            key={product.id}
+                            key={product.productNo}
                             className="relative p-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
                         >
-                            <Link to="/creator/detail">
-                                {/* 상품 이미지 */}
+                            <Link to={`/creator/detail`}>
                                 <div className="w-full h-48 overflow-hidden rounded-md mb-4">
                                     <img
-                                        src={product.image}
-                                        alt={product.name}
+                                        src={
+                                            product.images && product.images[0]
+                                                ? product.images[0].productImageUrl
+                                                : "https://via.placeholder.com/150"
+                                        }
+                                        alt={product.productName}
                                         className="w-full h-full object-cover"
                                     />
                                 </div>
-
-                                {/* 상품 정보 */}
-                                <h4 className="text-[18px] font-bold">{product.name}</h4>
-                                <p className="text-gray-700 mt-1">[포카증정] 많이 받아가</p>
-                                <p className="text-gray-500 mt-1">{product.price}</p>
-
-                                {/* 장바구니 버튼 */}
+                                <h4 className="text-[18px] font-bold">{product.productName}</h4>
+                                <p className="text-gray-500 mt-1">{product.productPrice}</p>
                                 <button
                                     className="absolute bottom-4 right-4 p-3 bg-white rounded-full border border-gray-300 shadow hover:bg-gray-100 transition-all"
-                                    onClick={() => console.log(`${product.name} 장바구니에 추가됨`)}
+                                    onClick={() =>
+                                        console.log(`${product.productName} 장바구니에 추가됨`)
+                                    }
                                 >
-                                    <img
-                                        src={cart2}
-                                        alt="장바구니 담기"
-                                        className="w-6 h-6"
-                                    />
+                                    <img src={cart2} alt="장바구니 담기" className="w-4 h-4" />
                                 </button>
                             </Link>
-
                         </div>
                     ))}
                 </div>
             </div>
         </div>
-
     );
 }
 
 export default CreatorReadComponent;
+
+
