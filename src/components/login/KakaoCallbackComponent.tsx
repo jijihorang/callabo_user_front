@@ -1,29 +1,33 @@
-import {useNavigate} from "react-router-dom";
-import {useEffect} from "react";
-import axios from "axios";
+import { useSearchParams, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { getAccessToken, getMemberWithAccessToken } from "../../apis/login/KakaoLoginAPI.ts";
 
 function KakaoCallbackComponent() {
-    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const navigate = useNavigate(); // useNavigate 훅 사용
 
-    const code = new URL(window.location.href).searchParams.get("code");
+    const authCode: string | null = searchParams.get("code");
 
     useEffect(() => {
-        const KakaoLogin = async () => {
-            await axios ({
-                method: "GET",
-                url: `${import.meta.env.VITE_KAKAO_REDIRECT_URI}/?code=${code}`
-            }). then((res) => {
-                console.log(res);
-                localStorage.setItem("name", res.data.name)
-                navigate("/");
-            })
+        if (authCode != null) {
+            getAccessToken(authCode)
+                .then((accessToken) => {
+                    console.log(accessToken);
+                    return getMemberWithAccessToken(accessToken);
+                })
+                .then((result) => {
+                    console.log(result);
+                    // 로그인 성공 시 메인 페이지로 이동
+                    navigate("/");
+                })
+                .catch((error) => {
+                    console.error("Login failed:", error);
+                });
         }
-        KakaoLogin();
-    });
-
+    }, [authCode, navigate]);
     return (
-        <div className="flex items-center justify-center h-screen">
-            <p className="text-lg font-bold">Kakao 인증 중...</p>
+        <div>
+            <div>Kakao Login Redirect</div>
         </div>
     );
 }

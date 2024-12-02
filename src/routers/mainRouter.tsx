@@ -2,6 +2,7 @@ import {createBrowserRouter, Navigate} from "react-router-dom";
 import LoadingPage from "../pages/common/LoadingPage.tsx";
 import {lazy, Suspense} from "react";
 import creatorRouter from "./creatorRouter.tsx";
+import customerRouter from "./customerRouter.tsx";
 
 const MainPage = lazy(() => import("../pages/MainPage.tsx"))
 
@@ -11,9 +12,9 @@ const CartPage = lazy(() => import("../pages/cart/CartPage.tsx"))
 
 const WishListPage = lazy(() => import("../pages/wishlist/WishlistPage.tsx"))
 
-const KakaoCallbackPage = lazy(() => import("../pages/login/KakaoCallbackPage.tsx"))
-
 const OrderPage = lazy(() => import("../pages/order/OrderPage.tsx"))
+
+const UserInfoPage = lazy(() => import("../pages/login/UserInfoPage.tsx"))
 
 export const Loading = <LoadingPage></LoadingPage>
 
@@ -39,14 +40,15 @@ const mainRouter = createBrowserRouter([
         element: <Suspense fallback={Loading}><LoginPage/></Suspense>
     },
     {
-        path: "/kakao",
-        element: <Suspense fallback={Loading}><KakaoCallbackPage /></Suspense>, // Kakao 인증 Callback
+        path: "/user",
+        element: <Suspense fallback={Loading}><UserInfoPage/></Suspense>
     },
     {
         path: "/order",
         element: <Suspense fallback={Loading}><OrderPage/></Suspense>
     },
-    creatorRouter
+    creatorRouter,
+    customerRouter
 ])
 
 export default mainRouter
