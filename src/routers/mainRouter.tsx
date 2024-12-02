@@ -47,6 +47,14 @@ const mainRouter = createBrowserRouter([
         path: "/order",
         element: <Suspense fallback={Loading}><OrderPage/></Suspense>
     },
+    {
+        path: "weekranking",
+        element: <Suspense fallback={Loading}><WeekRankingPage/></Suspense>
+    },
+    {
+        path: "/offlinestore",
+        element: <Suspense fallback={Loading}><OfflineStorePage/></Suspense>
+    },
     creatorRouter,
     customerRouter
 ])
