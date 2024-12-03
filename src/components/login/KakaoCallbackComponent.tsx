@@ -13,6 +13,9 @@ function KakaoCallbackComponent() {
             getAccessToken(authCode)
                 .then((accessToken) => {
                     console.log(accessToken);
+                    
+                    localStorage.setItem("kakao_access_token", accessToken);
+
                     return getMemberWithAccessToken(accessToken);
                 })
                 .then((result) => {

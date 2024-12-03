@@ -1,9 +1,9 @@
-import { useNavigate } from "react-router-dom";
 import mangnani from "../../assets/img/mangnani.png";
 import keyring from "../../assets/img/roulette.png";
 import tray from "../../assets/img/tray.png";
 import likeIcon from "../../assets/icons/redheart.png";
 import heart from "../../assets/icons/redheart.png";
+import { useNavigate } from "react-router-dom";
 
 function WishlistProductComponent() {
     const likedProducts = [
@@ -30,15 +30,16 @@ function WishlistProductComponent() {
     const navigate = useNavigate();
 
     return (
-        <div className="container mx-auto">
-            {likedProducts.length > 0 ? ( // 조건부 렌더링 추가
+        <div className="container mx-auto px-4 py-8">
+            {likedProducts.length > 0 ? (
                 <>
                     <h2 className="text-xl font-bold mb-6">상품 {likedProducts.length}</h2>
-                    <div className="grid grid-cols-6 gap-3">
+                    {/* 반응형 그리드: 웹 6개, 앱 2개 */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-6">
                         {likedProducts.map((product) => (
                             <div
                                 key={product.id}
-                                className="border border-gray-200 rounded-lg p-8 flex flex-col items-center"
+                                className="border border-gray-200 rounded-lg p-4 flex flex-col items-center"
                             >
                                 <img
                                     src={product.img}
@@ -49,8 +50,10 @@ function WishlistProductComponent() {
                                 <div className="text-blue-600 font-bold mb-2">
                                     {product.price.toLocaleString()}원
                                 </div>
-                                <button className="flex items-center space-x-2 mt-3">
-                                    <img src={likeIcon} alt="찜" className="w-5 h-5" />
+                                <button
+                                    className="flex space-x-2 mt-3 bg-blue-500 text-white rounded-full px-4 py-2 shadow-lg hover:bg-blue-600 transition-all duration-300">
+                                    <img src={likeIcon} alt="찜" className="w-5 h-5"/>
+                                    <span className="font-semibold">상품 보기</span>
                                 </button>
                             </div>
                         ))}

@@ -16,6 +16,10 @@ const OrderPage = lazy(() => import("../pages/order/OrderPage.tsx"))
 
 const UserInfoPage = lazy(() => import("../pages/login/UserInfoPage.tsx"))
 
+const WeekRankingPage = lazy(() => import("../pages/weekranking/WeekRankingPage.tsx"))
+
+const OfflineStorePage = lazy(() => import("../pages/offlinestore/OfflineStorePage.tsx"))
+
 export const Loading = <LoadingPage></LoadingPage>
 
 const mainRouter = createBrowserRouter([
