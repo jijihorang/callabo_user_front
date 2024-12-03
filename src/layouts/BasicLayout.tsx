@@ -45,7 +45,7 @@ function BasicLayout({ children }: { children: React.ReactNode }) {
             <main className="flex-1 bg-white mt-[100px] mb-[100px]">{children}</main>
 
 
-           <footer className="p-2">
+           <footer>
                <FooterComponent></FooterComponent>
            </footer>
         </div>
