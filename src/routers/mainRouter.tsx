@@ -17,6 +17,8 @@ const OfflineStorePage = lazy(() => import("../pages/offlinestore/OfflineStorePa
 
 const WeekRankingPage = lazy(() => import("../pages/weekranking/WeekRankingPage.tsx"))
 
+const ReviewLeadPage = lazy(() => import("../pages/reviewlead/ReviewLead.Page.tsx"))
+
 export const Loading = <LoadingPage></LoadingPage>
 
 const mainRouter = createBrowserRouter([
@@ -47,6 +49,10 @@ const mainRouter = createBrowserRouter([
     {
         path: "/offlinestore",
         element: <Suspense fallback={Loading}><OfflineStorePage/></Suspense>
+    },
+    {
+        path: "/reviewlead",
+        element: <Suspense fallback={Loading}><ReviewLeadPage/></Suspense>
     },
     {
         path: "/order",

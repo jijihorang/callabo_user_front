@@ -8,6 +8,7 @@ const CreateRead = lazy(() => import("../pages/creator/CreatorReadPage.tsx"));
 const CreateDetail = lazy(() => import("../pages/creator/CreatorDetailPage.tsx"));
 const CreateAllList = lazy(() => import("../pages/CreatorAllListPage.tsx"));
 
+
 export const Loading = <LoadingPage></LoadingPage>
 
 const creatorRouter = {
