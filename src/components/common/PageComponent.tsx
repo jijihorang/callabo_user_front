@@ -1,6 +1,7 @@
 import {ReactElement} from "react";
 import {useSearchParams} from "react-router-dom";
-import {IPageResponse} from "../../types/ipageresponse.ts";
+import {IPageResponse} from "../../types/common/ipageresponse.ts";
+
 
 
 interface Props<E> {
