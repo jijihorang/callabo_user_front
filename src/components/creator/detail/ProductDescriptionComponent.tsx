@@ -4,7 +4,6 @@ function ProductDescriptionComponent() {
         <div>
             {/* 상품 상세 설명 섹션 */}
             <div className="mt-5">
-                <h1 className="text-2xl font-bold mb-6 border-b-2 pb-4 text-center">상품 상세</h1>
                 <p className="text-lg text-gray-700 mb-4">
                     <strong>와르르 쉐이커 키링</strong>
                     <br />

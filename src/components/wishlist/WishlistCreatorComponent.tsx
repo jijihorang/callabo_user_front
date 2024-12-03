@@ -4,12 +4,33 @@ import product2 from "../../assets/img/prod1.png";
 import product3 from "../../assets/img/prod1.png";
 import heartIcon from "../../assets/icons/redheart.png";
 import heart from "../../assets/icons/redheart.png";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function WishlistCreatorComponent() {
     const creators = [
         {
             creatorId: "1",
+            profileImg: profileImg,
+            name: "차린건쥐뿔도없지만",
+            likes: 1664,
+            products: [product1, product2, product3],
+        },
+        {
+            creatorId: "2",
+            profileImg: profileImg,
+            name: "차린건쥐뿔도없지만",
+            likes: 1664,
+            products: [product1, product2, product3],
+        },
+        {
+            creatorId: "3",
+            profileImg: profileImg,
+            name: "차린건쥐뿔도없지만",
+            likes: 1664,
+            products: [product1, product2, product3],
+        },
+        {
+            creatorId: "4",
             profileImg: profileImg,
             name: "차린건쥐뿔도없지만",
             likes: 1664,
@@ -27,15 +48,16 @@ function WishlistCreatorComponent() {
     };
 
     return (
-        <div className="container mx-auto">
+        <div className="container mx-auto px-4 py-8">
             {creators.length > 0 ? (
                 <>
                     <h2 className="text-xl font-bold mb-6">제작자 {creators.length}</h2>
-                    <div className="grid grid-cols-1 gap-6">
+                    {/* 반응형 그리드: 웹 4개, 앱 2개 */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         {creators.map((creator) => (
                             <div
                                 key={creator.creatorId}
-                                className="rounded-lg bg-gradient-to-b from-gray-100 to-gray-200 p-5 shadow-md flex flex-col items-center w-72"
+                                className="rounded-lg bg-gradient-to-b from-gray-100 to-gray-200 p-5 shadow-md flex flex-col items-center w-full"
                             >
                                 {/* 프로필 이미지 */}
                                 <img
@@ -61,7 +83,7 @@ function WishlistCreatorComponent() {
 
                                 <button
                                     className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg"
-                                    onClick={() => moveToProductList(creator.creatorId!)}
+                                    onClick={() => moveToProductList(creator.creatorId)}
                                 >
                                     상품 보기
                                 </button>
