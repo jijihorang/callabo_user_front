@@ -20,7 +20,6 @@ const creatorRouter = {
             element: <Navigate to="list" replace={true}/>
         },
         {
-            // path: ":/makerName",
             path: "list",
             element: <Suspense fallback={Loading}><CreateList/></Suspense>
         },

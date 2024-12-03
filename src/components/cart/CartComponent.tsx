@@ -2,6 +2,7 @@ import mangnani from "../../assets/img/mangnani.png";
 import soju from "../../assets/img/soju.png";
 import roulette from "../../assets/img/roulette.png";
 import trash from "../../assets/icons/trash.png";
+import {useNavigate} from "react-router-dom";
 
 function CartPage() {
   
@@ -43,6 +44,14 @@ function CartPage() {
             shippingFee: 0,
         },
     ];
+
+    const navigate = useNavigate();
+
+    // 제작자 상품 리스트로 이동
+    const moveToOrder = () => {
+            navigate(`/order`);
+    };
+
     return (
         <div className="container mx-auto px-4 py-8 flex">
             {/* 상품 목록 영역 */}
@@ -126,7 +135,7 @@ function CartPage() {
 
             {/* 주문 정보 영역 */}
             <div className="w-1/3 ml-12">
-                <div className="sticky top-20 border border-gray-300 rounded-lg p-6 bg-white shadow-md">
+                <div className="sticky top-20 border border-gray-300 rounded-lg p-6 bg-white shadow-md mt-10">
                     <h2 className="text-xl font-bold mb-6 border-b-2 border-gray-400 pb-3 text-center">주문정보</h2>
                     <div className="flex justify-between mb-4">
                         <span className="text-gray-600">총 수량</span>
@@ -159,6 +168,7 @@ function CartPage() {
                     </div>
                     <button
                         className="w-full mt-6 bg-blue-600 text-white py-3 rounded-md font-semibold text-center hover:bg-blue-500"
+                        onClick={moveToOrder}
                     >
                         주문서 작성 <span
                         className="ml-2 rounded-full bg-white text-blue-600 px-2 py-1 text-sm font-bold">4</span>

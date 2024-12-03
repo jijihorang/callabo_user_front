@@ -8,6 +8,8 @@ import "swiper/css";
 import img1 from "../../assets/img/img3.webp";
 import img2 from "../../assets/img/img4.webp";
 import img3 from "../../assets/img/img5.webp";
+import img4 from "../../assets/img/img6.webp";
+import img5 from "../../assets/img/img7.webp";
 
 function MainFractionSlider() {
     return (
@@ -110,6 +112,69 @@ function MainFractionSlider() {
                         </div>
                     </div>
                 </SwiperSlide>
+
+                {/* 슬라이드 1 */}
+                <SwiperSlide>
+                    <div className="relative w-full h-full">
+                        {/* 배경 이미지 */}
+                        <img
+                            src={img4}
+                            alt="Slide Background"
+                            className="w-full h-full object-cover"
+                        />
+                        {/* 텍스트 콘텐츠 */}
+                        <div
+                            className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent flex items-center px-6 md:px-16">
+                            <div className="text-white space-y-4 max-w-lg">
+                                <h3 className="text-sm md:text-lg uppercase">Logo Shop</h3>
+                                <h1 className="text-2xl md:text-4xl font-bold leading-snug">
+                                    뜨뜻한 겨울나기를 위한
+                                    <br/>
+                                    마플샵의 따끈따끈한 신상
+                                </h1>
+                                <p className="text-sm md:text-base">
+                                    [마플샵]의 겨울 한정 굿즈를 만나보세요!
+                                </p>
+                                <button
+                                    className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 mt-4 rounded-lg text-sm md:text-base">
+                                    굿즈 샵 바로가기 →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </SwiperSlide>
+
+                {/* 슬라이드 1 */}
+                <SwiperSlide>
+                    <div className="relative w-full h-full">
+                        {/* 배경 이미지 */}
+                        <img
+                            src={img5}
+                            alt="Slide Background"
+                            className="w-full h-full object-cover"
+                        />
+                        {/* 텍스트 콘텐츠 */}
+                        <div
+                            className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent flex items-center px-6 md:px-16">
+                            <div className="text-white space-y-4 max-w-lg">
+                                <h3 className="text-sm md:text-lg uppercase">Logo Shop</h3>
+                                <h1 className="text-2xl md:text-4xl font-bold leading-snug">
+                                    마이멜로디 [산리오]
+                                    <br/>
+                                    생일 기념 한정 MD 오픈!
+                                </h1>
+                                <p className="text-sm md:text-base">
+                                    [마이멜로디]의 생일 기념 한정 굿즈를 만나보세요!
+                                </p>
+                                <button
+                                    className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 mt-4 rounded-lg text-sm md:text-base">
+                                    산리오 굿즈 샵 바로가기 →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </SwiperSlide>
+
             </Swiper>
         </div>
     );

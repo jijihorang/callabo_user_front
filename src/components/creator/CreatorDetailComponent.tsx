@@ -1,28 +1,139 @@
+import { useState, useEffect } from "react";
 import ProductImageSlider from "../slider/ProductImageSlider.tsx";
 import ProductInfoComponent from "./detail/ProductInfoComponent.tsx";
 import ProductDescriptionComponent from "./detail/ProductDescriptionComponent.tsx";
+import ProductFAQComponent from "./detail/ProductFAQComponent.tsx";
+import ProductReviewComponent from "./detail/ProductReviewComponent.tsx";
+
+import heart from "../../assets/icons/heart.png";
+import close from "../../assets/icons/close.png";
 
 function CreatorDetailComponent() {
-    return (
-        <div className="container mx-auto mt-5 pb-5"> {/* 컨테이너에 하단 여백 추가 */}
+    const [activeTab, setActiveTab] = useState("description"); // 탭 상태 관리
+    const [showPurchasePopup, setShowPurchasePopup] = useState(false); // 구매 팝업 상태
+    const [isMobile, setIsMobile] = useState(false); // 화면 크기 상태
 
+    useEffect(() => {
+        // 화면 크기 체크
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768); // 768px 이하를 모바일로 간주
+        };
+
+        handleResize(); // 초기 체크
+        window.addEventListener("resize", handleResize);
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
+
+    const handlePurchaseClick = () => {
+        setShowPurchasePopup(true);
+    };
+
+    const handleClosePopup = () => {
+        setShowPurchasePopup(false);
+    };
+
+    return (
+        <div className="container mx-auto mt-5 pb-5">
             {/* 상품 이미지 및 정보 섹션 */}
-            <div className="flex flex-col lg:flex-row items-stretch gap-2">
-                {/* 왼쪽 이미지 슬라이더 */}
+            <div className="flex flex-col lg:flex-row items-stretch gap-4">
                 <div className="flex-1 flex justify-center">
                     <ProductImageSlider />
                 </div>
-
-                {/* 오른쪽 상품 정보 */}
-                <div className="flex-1 flex flex-col justify-center">
+                <div className="flex-1 flex flex-col justify-center ml-4">
                     <ProductInfoComponent />
                 </div>
             </div>
 
-            {/* 상세 설명 섹션 */}
-            <div className="mt-5 mb-24"> {/* 상세 설명 하단 여백 추가 */}
-                <ProductDescriptionComponent />
+            {/* 탭 메뉴 */}
+            <div className="mt-8 border-b">
+                <div className="flex justify-center space-x-8">
+                    {["description", "faq", "review"].map((tab) => (
+                        <button
+                            key={tab}
+                            className={`py-2 ${
+                                activeTab === tab
+                                    ? "text-blue-600 font-bold border-b-2 border-blue-600 text-lg"
+                                    : "text-gray-400 text-lg"
+                            }`}
+                            onClick={() => setActiveTab(tab)}
+                        >
+                            {tab === "description" ? "상품 상세" : tab === "faq" ? "F&Q" : "리뷰"}
+                        </button>
+                    ))}
+                </div>
             </div>
+
+            {/* 탭 내용 */}
+            <div className="mt-8 mb-20 m-5">
+                {activeTab === "description" && <ProductDescriptionComponent />}
+                {activeTab === "faq" && <ProductFAQComponent />}
+                {activeTab === "review" && <ProductReviewComponent />}
+            </div>
+
+            {/* 하단 고정 구매 영역 (모바일에서만 표시) */}
+            {isMobile && (
+                <div className="fixed bottom-0 left-0 w-full bg-white flex justify-between items-center px-4 py-3 z-50">
+                    <button
+                        className="text-gray-500 font-bold flex items-center"
+                        onClick={() => console.log("찜하기 클릭됨")}
+                    >
+                        <img src={heart} alt="찜하기" className="w-5 h-5 mr-2" />
+                    </button>
+                    <div className="flex gap-4">
+                        <button
+                            className="bg-blue-600 text-white px-10 py-2 rounded-lg hover:bg-blue-700"
+                            onClick={handlePurchaseClick}
+                        >
+                            구매하기
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            {/* 구매 팝업 (모바일에서만 표시) */}
+            {isMobile && showPurchasePopup && (
+                <>
+                    <div className="fixed inset-0 bg-black bg-opacity-50 z-40"></div>
+                    <div className="fixed bottom-0 left-0 w-full bg-white shadow-lg z-50 px-4 py-6 rounded-t-2xl">
+                        <div className="flex justify-end items-center mb-4">
+                            <button onClick={handleClosePopup} className="text-gray-500">
+                                <img src={close} alt="닫기" className="w-5 h-5" />
+                            </button>
+                        </div>
+                        <div className="mb-4">
+                            <div className="flex items-center justify-between mb-2">
+                                <span className="text-gray-700">수량</span>
+                                <div className="flex items-center gap-2">
+                                    <button className="px-2 py-1 font-bold text-lg">−</button>
+                                    <span className="text-lg font-semibold text-gray-800">1</span>
+                                    <button className="px-2 py-1 font-bold text-lg">+</button>
+                                </div>
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <span className="text-gray-700">총 상품 금액</span>
+                                <span className="text-2xl font-bold">21,000원</span>
+                            </div>
+                        </div>
+                        <div className="flex gap-4">
+                            <button
+                                className="flex-1 border border-gray-300 py-2 rounded-lg text-gray-700 hover:bg-gray-100"
+                                onClick={() => console.log("장바구니 클릭됨")}
+                            >
+                                장바구니
+                            </button>
+                            <button
+                                className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
+                                onClick={() => console.log("구매하기")}
+                            >
+                                바로 구매하기
+                            </button>
+                        </div>
+                    </div>
+                </>
+            )}
         </div>
     );
 }
