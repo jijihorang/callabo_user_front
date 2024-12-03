@@ -2,8 +2,6 @@ import {createBrowserRouter, Navigate} from "react-router-dom";
 import LoadingPage from "../pages/common/LoadingPage.tsx";
 import {lazy, Suspense} from "react";
 import creatorRouter from "./creatorRouter.tsx";
-import OfflineStorePage from "../pages/offlinestore/OfflineStorePage.tsx";
-import WeekRankingPage from "../pages/weekranking/WeekRankingPage.tsx";
 
 const MainPage = lazy(() => import("../pages/MainPage.tsx"))
 
@@ -14,6 +12,10 @@ const CartPage = lazy(() => import("../pages/cart/CartPage.tsx"))
 const WishListPage = lazy(() => import("../pages/wishlist/WishlistPage.tsx"))
 
 const OrderPage = lazy(() => import("../pages/order/OrderPage.tsx"))
+
+const OfflineStorePage = lazy(() => import("../pages/offlinestore/OfflineStorePage.tsx"))
+
+const WeekRankingPage = lazy(() => import("../pages/weekranking/WeekRankingPage.tsx"))
 
 export const Loading = <LoadingPage></LoadingPage>
 
@@ -39,7 +41,7 @@ const mainRouter = createBrowserRouter([
         element: <Suspense fallback={Loading}><CartPage/></Suspense>
     },
     {
-        path: "weekranking",
+        path: "/weekranking",
         element: <Suspense fallback={Loading}><WeekRankingPage/></Suspense>
     },
     {
