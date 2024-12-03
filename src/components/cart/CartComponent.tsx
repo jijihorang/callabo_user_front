@@ -4,6 +4,7 @@ import roulette from "../../assets/img/roulette.png";
 import trash from "../../assets/icons/trash.png";
 
 function CartPage() {
+  
     const cartGroups = [
         {
             groupName: "차린건쥐뿔도없지만",
@@ -42,7 +43,6 @@ function CartPage() {
             shippingFee: 0,
         },
     ];
-
     return (
         <div className="container mx-auto px-4 py-8 flex">
             {/* 상품 목록 영역 */}
