@@ -6,7 +6,7 @@ import customerRouter from "./customerRouter.tsx";
 
 const MainPage = lazy(() => import("../pages/MainPage.tsx"))
 
-const LoginPage = lazy(() => import("../pages/login/LoginPage.tsx"))
+const LoginPage = lazy(() => import("../pages/LoginPage.tsx"))
 
 const CartPage = lazy(() => import("../pages/cart/CartPage.tsx"))
 
@@ -32,6 +32,10 @@ const mainRouter = createBrowserRouter([
         element: <Navigate to="main" replace={true}></Navigate>
     },
     {
+        path: "/login",
+        element: <Suspense fallback={Loading}><LoginPage/></Suspense>
+    },
+    {
         path: "/wishlist",
         element: <Suspense fallback={Loading}><WishListPage/></Suspense>
     },
@@ -40,24 +44,16 @@ const mainRouter = createBrowserRouter([
         element: <Suspense fallback={Loading}><CartPage/></Suspense>
     },
     {
-        path: "/login",
-        element: <Suspense fallback={Loading}><LoginPage/></Suspense>
-    },
-    {
-        path: "/user",
-        element: <Suspense fallback={Loading}><UserInfoPage/></Suspense>
-    },
-    {
-        path: "/order",
-        element: <Suspense fallback={Loading}><OrderPage/></Suspense>
-    },
-    {
-        path: "weekranking",
+        path: "/weekranking",
         element: <Suspense fallback={Loading}><WeekRankingPage/></Suspense>
     },
     {
         path: "/offlinestore",
         element: <Suspense fallback={Loading}><OfflineStorePage/></Suspense>
+    },
+    {
+        path: "/order",
+        element: <Suspense fallback={Loading}><OrderPage/></Suspense>
     },
     creatorRouter,
     customerRouter
