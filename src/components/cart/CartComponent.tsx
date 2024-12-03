@@ -53,7 +53,7 @@ function CartPage() {
     };
 
     return (
-        <div className="container mx-auto px-4 py-8 flex">
+        <div className="container mx-auto px-4 py-12 flex flex-col lg:flex-row gap-8">
             {/* 상품 목록 영역 */}
             <div className="w-2/3 space-y-8">
                 <h2 className="text-2xl font-bold mb-2">장바구니</h2>
