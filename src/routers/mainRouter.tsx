@@ -6,7 +6,7 @@ import customerRouter from "./customerRouter.tsx";
 
 const MainPage = lazy(() => import("../pages/MainPage.tsx"))
 
-const LoginPage = lazy(() => import("../pages/LoginPage.tsx"))
+const LoginPage = lazy(() => import("../pages/login/LoginPage.tsx"))
 
 const CartPage = lazy(() => import("../pages/cart/CartPage.tsx"))
 
@@ -50,6 +50,10 @@ const mainRouter = createBrowserRouter([
     {
         path: "/offlinestore",
         element: <Suspense fallback={Loading}><OfflineStorePage/></Suspense>
+    },
+    {
+      path: "/user",
+      element: <Suspense fallback={Loading}><UserInfoPage/></Suspense>
     },
     {
         path: "/order",
