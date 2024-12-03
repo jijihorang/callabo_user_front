@@ -20,6 +20,8 @@ const WeekRankingPage = lazy(() => import("../pages/weekranking/WeekRankingPage.
 
 const OfflineStorePage = lazy(() => import("../pages/offlinestore/OfflineStorePage.tsx"))
 
+const AccountSettingPage = lazy(() => import("../pages/login/AccountSettingsPage.tsx"))
+
 export const Loading = <LoadingPage></LoadingPage>
 
 const mainRouter = createBrowserRouter([
@@ -32,6 +34,10 @@ const mainRouter = createBrowserRouter([
         element: <Navigate to="main" replace={true}></Navigate>
     },
     {
+        path: "/login",
+        element: <Suspense fallback={Loading}><LoginPage/></Suspense>
+    },
+    {
         path: "/wishlist",
         element: <Suspense fallback={Loading}><WishListPage/></Suspense>
     },
@@ -40,24 +46,24 @@ const mainRouter = createBrowserRouter([
         element: <Suspense fallback={Loading}><CartPage/></Suspense>
     },
     {
-        path: "/login",
-        element: <Suspense fallback={Loading}><LoginPage/></Suspense>
+        path: "/weekranking",
+        element: <Suspense fallback={Loading}><WeekRankingPage/></Suspense>
     },
     {
-        path: "/user",
-        element: <Suspense fallback={Loading}><UserInfoPage/></Suspense>
+        path: "/offlinestore",
+        element: <Suspense fallback={Loading}><OfflineStorePage/></Suspense>
+    },
+    {
+      path: "/user",
+      element: <Suspense fallback={Loading}><UserInfoPage/></Suspense>
     },
     {
         path: "/order",
         element: <Suspense fallback={Loading}><OrderPage/></Suspense>
     },
     {
-        path: "weekranking",
-        element: <Suspense fallback={Loading}><WeekRankingPage/></Suspense>
-    },
-    {
-        path: "/offlinestore",
-        element: <Suspense fallback={Loading}><OfflineStorePage/></Suspense>
+        path: "/account",
+        element: <Suspense fallback={Loading}><AccountSettingPage/></Suspense>
     },
     creatorRouter,
     customerRouter

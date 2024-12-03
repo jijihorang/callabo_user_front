@@ -2,7 +2,7 @@ function FooterComponent() {
     return (
         <footer className="bg-white text-gray-700 border-t border-gray-400">
             {/* 푸터 1 */}
-            <div className="container mx-auto py-8 flex flex-col md:flex-row justify-between">
+            <div className="container mx-auto py-4 flex flex-col md:flex-row justify-between hidden lg:flex">
                 {/* 왼쪽 섹션 */}
                 <div className="w-full md:w-1/2 space-y-4">
                     <div>
@@ -29,7 +29,7 @@ function FooterComponent() {
             </div>
 
             {/* 푸터 2 */}
-            <div className="border-t border-gray-300 py-6 text-center text-xs md:text-sm">
+            <div className="border-t border-gray-300 py-2 text-center text-xs md:text-sm block lg:hidden">
                 &copy; 2024 Logo Corporation.
             </div>
         </footer>

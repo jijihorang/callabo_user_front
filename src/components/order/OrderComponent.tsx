@@ -96,18 +96,6 @@ function OrderFormPage() {
                         </div>
                     </div>
                 </div>
-
-                {/* 결제 방법 */}
-                <div className="mt-10">
-                    <h3 className="text-lg font-semibold mb-4 text-gray-700 border-t border-gray-300 pt-6">
-                        결제 수단
-                    </h3>
-                    <div className="flex justify-center">
-                        <button className="bg-blue-600 text-white px-20 py-3 w-full rounded-lg hover:bg-blue-500 shadow-md transition duration-300">
-                            토스
-                        </button>
-                    </div>
-                </div>
             </div>
 
             {/* 주문 정보 및 결제 버튼 */}
