@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import useCreatorStore from "../../stores/creator/CreatorStore.ts";
 import { getCreatorList } from "../../apis/creator/creatorAPI.ts";
-import { ICreator } from "../../types/creator/creator.ts";
+import { ICreator } from "../../types/creator/icreator.ts";
 import click from "../../assets/icons/click.png";
 
 function CreatorListComponent() {
