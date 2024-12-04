@@ -1,8 +1,8 @@
 import close from "../../assets/icons/close.png";
 import kakao_logo from "../../assets/login/kakao.png";
 import profile from "../../assets/login/profile.png";
-import {Link, useNavigate} from "react-router-dom";
-import {getKakaoLoginLink} from "../../apis/login/KakaoLoginAPI.ts";
+import { Link, useNavigate } from "react-router-dom";
+import { getKakaoLoginLink } from "../../apis/login/KakaoLoginAPI.ts";
 
 function LoginComponent() {
     const navigate = useNavigate();
@@ -13,10 +13,9 @@ function LoginComponent() {
 
     const kakao = getKakaoLoginLink();
 
-
     return (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-40">
-            <div className="bg-white rounded-lg shadow-lg w-[400px] min-h-[500px] p-6 relative flex flex-col">
+            <div className="bg-white rounded-lg shadow-lg w-[90%] md:w-[400px] min-h-[500px] p-6 relative flex flex-col">
                 {/* 닫기 버튼 */}
                 <button
                     className="absolute top-4 right-4 text-gray-400 hover:text-gray-500"

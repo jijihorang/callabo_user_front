@@ -16,9 +16,11 @@ const OrderPage = lazy(() => import("../pages/order/OrderPage.tsx"))
 
 const UserInfoPage = lazy(() => import("../pages/login/UserInfoPage.tsx"))
 
+const OfflineStorePage = lazy(() => import("../pages/offlinestore/OfflineStorePage.tsx"))
+
 const WeekRankingPage = lazy(() => import("../pages/weekranking/WeekRankingPage.tsx"))
 
-const OfflineStorePage = lazy(() => import("../pages/offlinestore/OfflineStorePage.tsx"))
+const AccountSettingPage = lazy(() => import("../pages/login/AccountSettingsPage.tsx"))
 
 const ReviewLeadPage = lazy(() => import("../pages/reviewlead/ReviewLead.Page.tsx"))
 
@@ -34,6 +36,10 @@ const mainRouter = createBrowserRouter([
         element: <Navigate to="main" replace={true}></Navigate>
     },
     {
+        path: "/login",
+        element: <Suspense fallback={Loading}><LoginPage/></Suspense>
+    },
+    {
         path: "/wishlist",
         element: <Suspense fallback={Loading}><WishListPage/></Suspense>
     },
@@ -42,24 +48,24 @@ const mainRouter = createBrowserRouter([
         element: <Suspense fallback={Loading}><CartPage/></Suspense>
     },
     {
-        path: "/login",
-        element: <Suspense fallback={Loading}><LoginPage/></Suspense>
-    },
-    {
-        path: "/user",
-        element: <Suspense fallback={Loading}><UserInfoPage/></Suspense>
-    },
-    {
-        path: "/order",
-        element: <Suspense fallback={Loading}><OrderPage/></Suspense>
-    },
-    {
         path: "/weekranking",
         element: <Suspense fallback={Loading}><WeekRankingPage/></Suspense>
     },
     {
         path: "/offlinestore",
         element: <Suspense fallback={Loading}><OfflineStorePage/></Suspense>
+    },
+    {
+      path: "/user",
+      element: <Suspense fallback={Loading}><UserInfoPage/></Suspense>
+    },
+    {
+        path: "/order",
+        element: <Suspense fallback={Loading}><OrderPage/></Suspense>
+    },
+    {
+        path: "/account",
+        element: <Suspense fallback={Loading}><AccountSettingPage/></Suspense>
     },
     {
         path: "/reviewlead",
