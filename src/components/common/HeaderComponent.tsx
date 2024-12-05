@@ -9,11 +9,11 @@ import menu from "../../assets/icons/menu.png";
 
 function HeaderComponent() {
     const navigate = useNavigate();
-    const { accessToken } = useAuthStore(); // Zustand 상태 가져오기
+    const { isLoggedIn } = useAuthStore(); // Zustand 상태 가져오기
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const handleUserIconClick = () => {
-        if (accessToken) {
+        if (isLoggedIn) {
             navigate("/user"); // 로그인 상태일 때 사용자 정보 페이지로 이동
         } else {
             navigate("/login"); // 로그인되지 않은 상태라면 로그인 페이지로 이동
