@@ -8,7 +8,7 @@ import useAuthStore from "../../stores/customer/AuthStore.ts";
 
 function CreatorListComponent() {
     const { creators, selectedCreator, searchQuery, isInitialized, setCreators, setSelectedCreator, setSearchQuery, setInitialized } = useCreatorStore();
-    const customerId = useAuthStore((state) => state.customerId); // Zustand에서 customerId 가져오기
+    const customerId = useAuthStore((state) => state.customer?.customerId); // Zustand에서 customerId 가져오기
     const navigate = useNavigate();
 
     // React Query로 데이터 가져오기
