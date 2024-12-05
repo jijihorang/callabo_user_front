@@ -3,44 +3,58 @@ import { useQuery } from "react-query";
 import useCreatorStore from "../../stores/creator/CreatorStore.ts";
 import { getCreatorList } from "../../apis/creator/creatorAPI.ts";
 import click from "../../assets/icons/click.png";
-import {ICreator} from "../../types/creator/icreator.ts";
+import { ICreator } from "../../types/creator/icreator.ts";
+import useAuthStore from "../../stores/customer/AuthStore.ts";
+
 function CreatorListComponent() {
-    const { creators, selectedCreator, searchQuery, isInitialized, setCreators, setSelectedCreator, setSearchQuery, setInitialized,} = useCreatorStore();
+    const { creators, selectedCreator, searchQuery, isInitialized, setCreators, setSelectedCreator, setSearchQuery, setInitialized } = useCreatorStore();
+    const customerId = useAuthStore((state) => state.customerId); // Zustand에서 customerId 가져오기
     const navigate = useNavigate();
-    // React Query 사용해 데이터 가져오기
+
+    // React Query로 데이터 가져오기
     const { isLoading } = useQuery<ICreator[]>({
-        queryKey: ["creatorList"],
-        queryFn: () => getCreatorList(),
-        staleTime: 0, // 데이터 신선도 유지 시간
-        refetchInterval: 0, // 1분 간격으로 자동 갱신
-        enabled: true, // 자동 갱신을 유지
-        initialData: creators, // Zustand 상태를 React Query 초기 데이터로 설정
+        queryKey: ["creatorList", customerId], // queryKey에 customerId 포함
+        queryFn: () => {
+            if (!customerId) {
+                return Promise.reject(new Error("Customer ID is null")); // customerId가 없을 경우 명시적으로 에러 발생
+            }
+            return getCreatorList(customerId); // customerId 전달
+        },
+        staleTime: 0,
+        refetchInterval: 0,
+        enabled: !!customerId, // customerId가 있을 때만 활성화
+        initialData: creators,
         onSuccess: (data: ICreator[]) => {
             if (!isInitialized) {
-                setCreators(data); // Zustand 상태 업데이트
-                setInitialized(true); // Zustand 초기화 완료
+                setCreators(data);
+                setInitialized(true);
             } else {
-                setCreators(data); // 상태 갱신
+                setCreators(data);
             }
+            console.log(data);
         },
-        onError: () => {
-            console.error("제작자 리스트를 불러오는 중 오류 발생");
+        onError: (error) => {
+            console.error("제작자 리스트를 불러오는 중 오류 발생:", error);
         },
     });
+
     // 제작자 선택
     const handleCreatorSelect = (creator: ICreator) => {
         setSelectedCreator(creator);
     };
+
     // 제작자 상품 리스트로 이동
     const moveToProductList = (creatorId?: string) => {
         if (creatorId) {
             navigate(`/product/list/${creatorId}`);
         }
     };
+
     // 제작자 검색 필터링
     const filteredCreators = creators.filter((creator) =>
         creator.creatorName?.toLowerCase().includes(searchQuery.toLowerCase())
     );
+
     return (
         <div className="container mx-auto mb-20">
             <div className="flex flex-col md:flex-row gap-6 mt-10">
@@ -86,8 +100,8 @@ function CreatorListComponent() {
                                             <button
                                                 className={`rounded-full px-3 py-1 text-white ${
                                                     creator.followStatus
-                                                        ? "bg-blue-500 hover:bg-indigo-600" // 팔로우 상태: 이쁜 색상
-                                                        : "bg-gray-400 hover:bg-gray-200" // 팔로잉 상태: 회색
+                                                        ? "bg-blue-500 hover:bg-indigo-600"
+                                                        : "bg-gray-400 hover:bg-gray-200"
                                                 }`}
                                             >
                                                 {creator.followStatus ? "팔로잉" : "팔로우"}
@@ -152,4 +166,5 @@ function CreatorListComponent() {
         </div>
     );
 }
+
 export default CreatorListComponent;
