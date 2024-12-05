@@ -1,4 +1,3 @@
-
 export interface IProduct {
     productNo : number;
     productName : string;
