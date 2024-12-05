@@ -42,15 +42,15 @@ function UserInfoComponent() {
 
             {/* 하단 메뉴 */}
             <div className="flex space-x-6">
-                <a href="#favorites" className="text-gray-600 hover:text-blue-500">
+                <Link to="/wishlist" className="text-gray-600 hover:text-blue-500">
                     좋아요
-                </a>
+                </Link>
                 <a href="#my-posts" className="text-gray-600 hover:text-blue-500">
                     내가 쓴 글
                 </a>
-                <a href="#cart" className="text-gray-600 hover:text-blue-500">
+                <Link to="/cart" className="text-gray-600 hover:text-blue-500">
                     장바구니
-                </a>
+                </Link>
                 <a href="#purchase-history" className="text-gray-600 hover:text-blue-500">
                     구매내역
                 </a>

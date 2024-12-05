@@ -11,8 +11,8 @@ function CreatorListComponent() {
     const { isLoading } = useQuery<ICreator[]>({
         queryKey: ["creatorList"],
         queryFn: () => getCreatorList(),
-        staleTime: 60 * 1000, // 데이터 신선도 유지 시간
-        refetchInterval: 60 * 1000, // 1분 간격으로 자동 갱신
+        staleTime: 0, // 데이터 신선도 유지 시간
+        refetchInterval: 0, // 1분 간격으로 자동 갱신
         enabled: true, // 자동 갱신을 유지
         initialData: creators, // Zustand 상태를 React Query 초기 데이터로 설정
         onSuccess: (data: ICreator[]) => {
