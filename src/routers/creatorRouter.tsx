@@ -25,7 +25,7 @@ const creatorRouter = {
         {
             path: "list/all",
             element: <Suspense fallback={Loading}><CreateAllList/></Suspense>
-        }
+        },
     ]
 }
 

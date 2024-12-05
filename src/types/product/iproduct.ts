@@ -2,7 +2,7 @@
 export interface IProduct {
     productNo : number;
     productName : string;
-    productDescription : string;
+    productDescription : number;
     productPrice : string;
     productStatus ?: string;
 

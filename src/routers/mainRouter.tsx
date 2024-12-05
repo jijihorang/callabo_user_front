@@ -24,6 +24,14 @@ const OfflineStorePage = lazy(() => import("../pages/offlinestore/OfflineStorePa
 
 const AccountSettingPage = lazy(() => import("../pages/login/AccountSettingsPage.tsx"))
 
+// const CreatorReviewsPage = lazy(() => import("../pages/review/CreatorReviewsPage.tsx"))
+
+const CreatorReviewReadPage = lazy(() => import("../pages/creatorreviews/CreatorReviewReadPage.tsx"))
+
+const ReviewRegisterPage = lazy(() => import("../pages/reviewwriting/ReviewRegisterPage.tsx"))
+
+const FaqPage = lazy(() => import("../pages/faq/FaqPage.tsx"))
+
 export const Loading = <LoadingPage></LoadingPage>
 
 const mainRouter = createBrowserRouter([
@@ -73,6 +81,22 @@ const mainRouter = createBrowserRouter([
             {
                 path: "/account",
                 element: <Suspense fallback={Loading}><AccountSettingPage/></Suspense>
+            },
+            {
+                path: "review/read",
+                element: <Suspense fallback={Loading}><CreatorReviewReadPage/></Suspense>
+            },
+            {
+                path: "/review",
+                element: <Suspense fallback={Loading}><ReviewRegisterPage/></Suspense>
+            },
+            // {
+            //     path: "/review",
+            //     element: <Suspense fallback={Loading}><CreatorReviewsPage/></Suspense>
+            // },
+            {
+                path: "/faq",
+                element: <Suspense fallback={Loading}><FaqPage/></Suspense>
             },
             creatorRouter,
             customerRouter,
