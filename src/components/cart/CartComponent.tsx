@@ -147,8 +147,8 @@ function CartPage() {
                                         <div className="text-gray-400 text-sm mt-1">
                                             {product.category}
                                         </div>
-                                        <div className="text-lg font-bold mt-2">
-                                            {product.price.toLocaleString()}원
+                                        <div className="text-blue-600 font-bold mb-2">
+                                            {(product.price ?? 0).toLocaleString()}원
                                         </div>
                                     </div>
                                 </div>

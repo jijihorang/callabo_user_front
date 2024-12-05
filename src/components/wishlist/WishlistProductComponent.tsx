@@ -3,37 +3,29 @@ import { useQuery } from "react-query";
 import useAuthStore from "../../stores/customer/AuthStore";
 import heart from "../../assets/icons/redheart.png";
 import likeIcon from "../../assets/icons/redheart.png";
-import {getLikedProducts} from "../../apis/customer/customerAPI.ts";
-import {IWishlistProduct} from "../../types/wishlist/iwishlist.ts";
+import { getLikedProducts } from "../../apis/customer/customerAPI.ts";
+import {ILikedProducts} from "../../types/wishlist/iwishlist.ts";
 
 function WishlistProductComponent() {
     const navigate = useNavigate();
     const customerId = useAuthStore((state) => state.customer?.customerId); // Zustand에서 customerId 가져오기
 
     // React Query로 좋아요한 상품 가져오기
-    const { data: likedProducts = [], isLoading } = useQuery<IWishlistProduct[]>({
+    const { data: likedProducts = [], isLoading } = useQuery<ILikedProducts[]>({
         queryKey: ["likedProducts", customerId],
         queryFn: async () => {
             if (!customerId) {
-                return Promise.reject(new Error("Customer ID is null"));
+                return Promise.reject(new Error("Customer ID is null")); // customerId가 없으면 에러 반환
             }
-            return getLikedProducts(customerId);
+            return getLikedProducts(customerId); // API 호출
         },
-        enabled: !!customerId,
+        enabled: !!customerId, // customerId가 있을 때만 활성화
         onError: (error) => {
-            console.error("React Query 에러:", error);
+            console.error("좋아요한 상품을 불러오는 중 오류 발생:", error);
         },
     });
 
-    console.log(customerId)
-
-    console.log(likedProducts.map((products)=>(
-        products.id,
-        products.img,
-        products.name,
-        products.id
-        )
-    ))
+    console.log("좋아요한 상품 데이터:", likedProducts);
 
     return (
         <div className="container mx-auto px-4 py-8">
@@ -51,13 +43,13 @@ function WishlistProductComponent() {
                                 className="border border-gray-200 rounded-lg p-4 flex flex-col items-center"
                             >
                                 <img
-                                    src={product.img || likeIcon} // 기본 이미지 설정
+                                    src={product.img || likeIcon} // 이미지가 없을 때 기본 이미지 사용
                                     alt={product.name}
                                     className="w-40 h-40 object-cover rounded-md mb-4"
                                 />
                                 <h3 className="text-sm font-bold mb-2">{product.name}</h3>
                                 <div className="text-blue-600 font-bold mb-2">
-                                    {product.price.toLocaleString()}원
+                                    {(product.price || 0).toLocaleString()}원
                                 </div>
                                 <button
                                     className="flex space-x-2 mt-3 bg-blue-500 text-white rounded-full px-4 py-2 shadow-lg hover:bg-blue-600 transition-all duration-300"
