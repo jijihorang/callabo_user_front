@@ -6,9 +6,6 @@ import customerRouter from "./customerRouter.tsx";
 import productRouter from "./productRouter.tsx";
 import BasicLayout from "../layouts/BasicLayout.tsx";
 
-import CreatorReviewsPage from "../pages/creatorreviews/CreatorReviewsPage.tsx";
-
-
 const MainPage = lazy(() => import("../pages/MainPage.tsx"))
 
 const LoginPage = lazy(() => import("../pages/login/LoginPage.tsx"))
@@ -26,6 +23,8 @@ const WeekRankingPage = lazy(() => import("../pages/weekranking/WeekRankingPage.
 const OfflineStorePage = lazy(() => import("../pages/offlinestore/OfflineStorePage.tsx"))
 
 const AccountSettingPage = lazy(() => import("../pages/login/AccountSettingsPage.tsx"))
+
+const CreatorReviewsPage = lazy(() => import("../pages/creatorreviews/CreatorReviewsPage.tsx"))
 
 const ReviewLeadPage = lazy(() => import("../pages/reviewlead/ReviewLeadPage.tsx"))
 
