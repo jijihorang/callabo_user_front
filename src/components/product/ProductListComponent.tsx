@@ -7,9 +7,11 @@ import { getCreatorList } from "../../apis/creator/creatorAPI.ts";
 
 import wheart from "../../assets/icons/whiteheart.png";
 import cart2 from "../../assets/icons/cart.png";
+import useAuthStore from "../../stores/customer/AuthStore.ts";
 
 function ProductListComponent() {
     const { creatorId } = useParams(); // URL에서 creatorId 추출
+    const { customer } = useAuthStore();
     const [products, setProducts] = useState<IProduct[]>([]);
     const [visibleProducts, setVisibleProducts] = useState<IProduct[]>([]); // 현재 화면에 보이는 상품들
     const [creator, setCreator] = useState<ICreator | null>(null);
@@ -32,13 +34,17 @@ function ProductListComponent() {
 
         const fetchCreatorInfo = async () => {
             try {
-                const data = await getCreatorList();
-                const selectedCreator = data.find((c: ICreator) => c.creatorId === creatorId); // creatorId로 필터링
-                setCreator(selectedCreator || null);
-                if (!selectedCreator) {
-                    console.warn(`제작자 ${creatorId}를 찾을 수 없습니다.`);
+                if (customer?.customerId) {
+                    const data = await getCreatorList(customer.customerId); // customerId로 제작자 목록 가져오기
+                    const selectedCreator = data.find((c: ICreator) => c.creatorId === creatorId); // creatorId로 필터링
+                    setCreator(selectedCreator || null);
+                    if (!selectedCreator) {
+                        console.warn(`제작자 ${creatorId}를 찾을 수 없습니다.`);
+                    }
+                } else {
+                    console.error("customerId가 없습니다.");
                 }
-            } catch (error) {
+                } catch (error) {
                 console.error("제작자 정보를 가져오는 중 에러 발생:", error);
             }
         };
