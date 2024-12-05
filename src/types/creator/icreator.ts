@@ -1,5 +1,5 @@
 export interface ICreator {
-    creatorId : string;
+    creatorId ?: string;
     creatorName : string;
 
     creatorEmail ?: string;
