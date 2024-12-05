@@ -24,11 +24,11 @@ const OfflineStorePage = lazy(() => import("../pages/offlinestore/OfflineStorePa
 
 const AccountSettingPage = lazy(() => import("../pages/login/AccountSettingsPage.tsx"))
 
-const CreatorReviewsPage = lazy(() => import("../pages/creatorreviews/CreatorReviewsPage.tsx"))
+// const CreatorReviewsPage = lazy(() => import("../pages/review/CreatorReviewsPage.tsx"))
 
-const ReviewLeadPage = lazy(() => import("../pages/reviewlead/ReviewLeadPage.tsx"))
+const CreatorReviewReadPage = lazy(() => import("../pages/creatorreviews/CreatorReviewReadPage.tsx"))
 
-const ReviewWritingPage = lazy(() => import("../pages/reviewwriting/ReviewWritingPage.tsx"))
+const ReviewRegisterPage = lazy(() => import("../pages/reviewwriting/ReviewRegisterPage.tsx"))
 
 const FaqPage = lazy(() => import("../pages/faq/FaqPage.tsx"))
 
@@ -83,17 +83,17 @@ const mainRouter = createBrowserRouter([
                 element: <Suspense fallback={Loading}><AccountSettingPage/></Suspense>
             },
             {
-                path: "/reviewread",
-                element: <Suspense fallback={Loading}><ReviewLeadPage/></Suspense>
+                path: "review/read",
+                element: <Suspense fallback={Loading}><CreatorReviewReadPage/></Suspense>
             },
             {
-                path: "/reviewwriting",
-                element: <Suspense fallback={Loading}><ReviewWritingPage/></Suspense>
+                path: "/review",
+                element: <Suspense fallback={Loading}><ReviewRegisterPage/></Suspense>
             },
-            {
-                path: "/creatorreviews",
-                element: <Suspense fallback={Loading}><CreatorReviewsPage/></Suspense>
-            },
+            // {
+            //     path: "/review",
+            //     element: <Suspense fallback={Loading}><CreatorReviewsPage/></Suspense>
+            // },
             {
                 path: "/faq",
                 element: <Suspense fallback={Loading}><FaqPage/></Suspense>

@@ -1,6 +1,6 @@
-import { useState } from "react"; // React에서 제공하는 useState 훅을 사용하기 위해 import합니다.
+import {useState} from "react";
 
-function ReviewWritingComponent() { // 리뷰 작성 컴포넌트를 정의합니다.
+function ReviewRegisterComponent() {
     const [rating, setRating] = useState(5); // 사용자가 평가한 별점(1~5)을 관리합니다. 초기값은 4입니다.
     const [reviewText, setReviewText] = useState(""); // 사용자가 작성한 리뷰 텍스트를 관리합니다. 초기값은 빈 문자열입니다.
     const [attachments, setAttachments] = useState<File[]>([]); // 리뷰에 첨부된 사진들을 관리합니다. 초기값은 빈 배열입니다.
@@ -87,4 +87,4 @@ function ReviewWritingComponent() { // 리뷰 작성 컴포넌트를 정의합�
     );
 }
 
-export default ReviewWritingComponent;
+export default ReviewRegisterComponent;

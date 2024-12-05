@@ -1,17 +1,22 @@
-import {Link, useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
-import {IProduct} from "../../types/product/iproduct.ts";
-import {ICreator} from "../../types/creator/icreator.ts";
-import {getProductList} from "../../apis/product/productAPI.ts";
-import {getCreatorList} from "../../apis/creator/creatorAPI.ts";
+import { Link, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { IProduct } from "../../types/product/iproduct.ts";
+import { ICreator } from "../../types/creator/icreator.ts";
+import { getProductList } from "../../apis/product/productAPI.ts";
+import { getCreatorList } from "../../apis/creator/creatorAPI.ts";
 
 import wheart from "../../assets/icons/whiteheart.png";
 import cart2 from "../../assets/icons/cart.png";
+import useAuthStore from "../../stores/customer/AuthStore.ts";
 
 function ProductListComponent() {
     const { creatorId } = useParams(); // URL에서 creatorId 추출
+    const { customer } = useAuthStore();
     const [products, setProducts] = useState<IProduct[]>([]);
+    const [visibleProducts, setVisibleProducts] = useState<IProduct[]>([]); // 현재 화면에 보이는 상품들
     const [creator, setCreator] = useState<ICreator | null>(null);
+    const [expanded, setExpanded] = useState(false); // "See More" / "Close" 상태
+    const productsPerPage = 8; // 한 페이지에 표시할 상품 수
 
     // 데이터 로드
     useEffect(() => {
@@ -20,6 +25,7 @@ function ProductListComponent() {
                 if (creatorId) {
                     const data = await getProductList(creatorId); // creatorId로 필터링된 상품 목록 가져오기
                     setProducts(data);
+                    setVisibleProducts(data.slice(0, productsPerPage)); // 첫 페이지의 상품만 표시
                 }
             } catch (error) {
                 console.error("상품 데이터를 가져오는 중 에러 발생:", error);
@@ -28,20 +34,33 @@ function ProductListComponent() {
 
         const fetchCreatorInfo = async () => {
             try {
-                const data = await getCreatorList();
-                const selectedCreator = data.find((c: ICreator) => c.creatorId === creatorId); // creatorId로 필터링
-                setCreator(selectedCreator || null);
-                if (!selectedCreator) {
-                    console.warn(`제작자 ${creatorId}를 찾을 수 없습니다.`);
+                if (customer?.customerId) {
+                    const data = await getCreatorList(customer.customerId); // customerId로 제작자 목록 가져오기
+                    const selectedCreator = data.find((c: ICreator) => c.creatorId === creatorId); // creatorId로 필터링
+                    setCreator(selectedCreator || null);
+                    if (!selectedCreator) {
+                        console.warn(`제작자 ${creatorId}를 찾을 수 없습니다.`);
+                    }
+                } else {
+                    console.error("customerId가 없습니다.");
                 }
-            } catch (error) {
+                } catch (error) {
                 console.error("제작자 정보를 가져오는 중 에러 발생:", error);
             }
         };
-
         fetchCreatorInfo();
         fetchProducts();
     }, [creatorId]); // creatorId 변경 시 재호출
+
+    // "See More" / "Close" 버튼 클릭 핸들러
+    const toggleProductVisibility = () => {
+        if (expanded) {
+            setVisibleProducts(products.slice(0, productsPerPage)); // 처음 페이지로 되돌리기
+        } else {
+            setVisibleProducts(products); // 모든 상품 표시
+        }
+        setExpanded(!expanded); // 상태 토글
+    };
 
     // 데이터 로딩 중 상태
     if (!creator) {
@@ -49,7 +68,7 @@ function ProductListComponent() {
     }
 
     return (
-        <div className="container mx-auto mb-20 px-4">
+        <div className="container mx-auto mb-20 px-5">
             {/* 배너 */}
             <div className="relative w-full h-[300px] lg:h-[400px] rounded-xl overflow-hidden mb-5">
                 <img
@@ -85,10 +104,25 @@ function ProductListComponent() {
 
             {/* 상품 리스트 */}
             <div className="px-4">
-                <h2 className="text-[15px] mb-1">당신의 취향을 저격할</h2>
-                <h1 className="text-[30px] font-bold mb-5">PRODUCTS</h1>
+                <div className="flex justify-between items-center mb-5">
+                    <div>
+                        <h2 className="text-[15px]">당신의 취향을 저격할</h2>
+                        <h1 className="text-[30px] font-bold">PRODUCTS</h1>
+                    </div>
+
+                    {/* "See More" / "Close" 버튼 */}
+                    {products.length > productsPerPage && (
+                        <button
+                            className="px-6 py-2 text-gray-500 border border-gray-400 rounded-lg transition"
+                            onClick={toggleProductVisibility}
+                        >
+                            {expanded ? "Close" : "See More"}
+                        </button>
+                    )}
+                </div>
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {products.map((product, index) => (
+                    {visibleProducts.map((product, index) => (
                         <div
                             key={`${product.productNo}-${index}`}
                             className="relative bg-white rounded-lg shadow-md hover:shadow-lg transition-all"
