@@ -1,5 +1,5 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
+import { Navigation, Pagination } from "swiper/modules";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
@@ -9,31 +9,35 @@ import "swiper/css";
 // @ts-expect-error
 import "swiper/css/pagination";
 
-import product1 from "../../assets/img/prod1.png";
-import product2 from "../../assets/img/prod2.png";
-import product3 from "../../assets/img/prod1.png";
-import product4 from "../../assets/img/prod2.png";
+interface ProductImage {
+    productImageNo: number;
+    productImageUrl: string;
+    productImageOrd: number;
+}
 
-
-function ProductImageSlider() {
-    const productImages = [product1, product2, product3, product4];
+function ProductImageSlider({ productImages }: { productImages: ProductImage[] }) {
+    // 슬라이드가 충분하지 않을 경우 복제
+    const slides = productImages.length >= 3 ? productImages : [...productImages, ...productImages];
 
     return (
-        <div className="w-full max-w-2xl mx-auto">
-            {/* Swiper Slider */}
+        <div className="w-full max-w-[500px] mx-auto">
             <Swiper
-                modules={[Navigation]}
+                modules={[Navigation, Pagination]}
                 navigation
                 pagination={{ clickable: true }}
-                loop={true}
-                className="w-full h-[800px]" // 슬라이더 높이를 키움
+                loop={slides.length > 3} // 슬라이드가 충분할 경우에만 loop 활성화
+                spaceBetween={10}
+                className="relative w-full h-[400px]"
             >
-                {productImages.map((image, index) => (
-                    <SwiperSlide key={index} className="flex justify-center items-center">
+                {slides.map((image, index) => (
+                    <SwiperSlide
+                        key={index}
+                        className="flex justify-center items-center"
+                    >
                         <img
-                            src={image}
-                            alt={`Product ${index + 1}`}
-                            className="w-auto h-full object-contain" // 이미지가 슬라이더 영역에 맞춰 확대
+                            src={image.productImageUrl}
+                            alt={`Product Image ${image.productImageNo}`}
+                            className="w-auto h-full object-contain"
                         />
                     </SwiperSlide>
                 ))}
@@ -43,3 +47,4 @@ function ProductImageSlider() {
 }
 
 export default ProductImageSlider;
+
