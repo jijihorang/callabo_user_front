@@ -1,4 +1,3 @@
-import {ICategory} from "../category/icategory.ts";
 
 export interface IProduct {
     productNo : number;
@@ -15,5 +14,5 @@ export interface IProduct {
         productImageOrd: number;
     }[];
 
-    category ?: ICategory;
+    categoryName?: string;
 }

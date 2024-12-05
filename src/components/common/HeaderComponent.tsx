@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-
+import { useState } from "react";
+import useAuthStore from "../../stores/customer/AuthStore.ts"; // Zustand Store
 import logo from "../../assets/icons/atom.png";
 import heart from "../../assets/icons/heart.png";
 import cart from "../../assets/icons/cart.png";
@@ -9,17 +9,11 @@ import menu from "../../assets/icons/menu.png";
 
 function HeaderComponent() {
     const navigate = useNavigate();
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const { accessToken } = useAuthStore(); // Zustand 상태 가져오기
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    // 로그인 상태 확인
-    useEffect(() => {
-        const token = localStorage.getItem("kakao_access_token");
-        setIsLoggedIn(!!token); // 토큰이 존재하면 true, 없으면 false
-    }, []);
-
     const handleUserIconClick = () => {
-        if (isLoggedIn) {
+        if (accessToken) {
             navigate("/user"); // 로그인 상태일 때 사용자 정보 페이지로 이동
         } else {
             navigate("/login"); // 로그인되지 않은 상태라면 로그인 페이지로 이동
@@ -48,25 +42,21 @@ function HeaderComponent() {
                 </nav>
             </div>
 
-
             {/* 모바일 메뉴 아이콘 */}
-            <button
-                className="lg:hidden"
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-                <img src={menu} alt="메뉴" className="w-7 h-7 cursor-pointer"/>
+            <button className="lg:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                <img src={menu} alt="메뉴" className="w-7 h-7 cursor-pointer" />
             </button>
 
             {/* 오른쪽 아이콘 (데스크톱 전용) */}
             <div className="hidden lg:flex items-center space-x-5">
                 <Link to="/wishlist">
-                    <img src={heart} alt="찜하기" className="w-6 h-6 cursor-pointer"/>
+                    <img src={heart} alt="찜하기" className="w-6 h-6 cursor-pointer" />
                 </Link>
                 <Link to="/cart">
-                    <img src={cart} alt="장바구니" className="w-7 h-7 cursor-pointer"/>
+                    <img src={cart} alt="장바구니" className="w-7 h-7 cursor-pointer" />
                 </Link>
                 <button onClick={handleUserIconClick} className="cursor-pointer">
-                    <img src={info} alt="사용자" className="w-7 h-7"/>
+                    <img src={info} alt="사용자" className="w-7 h-7" />
                 </button>
             </div>
 
