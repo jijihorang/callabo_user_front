@@ -1,7 +1,4 @@
 import { create } from "zustand";
-import mangnani from "../../assets/img/mangnani.png";
-import soju from "../../assets/img/soju.png";
-import roulette from "../../assets/img/roulette.png";
 
 interface Product {
     id: number;
@@ -10,16 +7,19 @@ interface Product {
     price: number;
     category: string;
     quantity: number;
+    creatorId: string; // 추가: 상품에 creatorId 포함
 }
 
 interface CartGroup {
-    groupName: string;
+    groupName: string; // Optional for better labeling
+    creatorId: string; // 추가: 그룹을 creatorId로 분류
     products: Product[];
     shippingFee: number;
 }
 
 interface CartState {
     cartGroups: CartGroup[];
+    addToCart: (product: Product) => void;
     increaseQuantity: (groupIndex: number, productIndex: number) => void;
     decreaseQuantity: (groupIndex: number, productIndex: number) => void;
     removeProduct: (groupIndex: number, productIndex: number) => void;
@@ -27,44 +27,45 @@ interface CartState {
 }
 
 const useCartStore = create<CartState>((set) => ({
-    cartGroups: [
-        {
-            groupName: "차린건쥐뿔도없지만",
-            products: [
-                {
-                    id: 1,
-                    img: mangnani,
-                    name: "[포카 증정] 차쥐뿔 추천 구성 맥주잔+차쥐뿔 병따개 SET",
-                    price: 21000,
-                    category: "유리컵/머그컵",
-                    quantity: 1,
-                },
-                {
-                    id: 2,
-                    img: soju,
-                    name: "[한정수량] 망나니 잔 (2024년 12월 배송)",
-                    price: 15000,
-                    category: "유리컵/머그컵",
-                    quantity: 1,
-                },
-            ],
-            shippingFee: 3000,
-        },
-        {
-            groupName: "싸이코드 감자에",
-            products: [
-                {
-                    id: 3,
-                    img: roulette,
-                    name: "오니제이 포토카드",
-                    price: 7500,
-                    category: "세로포토카드",
-                    quantity: 1,
-                },
-            ],
-            shippingFee: 0,
-        },
-    ],
+    cartGroups: [], // 초기 상태
+    addToCart: (product) =>
+        set((state) => {
+            const groupIndex = state.cartGroups.findIndex(
+                (group) => group.creatorId === product.creatorId // creatorId로 그룹 찾기
+            );
+
+            if (groupIndex !== -1) {
+                // 그룹이 이미 존재할 경우
+                const productIndex = state.cartGroups[groupIndex].products.findIndex(
+                    (p) => p.id === product.id
+                );
+
+                if (productIndex !== -1) {
+                    // 상품이 이미 존재할 경우 수량 증가
+                    const newCartGroups = [...state.cartGroups];
+                    newCartGroups[groupIndex].products[productIndex].quantity += 1;
+                    return { cartGroups: newCartGroups };
+                }
+
+                // 그룹에 새로운 상품 추가
+                const newCartGroups = [...state.cartGroups];
+                newCartGroups[groupIndex].products.push({ ...product, quantity: 1 });
+                return { cartGroups: newCartGroups };
+            }
+
+            // 새로운 그룹 생성
+            return {
+                cartGroups: [
+                    ...state.cartGroups,
+                    {
+                        groupName: `Creator ${product.creatorId}`, // Optional group name
+                        creatorId: product.creatorId, // 그룹의 creatorId 설정
+                        products: [{ ...product, quantity: 1 }],
+                        shippingFee: 0, // 기본 배송비 설정 (필요 시 수정 가능)
+                    },
+                ],
+            };
+        }),
     increaseQuantity: (groupIndex, productIndex) =>
         set((state) => {
             const newCartGroups = [...state.cartGroups];
@@ -84,6 +85,12 @@ const useCartStore = create<CartState>((set) => ({
         set((state) => {
             const newCartGroups = [...state.cartGroups];
             newCartGroups[groupIndex].products.splice(productIndex, 1);
+
+            // 그룹에서 모든 상품이 제거되었을 경우 그룹 삭제
+            if (newCartGroups[groupIndex].products.length === 0) {
+                newCartGroups.splice(groupIndex, 1);
+            }
+
             return { cartGroups: newCartGroups };
         }),
     clearCart: () => set({ cartGroups: [] }),
