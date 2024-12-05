@@ -1,24 +1,28 @@
-import prod from "../../assets/img/pro1.png";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import useAuthStore from "../../stores/customer/AuthStore.ts";
 
-
 function UserInfoComponent() {
-    const { customerName, customerId, logout } = useAuthStore();
+    const { customer, logout } = useAuthStore();
+    const navigate = useNavigate();
 
     const handleLogout = () => {
         logout();
         alert("로그아웃 되었습니다.");
+        navigate("/");
     };
 
     return (
         <div className="flex flex-col items-center justify-center py-8 space-y-6">
             {/* 프로필 이미지 및 사용자 정보 */}
             <div className="flex flex-col items-center space-y-4">
-                <img src={prod} alt="프로필" className="w-40 h-40 rounded-full" />
+                <img
+                    src={customer?.customerProfileImage || "default-profile-image.png"}
+                    alt="프로필"
+                    className="w-40 h-40 rounded-full"
+                />
                 <div className="text-center">
-                    <p className="text-xl font-bold">{customerName ? `${customerName}님, 반가워요!` : "비회원님, 반가워요!"}</p>
-                    {customerId && <p className="text-sm text-gray-500">{customerId}</p>}
+                    <p className="text-xl font-bold">{customer?.customerName ? `${customer.customerName}님, 반가워요!` : "비회원님, 반가워요!"}</p>
+                    {customer?.customerId && <p className="text-sm text-gray-500">{customer.customerId}</p>}
                 </div>
             </div>
 
@@ -36,27 +40,6 @@ function UserInfoComponent() {
                 >
                     로그아웃
                 </button>
-            </div>
-
-            <hr className="border-gray-400 my-4 w-1/2" />
-
-            {/* 하단 메뉴 */}
-            <div className="flex space-x-6">
-                <a href="#favorites" className="text-gray-600 hover:text-blue-500">
-                    좋아요
-                </a>
-                <a href="#my-posts" className="text-gray-600 hover:text-blue-500">
-                    내가 쓴 글
-                </a>
-                <a href="#cart" className="text-gray-600 hover:text-blue-500">
-                    장바구니
-                </a>
-                <a href="#purchase-history" className="text-gray-600 hover:text-blue-500">
-                    구매내역
-                </a>
-                <a href="#faq" className="text-gray-600 hover:text-blue-500">
-                    FAQ
-                </a>
             </div>
         </div>
     );
