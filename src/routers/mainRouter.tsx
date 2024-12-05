@@ -3,6 +3,8 @@ import LoadingPage from "../pages/common/LoadingPage.tsx";
 import {lazy, Suspense} from "react";
 import creatorRouter from "./creatorRouter.tsx";
 import customerRouter from "./customerRouter.tsx";
+import CreatorReviewsPage from "../pages/creatorreviews/CreatorReviewsPage.tsx";
+
 
 const MainPage = lazy(() => import("../pages/MainPage.tsx"))
 
@@ -22,7 +24,11 @@ const WeekRankingPage = lazy(() => import("../pages/weekranking/WeekRankingPage.
 
 const AccountSettingPage = lazy(() => import("../pages/login/AccountSettingsPage.tsx"))
 
-const ReviewLeadPage = lazy(() => import("../pages/reviewlead/ReviewLead.Page.tsx"))
+const ReviewLeadPage = lazy(() => import("../pages/reviewlead/ReviewLeadPage.tsx"))
+
+const ReviewWritingPage = lazy(() => import("../pages/reviewwriting/ReviewWritingPage.tsx"))
+
+const FaqPage = lazy(() => import("../pages/faq/FaqPage.tsx"))
 
 export const Loading = <LoadingPage></LoadingPage>
 
@@ -68,8 +74,20 @@ const mainRouter = createBrowserRouter([
         element: <Suspense fallback={Loading}><AccountSettingPage/></Suspense>
     },
     {
-        path: "/reviewlead",
+        path: "/reviewread",
         element: <Suspense fallback={Loading}><ReviewLeadPage/></Suspense>
+    },
+    {
+        path: "/reviewwriting",
+        element: <Suspense fallback={Loading}><ReviewWritingPage/></Suspense>
+    },
+    {
+        path: "/creatorreviews",
+        element: <Suspense fallback={Loading}><CreatorReviewsPage/></Suspense>
+    },
+    {
+        path: "/faq",
+        element: <Suspense fallback={Loading}><FaqPage/></Suspense>
     },
     creatorRouter,
     customerRouter
