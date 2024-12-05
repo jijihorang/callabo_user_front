@@ -28,7 +28,7 @@ const creatorRouter = {
             element: <Suspense fallback={Loading}><CreateRead/></Suspense>
         },
         {
-            path: "detail",
+            path: "detail/:productNo",
             element: <Suspense fallback={Loading}><CreateDetail/></Suspense>
         },
         {

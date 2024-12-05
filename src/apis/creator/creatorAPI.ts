@@ -1,4 +1,4 @@
-import {ICreator} from "../../types/creator/creator.ts";
+import {ICreator} from "../../types/creator/icreator.ts";
 import  axios from "axios";
 
 const host = 'http://localhost:8080/api2/creator';

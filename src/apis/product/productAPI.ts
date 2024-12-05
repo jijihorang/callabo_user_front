@@ -1,4 +1,4 @@
-import {IProduct} from "../../types/product/product.ts";
+import {IProduct} from "../../types/product/iproduct.ts";
 import axios from "axios";
 
 const host = 'http://localhost:8080/api2/product';
@@ -11,3 +11,9 @@ export const getProductList = async (creatorId: string): Promise<IProduct[]> => 
 
     return res.data;
 };
+
+// 상품 조회
+export const getProductRead = async (productNo : number) : Promise<IProduct> => {
+    const res = await axios.get(`${host}/detail/${productNo}`);
+    return res.data;
+}
