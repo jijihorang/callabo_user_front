@@ -1,6 +1,5 @@
 import KakaoCallbackComponent from "../../components/login/KakaoCallbackComponent.tsx";
 
-
 function KakaoCallbackPage() {
     return (
         <div>
