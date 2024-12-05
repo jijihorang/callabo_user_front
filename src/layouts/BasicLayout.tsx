@@ -42,10 +42,12 @@ function BasicLayout({ children }: { children: React.ReactNode }) {
 
 
             {/* Main Content */}
-            <main className="flex-1 bg-white mt-[80px]">{children}</main>
+            <main className="flex-1 bg-white mt-[100px] mb-[100px]">{children}</main>
 
 
-            <FooterComponent></FooterComponent>
+           <footer>
+               <FooterComponent></FooterComponent>
+           </footer>
         </div>
     );
 }

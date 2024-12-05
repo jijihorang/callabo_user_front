@@ -2,10 +2,13 @@ import {createBrowserRouter, Navigate} from "react-router-dom";
 import LoadingPage from "../pages/common/LoadingPage.tsx";
 import {lazy, Suspense} from "react";
 import creatorRouter from "./creatorRouter.tsx";
+import customerRouter from "./customerRouter.tsx";
+import CreatorReviewsPage from "../pages/creatorreviews/CreatorReviewsPage.tsx";
+
 
 const MainPage = lazy(() => import("../pages/MainPage.tsx"))
 
-const LoginPage = lazy(() => import("../pages/LoginPage.tsx"))
+const LoginPage = lazy(() => import("../pages/login/LoginPage.tsx"))
 
 const CartPage = lazy(() => import("../pages/cart/CartPage.tsx"))
 
@@ -13,9 +16,19 @@ const WishListPage = lazy(() => import("../pages/wishlist/WishlistPage.tsx"))
 
 const OrderPage = lazy(() => import("../pages/order/OrderPage.tsx"))
 
+const UserInfoPage = lazy(() => import("../pages/login/UserInfoPage.tsx"))
+
 const OfflineStorePage = lazy(() => import("../pages/offlinestore/OfflineStorePage.tsx"))
 
 const WeekRankingPage = lazy(() => import("../pages/weekranking/WeekRankingPage.tsx"))
+
+const AccountSettingPage = lazy(() => import("../pages/login/AccountSettingsPage.tsx"))
+
+const ReviewLeadPage = lazy(() => import("../pages/reviewlead/ReviewLeadPage.tsx"))
+
+const ReviewWritingPage = lazy(() => import("../pages/reviewwriting/ReviewWritingPage.tsx"))
+
+const FaqPage = lazy(() => import("../pages/faq/FaqPage.tsx"))
 
 export const Loading = <LoadingPage></LoadingPage>
 
@@ -49,10 +62,35 @@ const mainRouter = createBrowserRouter([
         element: <Suspense fallback={Loading}><OfflineStorePage/></Suspense>
     },
     {
+      path: "/user",
+      element: <Suspense fallback={Loading}><UserInfoPage/></Suspense>
+    },
+    {
         path: "/order",
         element: <Suspense fallback={Loading}><OrderPage/></Suspense>
     },
-    creatorRouter
+    {
+        path: "/account",
+        element: <Suspense fallback={Loading}><AccountSettingPage/></Suspense>
+    },
+    {
+        path: "/reviewread",
+        element: <Suspense fallback={Loading}><ReviewLeadPage/></Suspense>
+    },
+    {
+        path: "/reviewwriting",
+        element: <Suspense fallback={Loading}><ReviewWritingPage/></Suspense>
+    },
+    {
+        path: "/creatorreviews",
+        element: <Suspense fallback={Loading}><CreatorReviewsPage/></Suspense>
+    },
+    {
+        path: "/faq",
+        element: <Suspense fallback={Loading}><FaqPage/></Suspense>
+    },
+    creatorRouter,
+    customerRouter
 ])
 
 export default mainRouter
