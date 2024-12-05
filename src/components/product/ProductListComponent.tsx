@@ -1,13 +1,14 @@
+import {Link, useParams} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {IProduct} from "../../types/product/iproduct.ts";
+import {ICreator} from "../../types/creator/icreator.ts";
+import {getProductList} from "../../apis/product/productAPI.ts";
+import {getCreatorList} from "../../apis/creator/creatorAPI.ts";
+
 import wheart from "../../assets/icons/whiteheart.png";
 import cart2 from "../../assets/icons/cart.png";
-import { Link, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { IProduct } from "../../types/product/iproduct.ts";
-import { ICreator } from "../../types/creator/icreator.ts";
-import { getProductList } from "../../apis/product/productAPI";
-import { getCreatorList } from "../../apis/creator/creatorAPI";
 
-function CreatorReadComponent() {
+function ProductListComponent() {
     const { creatorId } = useParams(); // URL에서 creatorId 추출
     const [products, setProducts] = useState<IProduct[]>([]);
     const [creator, setCreator] = useState<ICreator | null>(null);
@@ -92,8 +93,8 @@ function CreatorReadComponent() {
                             key={`${product.productNo}-${index}`}
                             className="relative bg-white rounded-lg shadow-md hover:shadow-lg transition-all"
                         >
-                            <Link to={`/creator/detail/${product.productNo}`}>
-                            {/* 상품 이미지 */}
+                            <Link to={`/product/detail/${product.productNo}`}>
+                                {/* 상품 이미지 */}
                                 <div className="w-full h-48 overflow-hidden rounded-t-lg">
                                     <img
                                         src={
@@ -141,4 +142,4 @@ function CreatorReadComponent() {
     );
 }
 
-export default CreatorReadComponent;
+export default ProductListComponent;

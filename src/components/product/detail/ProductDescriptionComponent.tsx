@@ -1,10 +1,10 @@
-function ProductDescriptionComponent() {
+function ProductDescriptionComponent({ productDescription }: { productDescription: string }) {
     return (
         <div className="bg-white rounded-lg p-4 md:p-6">
             {/* 상품 상세 설명 섹션 */}
             <div className="mt-5">
                 <p className="text-xl font-bold text-gray-800 mb-4">
-                    와르르 쉐이커 키링
+                    {productDescription || "상품 설명이 없습니다."}
                 </p>
                 <p className="text-gray-700 leading-relaxed mb-4">
                     본 상품은 예약 판매 및 주문 제작 상품입니다. 예약 주문 기간 종료 후, 단순 변심으로 인한 주문 취소/환불/변경이 불가합니다.
@@ -21,9 +21,9 @@ function ProductDescriptionComponent() {
                     </li>
                 </ul>
                 <p className="text-gray-500 mt-6 leading-relaxed">
-                    <span className="font-semibold text-black">▶ '보이스 키링' 상품:</span> 제작 기간으로 인해 2025년 1월부터 순차 출고 예정이며, 이 외 상품은 2024년 12월부터 순차 출고 예정입니다.
+                    <span className="font-semibold text-black">▶ 상품:</span> 제작 기간으로 인해 2025년 1월부터 순차 출고 예정이며, 이 외 상품은 2024년 12월부터 순차 출고 예정입니다.
                     <br />
-                    <span className="font-semibold text-black mt-3">▶ 일반 예약 상품:</span> 빠른 수령을 희망하시는 경우, '보이스 키링' 상품을 나누어 주문 및 결제를 부탁드립니다.
+                    <span className="font-semibold text-black mt-3">▶ 일반 예약 상품:</span> 빠른 수령을 희망하시는 경우, 상품을 나누어 주문 및 결제를 부탁드립니다.
                 </p>
             </div>
         </div>
