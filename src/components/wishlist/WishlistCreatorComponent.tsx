@@ -1,44 +1,30 @@
 import profileImg from "../../assets/img/pro1.png";
-import product1 from "../../assets/img/prod1.png";
-import product2 from "../../assets/img/prod1.png";
-import product3 from "../../assets/img/prod1.png";
 import heartIcon from "../../assets/icons/redheart.png";
 import heart from "../../assets/icons/redheart.png";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "react-query";
+import { getLikedCreators } from "../../apis/customer/customerAPI.ts";
+import useAuthStore from "../../stores/customer/AuthStore.ts";
+import {ILikedCreators} from "../../types/wishlist/iwishlist.ts";
 
 function WishlistCreatorComponent() {
-    const creators = [
-        {
-            creatorId: "1",
-            profileImg: profileImg,
-            name: "차린건쥐뿔도없지만",
-            likes: 1664,
-            products: [product1, product2, product3],
-        },
-        {
-            creatorId: "2",
-            profileImg: profileImg,
-            name: "차린건쥐뿔도없지만",
-            likes: 1664,
-            products: [product1, product2, product3],
-        },
-        {
-            creatorId: "3",
-            profileImg: profileImg,
-            name: "차린건쥐뿔도없지만",
-            likes: 1664,
-            products: [product1, product2, product3],
-        },
-        {
-            creatorId: "4",
-            profileImg: profileImg,
-            name: "차린건쥐뿔도없지만",
-            likes: 1664,
-            products: [product1, product2, product3],
-        },
-    ];
-
     const navigate = useNavigate();
+    const customerId = useAuthStore((state) => state.customer?.customerId); // Zustand에서 customerId 가져오기
+
+    // React Query로 좋아요한 크리에이터 가져오기
+    const { data: creators = [], isLoading } = useQuery<ILikedCreators[]>({
+        queryKey: ["likedCreators", customerId],
+        queryFn: async () => {
+            if (!customerId) {
+                return Promise.reject(new Error("Customer ID is null")); // customerId가 없으면 에러 반환
+            }
+            return getLikedCreators(customerId); // API 호출
+        },
+        enabled: !!customerId, // customerId가 있을 때만 활성화
+        onError: (error) => {
+            console.error("좋아요한 크리에이터를 불러오는 중 오류 발생:", error);
+        },
+    });
 
     // 제작자 상품으로 이동
     const moveToProductList = (creatorId?: string) => {
@@ -49,7 +35,11 @@ function WishlistCreatorComponent() {
 
     return (
         <div className="container mx-auto px-4 py-8">
-            {creators.length > 0 ? (
+            {isLoading ? (
+                <div className="flex items-center justify-center h-96">
+                    <p className="text-gray-500 text-lg">로딩 중...</p>
+                </div>
+            ) : creators.length > 0 ? (
                 <>
                     <h2 className="text-xl font-bold mb-6">제작자 {creators.length}</h2>
                     {/* 반응형 그리드: 웹 4개, 앱 2개 */}
@@ -61,7 +51,7 @@ function WishlistCreatorComponent() {
                             >
                                 {/* 프로필 이미지 */}
                                 <img
-                                    src={creator.profileImg}
+                                    src={creator.profileImg || profileImg} // 기본 이미지 처리
                                     alt={creator.name}
                                     className="w-20 h-20 object-cover rounded-full mb-4 border-4 border-white shadow-md"
                                 />
@@ -77,7 +67,7 @@ function WishlistCreatorComponent() {
                                         className="w-5 h-5 mr-1"
                                     />
                                     <span className="text-blue-600 text-base font-medium">
-                                        {creator.likes.toLocaleString()}
+                                        {(creator.likes || 0).toLocaleString()}
                                     </span>
                                 </div>
 
@@ -106,7 +96,8 @@ function WishlistCreatorComponent() {
                     </p>
                     <button
                         className="px-6 py-2 bg-blue-500 text-white rounded-lg"
-                        onClick={() => navigate(`/creator/list/all`)}>
+                        onClick={() => navigate(`/creator/list/all`)}
+                    >
                         크리에이터 찾아보기
                     </button>
                 </div>

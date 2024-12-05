@@ -151,7 +151,7 @@ function ProductListComponent() {
                                 </div>
                                 {/* 하트 아이콘 */}
                                 <button
-                                    className="absolute top-2 right-2 p-1 bg-white rounded-full shadow hover:bg-gray-100"
+                                    className="absolute top-2 right-2 p-1"
                                     onClick={() =>
                                         console.log(`${product.productName} 좋아요 클릭`)
                                     }
