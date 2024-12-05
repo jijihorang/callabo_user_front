@@ -5,21 +5,21 @@ import useAuthStore from "../../stores/customer/AuthStore.ts";
 import { createOrders } from "../../apis/order/orderAPI.ts";
 
 function OrderComponent() {
-    // 사용자 정보 상태 가져오기
-    const { customerName, customerId } = useAuthStore();
+    const { customer } = useAuthStore();
 
-    // 입력 상태
-    const [recipientName, setRecipientName] = useState(customerName || ""); // 이름
-    const [recipientPhone, setRecipientPhone] = useState(""); // 연락처
-    const [postalCode, setPostalCode] = useState(""); // 우편번호
-    const [address, setAddress] = useState(""); // 기본 주소
-    const [addressDetail, setAddressDetail] = useState(""); // 상세 주소
-    const [deliveryMemo, setDeliveryMemo] = useState(""); // 배송 메모
+    const [customerId] = useState(customer?.customerId || "");
+    const [recipientName, setRecipientName] = useState(customer?.customerName || "");
+    const [recipientPhone, setRecipientPhone] = useState("");
+    const [postalCode, setPostalCode] = useState("");
+    const [address, setAddress] = useState("");
+    const [addressDetail, setAddressDetail] = useState("");
+    const [deliveryMemo, setDeliveryMemo] = useState("");
+    const [isCollapsed, setIsCollapsed] = useState(true);
+    const [startY, setStartY] = useState(0);
 
     const scriptUrl = "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
     const open = useDaumPostcodePopup(scriptUrl);
 
-    // Daum 주소 API 호출
     const handleAddressSearch = () => {
         open({
             onComplete: (data) => {
@@ -29,7 +29,21 @@ function OrderComponent() {
         });
     };
 
-    // 결제 버튼 클릭 이벤트
+    const handleTouchStart = (e: React.TouchEvent) => {
+        setStartY(e.touches[0].clientY);
+    };
+
+    const handleTouchMove = (e: React.TouchEvent) => {
+        const currentY = e.touches[0].clientY;
+        const diff = currentY - startY;
+
+        if (diff > 20) {
+            setIsCollapsed(true);
+        } else if (diff < -20) {
+            setIsCollapsed(false);
+        }
+    };
+
     const handlePayment = async () => {
         try {
             if (!customerId) {
@@ -37,29 +51,27 @@ function OrderComponent() {
                 return;
             }
 
-            // 주문 데이터 생성
             const orderData = [
                 {
-                    creatorId: "creator1", // 예: 백엔드에서 필요한 경우, 실제 데이터에 맞게 수정
-                    customerId, // 사용자 ID
-                    recipientName: recipientName,
-                    recipientPhone: recipientPhone,
+                    creatorId: "creator1",
+                    customerId,
+                    recipientName,
+                    recipientPhone,
                     customerAddress: address,
                     customerAddrDetail: addressDetail,
-                    totalAmount: 1, // 총 수량
-                    totalPrice: 18000, // 총 금액
+                    totalAmount: 1,
+                    totalPrice: 18000,
                     items: [
                         {
-                            productNo: 1, // 상품 ID
+                            productNo: 1,
                             productName: "[한정수량] 망나니 잔 (2024년 12월 배송)",
-                            quantity: 1, // 수량
-                            unitPrice: 15000, // 단가
+                            quantity: 1,
+                            unitPrice: 15000,
                         },
                     ],
                 },
             ];
 
-            // API 호출
             const response = await createOrders(orderData);
             console.log("Order created successfully:", response);
 
@@ -150,11 +162,53 @@ function OrderComponent() {
             </div>
 
             {/* 주문 정보 및 결제 버튼 */}
-            <div className="w-full lg:w-1/3 lg:ml-12 bg-white z-50 p-4 relative">
+            <div
+                className={`w-full lg:w-1/3 lg:ml-12 bg-white z-50 p-4 ${
+                    window.innerWidth < 1024
+                        ? `transition-transform duration-300 fixed bottom-0 left-0 shadow-lg ${
+                            isCollapsed ? "translate-y-[80%]" : "translate-y-0"
+                        }`
+                        : "relative"
+                }`}
+                onTouchStart={window.innerWidth < 1024 ? handleTouchStart : undefined}
+                onTouchMove={window.innerWidth < 1024 ? handleTouchMove : undefined}
+            >
                 <div className="sticky top-20 border border-gray-300 rounded-lg p-6 bg-white shadow-md">
                     <h2 className="text-xl font-bold mb-6 text-gray-800 text-center border-b-2 border-gray-400 pb-3">
-                        주문 정보
+                        결제 내용
                     </h2>
+                    <div className="flex items-center gap-4 mb-6 border-b pb-4">
+                        <img
+                            src="/path/to/product-image.jpg"
+                            alt="상품 이미지"
+                            className="w-16 h-16 object-cover rounded-lg"
+                        />
+                        <div>
+                            <h3 className="text-sm font-semibold text-gray-800">
+                                [한정수량] 망나니 잔 (2024년 12월 배송)
+                            </h3>
+                            <p className="text-sm text-gray-500">유리컵/머그컵</p>
+                            <p className="text-lg font-bold text-gray-800 mt-2">15,000원</p>
+                        </div>
+                    </div>
+                    <div className="space-y-4 text-gray-700">
+                        <div className="flex justify-between">
+                            <span>총 수량</span>
+                            <span>1개</span>
+                        </div>
+                        <div className="flex justify-between">
+                            <span>총 상품금액</span>
+                            <span>15,000원</span>
+                        </div>
+                        <div className="flex justify-between">
+                            <span>총 배송비</span>
+                            <span>3,000원</span>
+                        </div>
+                        <div className="border-t border-gray-300 pt-4 flex justify-between text-lg font-bold">
+                            <span>총 주문금액</span>
+                            <span>18,000원</span>
+                        </div>
+                    </div>
                     <div className="mt-8">
                         <button
                             className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-500 font-semibold"
