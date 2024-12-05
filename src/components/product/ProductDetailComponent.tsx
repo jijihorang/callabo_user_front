@@ -1,20 +1,28 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import ProductImageSlider from "../slider/ProductImageSlider.tsx";
 import ProductInfoComponent from "./detail/ProductInfoComponent.tsx";
 import ProductDescriptionComponent from "./detail/ProductDescriptionComponent.tsx";
 import ProductFAQComponent from "./detail/ProductFAQComponent.tsx";
 import ProductReviewComponent from "./detail/ProductReviewComponent.tsx";
 
+import { getProductRead } from "../../apis/product/productAPI.ts";
+import { IProduct } from "../../types/product/iproduct.ts";
+
 import heart from "../../assets/icons/heart.png";
 import close from "../../assets/icons/close.png";
 
-function CreatorDetailComponent() {
+function ProductDetailComponent() {
     const [activeTab, setActiveTab] = useState("description"); // 탭 상태 관리
     const [showPurchasePopup, setShowPurchasePopup] = useState(false); // 구매 팝업 상태
     const [isMobile, setIsMobile] = useState(false); // 화면 크기 상태
 
+    const [product, setProduct] = useState<IProduct | null>(null); // 상품 데이터 상태
+
+    const { productNo } = useParams<{ productNo: string }>();
+
+    // 화면 크기 체크
     useEffect(() => {
-        // 화면 크기 체크
         const handleResize = () => {
             setIsMobile(window.innerWidth <= 768); // 768px 이하를 모바일로 간주
         };
@@ -26,6 +34,22 @@ function CreatorDetailComponent() {
             window.removeEventListener("resize", handleResize);
         };
     }, []);
+
+    // 상품 데이터 가져오기
+    useEffect(() => {
+        if (productNo) {
+            const fetchProduct = async () => {
+                try {
+                    const productData = await getProductRead(parseInt(productNo, 10));
+                    setProduct(productData);
+                } catch (error) {
+                    console.error("Failed to fetch product data:", error);
+                }
+            };
+
+            fetchProduct();
+        }
+    }, [productNo]);
 
     const handlePurchaseClick = () => {
         setShowPurchasePopup(true);
@@ -40,10 +64,18 @@ function CreatorDetailComponent() {
             {/* 상품 이미지 및 정보 섹션 */}
             <div className="flex flex-col lg:flex-row items-stretch gap-4">
                 <div className="flex-1 flex justify-center">
-                    <ProductImageSlider />
+                    {product?.productImages ? (
+                        <ProductImageSlider productImages={product.productImages}/>
+                    ) : (
+                        <p className="text-center text-gray-500">이미지를 불러오는 중입니다...</p>
+                    )}
                 </div>
                 <div className="flex-1 flex flex-col justify-center ml-4">
-                    <ProductInfoComponent />
+                    {productNo ? (
+                        <ProductInfoComponent productNo={parseInt(productNo, 10)}/>
+                    ) : (
+                        <p className="text-center text-gray-500">상품 번호가 유효하지 않습니다.</p>
+                    )}
                 </div>
             </div>
 
@@ -68,9 +100,11 @@ function CreatorDetailComponent() {
 
             {/* 탭 내용 */}
             <div className="mt-8 mb-20 m-5">
-                {activeTab === "description" && <ProductDescriptionComponent />}
-                {activeTab === "faq" && <ProductFAQComponent />}
-                {activeTab === "review" && <ProductReviewComponent />}
+                {activeTab === "description" && product && (
+                    <ProductDescriptionComponent productDescription={product.productDescription}/>
+                )}
+                {activeTab === "faq" && <ProductFAQComponent/>}
+                {activeTab === "review" && <ProductReviewComponent/>}
             </div>
 
             {/* 하단 고정 구매 영역 (모바일에서만 표시) */}
@@ -80,7 +114,7 @@ function CreatorDetailComponent() {
                         className="text-gray-500 font-bold flex items-center"
                         onClick={() => console.log("찜하기 클릭됨")}
                     >
-                        <img src={heart} alt="찜하기" className="w-5 h-5 mr-2" />
+                        <img src={heart} alt="찜하기" className="w-5 h-5 mr-2"/>
                     </button>
                     <div className="flex gap-4">
                         <button
@@ -100,7 +134,7 @@ function CreatorDetailComponent() {
                     <div className="fixed bottom-0 left-0 w-full bg-white shadow-lg z-50 px-4 py-6 rounded-t-2xl">
                         <div className="flex justify-end items-center mb-4">
                             <button onClick={handleClosePopup} className="text-gray-500">
-                                <img src={close} alt="닫기" className="w-5 h-5" />
+                                <img src={close} alt="닫기" className="w-5 h-5"/>
                             </button>
                         </div>
                         <div className="mb-4">
@@ -114,7 +148,7 @@ function CreatorDetailComponent() {
                             </div>
                             <div className="flex items-center justify-between">
                                 <span className="text-gray-700">총 상품 금액</span>
-                                <span className="text-2xl font-bold">21,000원</span>
+                                <span className="text-2xl font-bold">{product?.productPrice}원</span>
                             </div>
                         </div>
                         <div className="flex gap-4">
@@ -138,4 +172,4 @@ function CreatorDetailComponent() {
     );
 }
 
-export default CreatorDetailComponent;
+export default ProductDetailComponent;
