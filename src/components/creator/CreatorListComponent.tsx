@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "react-query";
+import {useQuery, useQueryClient} from "react-query";
 import useCreatorStore from "../../stores/creator/CreatorStore.ts";
 import { getCreatorList } from "../../apis/creator/creatorAPI.ts";
 import click from "../../assets/icons/click.png";
@@ -10,6 +10,8 @@ function CreatorListComponent() {
     const { creators, selectedCreator, searchQuery, isInitialized, setCreators, setSelectedCreator, setSearchQuery, setInitialized } = useCreatorStore();
     const customerId = useAuthStore((state) => state.customer?.customerId); // Zustand에서 customerId 가져오기
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
+
 
     // React Query로 데이터 가져오기
     const { isLoading } = useQuery<ICreator[]>({
@@ -55,6 +57,28 @@ function CreatorListComponent() {
         creator.creatorName?.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    // 팔로우 상태 토글
+    const toggleFollowStatus = async (creatorId: string, currentStatus: boolean) => {
+        try {
+            if (currentStatus) {
+                // 언팔로우 요청
+                await fetch(`/api/follow/${creatorId}`, {
+                    method: "DELETE",
+                });
+            } else {
+                // 팔로우 요청
+                await fetch(`/api/follow/${creatorId}`, {
+                    method: "POST",
+                });
+            }
+
+            // API 호출 후 React Query 데이터를 강제로 refetch
+            queryClient.invalidateQueries(["creatorList", customerId]);
+        } catch (error) {
+            console.error("팔로우 상태 변경 중 오류 발생:", error);
+        }
+    };
+
     return (
         <div className="container mx-auto mb-20">
             <div className="flex flex-col md:flex-row gap-6 mt-10">
@@ -98,6 +122,13 @@ function CreatorListComponent() {
                                             </div>
                                             {/* 팔로우 버튼 */}
                                             <button
+                                                onClick={() => {
+                                                    if (creator.creatorId) {
+                                                        toggleFollowStatus(creator.creatorId, creator.followStatus ?? false); // 기본값으로 false 사용
+                                                    } else {
+                                                        console.error("Creator ID is undefined");
+                                                    }
+                                                }}
                                                 className={`rounded-full px-3 py-1 text-white ${
                                                     creator.followStatus
                                                         ? "bg-blue-500 hover:bg-indigo-600"
