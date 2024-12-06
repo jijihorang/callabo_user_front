@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"; // useParams import 추가
 import CreatorReviewReadComponent from "./CreatorReviewReadComponent";
-import { IReview } from "../../types/review/ireview";
-import { getReviewList } from "../../apis/review/reviewAPI"; // 실제 API 호출 함수 import
+import {IReview} from "../../../types/review/ireview.ts";
+import {getReviewList} from "../../../apis/review/reviewAPI.ts";
+
 
 function CreatorReviews() {
     const { creatorId } = useParams<{ creatorId: string }>(); // URL에서 creatorId 추출
