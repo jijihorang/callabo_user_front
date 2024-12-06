@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { IProduct } from "../../types/product/iproduct.ts";
+import { IProductList} from "../../types/product/iproduct.ts";
 import { ICreator } from "../../types/creator/icreator.ts";
 import { getProductList } from "../../apis/product/productAPI.ts";
 import { getCreatorList } from "../../apis/creator/creatorAPI.ts";
@@ -8,12 +8,14 @@ import { getCreatorList } from "../../apis/creator/creatorAPI.ts";
 import wheart from "../../assets/icons/whiteheart.png";
 import cart2 from "../../assets/icons/cart.png";
 import useAuthStore from "../../stores/customer/AuthStore.ts";
+import useCartStore from "../../stores/cart/cartStore.ts";
 
 function ProductListComponent() {
     const { creatorId } = useParams(); // URL에서 creatorId 추출
     const { customer } = useAuthStore();
-    const [products, setProducts] = useState<IProduct[]>([]);
-    const [visibleProducts, setVisibleProducts] = useState<IProduct[]>([]); // 현재 화면에 보이는 상품들
+    const { addToCart } = useCartStore(); // Zustand 상태 가져오기
+    const [products, setProducts] = useState<IProductList[]>([]);
+    const [visibleProducts, setVisibleProducts] = useState<IProductList[]>([]); // 현재 화면에 보이는 상품들
     const [creator, setCreator] = useState<ICreator | null>(null);
     const [expanded, setExpanded] = useState(false); // "See More" / "Close" 상태
     const productsPerPage = 8; // 한 페이지에 표시할 상품 수
@@ -38,16 +40,14 @@ function ProductListComponent() {
                     const data = await getCreatorList(customer.customerId); // customerId로 제작자 목록 가져오기
                     const selectedCreator = data.find((c: ICreator) => c.creatorId === creatorId); // creatorId로 필터링
                     setCreator(selectedCreator || null);
-                    if (!selectedCreator) {
-                        console.warn(`제작자 ${creatorId}를 찾을 수 없습니다.`);
-                    }
                 } else {
                     console.error("customerId가 없습니다.");
                 }
-                } catch (error) {
+            } catch (error) {
                 console.error("제작자 정보를 가져오는 중 에러 발생:", error);
             }
         };
+
         fetchCreatorInfo();
         fetchProducts();
     }, [creatorId]); // creatorId 변경 시 재호출
@@ -96,9 +96,7 @@ function ProductListComponent() {
                     className="flex items-center mx-auto mt-4 bg-gray-100 rounded-full px-4 py-2 shadow-md hover:shadow-lg transition-shadow"
                 >
                     <img src={wheart} alt="찜" className="w-5 h-5 text-blue-500" />
-                    <span className="ml-2 text-gray-700 font-medium text-sm">
-                        1,600
-                    </span>
+                    <span className="ml-2 text-gray-700 font-medium text-sm">1,600</span>
                 </button>
             </div>
 
@@ -129,45 +127,55 @@ function ProductListComponent() {
                         >
                             <Link to={`/product/detail/${product.productNo}`}>
                                 {/* 상품 이미지 */}
+                                {/* 상품 이미지 */}
                                 <div className="w-full h-48 overflow-hidden rounded-t-lg">
                                     <img
                                         src={
-                                            product.productImages && product.productImages[0]
-                                                ? product.productImages[0].productImageUrl
-                                                : "https://via.placeholder.com/150"
+                                            product.productImageUrl // productImageUrl 필드를 사용
+                                                ? product.productImageUrl // 이미지 URL이 있을 경우 사용
+                                                : "https://via.placeholder.com/150" // 기본 이미지 URL
                                         }
-                                        alt={product.productName}
+                                        alt={product.productName} // 상품 이름을 alt 속성으로 설정
                                         className="w-full h-full object-cover"
                                     />
                                 </div>
+
+
                                 {/* 상품 정보 */}
                                 <div className="p-4">
                                     <h4 className="text-[14px] font-bold text-gray-800 truncate">
                                         {product.productName}
                                     </h4>
                                     <p className="text-gray-600 text-sm mt-2">
-                                        {product.productPrice.toLocaleString()}원
+                                    {product.productPrice.toLocaleString()}원
                                     </p>
                                 </div>
-                                {/* 하트 아이콘 */}
-                                <button
-                                    className="absolute top-2 right-2 p-1 bg-white rounded-full shadow hover:bg-gray-100"
-                                    onClick={() =>
-                                        console.log(`${product.productName} 좋아요 클릭`)
-                                    }
-                                >
-                                    <img src={wheart} alt="찜" className="w-4 h-4" />
-                                </button>
-                                {/* 장바구니 아이콘 */}
-                                <button
-                                    className="absolute bottom-4 right-4 p-2 bg-white rounded-full shadow border hover:bg-gray-100"
-                                    onClick={() =>
-                                        console.log(`${product.productName} 장바구니에 추가됨`)
-                                    }
-                                >
-                                    <img src={cart2} alt="장바구니" className="w-5 h-5" />
-                                </button>
                             </Link>
+                            {/* 하트 아이콘 */}
+                            <button
+                                className="absolute top-2 right-2 p-1 bg-white rounded-full shadow hover:bg-gray-100"
+                                onClick={() =>
+                                    console.log(`${product.productName} 좋아요 클릭`)
+                                }
+                            >
+                                <img src={wheart} alt="찜" className="w-4 h-4" />
+                            </button>
+                            {/* 장바구니 아이콘 */}
+                            <button
+                                className="absolute bottom-4 right-4 p-2 bg-white rounded-full shadow border hover:bg-gray-100"
+                                onClick={() =>
+                                    addToCart({
+                                        id: product.productNo,
+                                        img: product.productImages?.[0]?.productImageUrl || "",
+                                        name: product.productName,
+                                        price: product.productPrice,
+                                        category: product.categoryName || "기타",
+                                        quantity: 1,
+                                    })
+                                }
+                            >
+                                <img src={cart2} alt="장바구니" className="w-5 h-5" />
+                            </button>
                         </div>
                     ))}
                 </div>

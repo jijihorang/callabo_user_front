@@ -1,79 +1,21 @@
-import React, { useState } from "react";
-import mangnani from "../../assets/img/mangnani.png";
-import soju from "../../assets/img/soju.png";
-import roulette from "../../assets/img/roulette.png";
+import React from "react";
 import { useNavigate } from "react-router-dom";
+import useCartStore from "../../stores/cart/cartStore.ts";
 
-function CartPage() {
-    const [cartGroups, setCartGroups] = useState([
-        {
-            groupName: "차린건쥐뿔도없지만",
-            products: [
-                {
-                    id: 1,
-                    img: mangnani,
-                    name: "[포카 증정] 차쥐뿔 추천 구성 맥주잔+차쥐뿔 병따개 SET",
-                    price: 21000,
-                    category: "유리컵/머그컵",
-                    quantity: 1,
-                },
-                {
-                    id: 2,
-                    img: soju,
-                    name: "[한정수량] 망나니 잔 (2024년 12월 배송)",
-                    price: 15000,
-                    category: "유리컵/머그컵",
-                    quantity: 1,
-                },
-            ],
-            shippingFee: 3000,
-        },
-        {
-            groupName: "싸이코드 감자에",
-            products: [
-                {
-                    id: 3,
-                    img: roulette,
-                    name: "오니제이 포토카드",
-                    price: 7500,
-                    category: "세로포토카드",
-                    quantity: 1,
-                },
-            ],
-            shippingFee: 0,
-        },
-    ]);
-    const [isCollapsed, setIsCollapsed] = useState(true); // 슬라이드 상태 초기화
-    const [startY, setStartY] = useState(0); // 터치 시작 위치
+function CartComponent() {
+    const {
+        cartGroups,
+        increaseQuantity,
+        decreaseQuantity,
+        removeProduct,
+    } = useCartStore(); // Zustand에서 상태 가져오기
     const navigate = useNavigate();
+
+    const [isCollapsed, setIsCollapsed] = React.useState(true); // 슬라이드 상태 초기화
+    const [startY, setStartY] = React.useState(0); // 터치 시작 위치
 
     const moveToOrder = () => {
         navigate(`/order`);
-    };
-
-    // 수량 감소
-    const decreaseQuantity = (groupIndex: number, productIndex: number) => {
-        const newCartGroups = [...cartGroups];
-        const product = newCartGroups[groupIndex].products[productIndex];
-        if (product.quantity > 1) {
-            product.quantity -= 1;
-            setCartGroups(newCartGroups);
-        }
-    };
-
-    // 수량 증가
-    const increaseQuantity = (groupIndex: number, productIndex: number) => {
-        const newCartGroups = [...cartGroups];
-        const product = newCartGroups[groupIndex].products[productIndex];
-        product.quantity += 1;
-        setCartGroups(newCartGroups);
-    };
-
-    // 상품 삭제
-    const removeProduct = (groupIndex: number, productIndex: number) => {
-        const newCartGroups = [...cartGroups];
-        newCartGroups[groupIndex].products.splice(productIndex, 1);
-        setCartGroups(newCartGroups);
     };
 
     // 터치 시작
@@ -105,8 +47,8 @@ function CartPage() {
                             <h3 className="text-lg font-bold flex items-center">
                                 {group.groupName}
                                 <span role="img" aria-label="배송" className="ml-2">
-                  📦
-                </span>
+                                    📦
+                                </span>
                             </h3>
                         </div>
                         {group.products.map((product, productIndex) => (
@@ -182,14 +124,14 @@ function CartPage() {
                                 .toLocaleString()}
                             원 + 배송비 {group.shippingFee.toLocaleString()}원 = 주문금액{" "}
                             <span className="font-bold">
-                {(
-                    group.products.reduce(
-                        (acc, p) => acc + p.price * p.quantity,
-                        0
-                    ) + group.shippingFee
-                ).toLocaleString()}
+                                {(
+                                    group.products.reduce(
+                                        (acc, p) => acc + p.price * p.quantity,
+                                        0
+                                    ) + group.shippingFee
+                                ).toLocaleString()}
                                 원
-              </span>
+                            </span>
                         </div>
                     </div>
                 ))}
@@ -209,62 +151,62 @@ function CartPage() {
             >
                 <div className="border border-gray-300 rounded-lg p-6 bg-white shadow-md">
                     <h2 className="text-xl font-bold mb-6 border-b-2 border-gray-400 pb-3 text-center">
-                        주문정보
+                        장바구니 내용
                     </h2>
                     {/* 주문 정보 */}
                     <div className="flex justify-between mb-4">
                         <span className="text-gray-600">총 수량</span>
                         <span className="font-semibold">
-              {cartGroups.reduce(
-                  (acc, group) =>
-                      acc +
-                      group.products.reduce((sum, p) => sum + p.quantity, 0),
-                  0
-              )}
+                            {cartGroups.reduce(
+                                (acc, group) =>
+                                    acc +
+                                    group.products.reduce((sum, p) => sum + p.quantity, 0),
+                                0
+                            )}
                             개
-            </span>
+                        </span>
                     </div>
                     <div className="flex justify-between mb-4">
                         <span className="text-gray-600">총 상품금액</span>
                         <span className="font-semibold">
-              {cartGroups
-                  .reduce(
-                      (acc, group) =>
-                          acc +
-                          group.products.reduce(
-                              (sum, p) => sum + p.price * p.quantity,
-                              0
-                          ),
-                      0
-                  )
-                  .toLocaleString()}
+                            {cartGroups
+                                .reduce(
+                                    (acc, group) =>
+                                        acc +
+                                        group.products.reduce(
+                                            (sum, p) => sum + p.price * p.quantity,
+                                            0
+                                        ),
+                                    0
+                                )
+                                .toLocaleString()}
                             원
-            </span>
+                        </span>
                     </div>
                     <div className="flex justify-between mb-4">
                         <span className="text-gray-600">총 배송비</span>
                         <span className="font-semibold">
-              {cartGroups.reduce((acc, group) => acc + group.shippingFee, 0).toLocaleString()}
+                            {cartGroups.reduce((acc, group) => acc + group.shippingFee, 0).toLocaleString()}
                             원
-            </span>
+                        </span>
                     </div>
                     <div className="border-t border-gray-200 pt-4 flex justify-between text-lg font-bold">
                         <span>총 주문금액</span>
                         <span className="text-blue-600">
-              {cartGroups
-                  .reduce(
-                      (acc, group) =>
-                          acc +
-                          group.products.reduce(
-                              (sum, p) => sum + p.price * p.quantity,
-                              0
-                          ) +
-                          group.shippingFee,
-                      0
-                  )
-                  .toLocaleString()}
+                            {cartGroups
+                                .reduce(
+                                    (acc, group) =>
+                                        acc +
+                                        group.products.reduce(
+                                            (sum, p) => sum + p.price * p.quantity,
+                                            0
+                                        ) +
+                                        group.shippingFee,
+                                    0
+                                )
+                                .toLocaleString()}
                             원
-            </span>
+                        </span>
                     </div>
                     <button
                         className="w-full mt-6 bg-blue-600 text-white py-3 rounded-md font-semibold text-center hover:bg-blue-500"
@@ -278,4 +220,4 @@ function CartPage() {
     );
 }
 
-export default CartPage;
+export default CartComponent;

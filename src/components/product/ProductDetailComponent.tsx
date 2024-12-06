@@ -11,30 +11,23 @@ import { IProduct } from "../../types/product/iproduct.ts";
 
 import heart from "../../assets/icons/heart.png";
 import close from "../../assets/icons/close.png";
-
 function ProductDetailComponent() {
     const [activeTab, setActiveTab] = useState("description"); // 탭 상태 관리
     const [showPurchasePopup, setShowPurchasePopup] = useState(false); // 구매 팝업 상태
     const [isMobile, setIsMobile] = useState(false); // 화면 크기 상태
-
     const [product, setProduct] = useState<IProduct | null>(null); // 상품 데이터 상태
-
     const { productNo } = useParams<{ productNo: string }>();
-
     // 화면 크기 체크
     useEffect(() => {
         const handleResize = () => {
             setIsMobile(window.innerWidth <= 768); // 768px 이하를 모바일로 간주
         };
-
         handleResize(); // 초기 체크
         window.addEventListener("resize", handleResize);
-
         return () => {
             window.removeEventListener("resize", handleResize);
         };
     }, []);
-
     // 상품 데이터 가져오기
     useEffect(() => {
         if (productNo) {
@@ -46,15 +39,12 @@ function ProductDetailComponent() {
                     console.error("Failed to fetch product data:", error);
                 }
             };
-
             fetchProduct();
         }
     }, [productNo]);
-
     const handlePurchaseClick = () => {
         setShowPurchasePopup(true);
     };
-
     const handleClosePopup = () => {
         setShowPurchasePopup(false);
     };
@@ -78,7 +68,6 @@ function ProductDetailComponent() {
                     )}
                 </div>
             </div>
-
             {/* 탭 메뉴 */}
             <div className="mt-8 border-b">
                 <div className="flex justify-center space-x-8">
@@ -126,7 +115,6 @@ function ProductDetailComponent() {
                     </div>
                 </div>
             )}
-
             {/* 구매 팝업 (모바일에서만 표시) */}
             {isMobile && showPurchasePopup && (
                 <>
