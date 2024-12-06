@@ -1,6 +1,6 @@
-import shop1 from "../../assets/img/shop1.png"
-import map from "../../assets/img/map.png"
-import shop2 from "../../assets/img/shop2.png"
+import shop1 from "../../../assets/img/shop1.png"
+import map from "../../../assets/img/map.png"
+import shop2 from "../../../assets/img/shop2.png"
 
 function OfficeStoreComponent() {
     const dummyData = [

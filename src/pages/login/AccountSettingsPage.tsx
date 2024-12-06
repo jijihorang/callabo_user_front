@@ -1,4 +1,4 @@
-import AccountSettingsComponent from "../../components/customer/AccountSettingsComponent.tsx";
+import AccountSettingsComponent from "../../components/customer/info/AccountSettingsComponent.tsx";
 
 function AccountSettingsPage() {
     return (

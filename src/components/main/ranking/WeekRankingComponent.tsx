@@ -1,13 +1,13 @@
-import rank1 from "../../assets/img/rank1.png";
-import rank2 from "../../assets/img/rank2.png";
-import rank3 from "../../assets/img/rank3.png";
-import rank4 from "../../assets/img/rank4.png";
-import rank5 from "../../assets/img/rank5.png";
-import rank6 from "../../assets/img/rank6.png";
-import rank7 from "../../assets/img/rank7.png";
-import rank8 from "../../assets/img/rank8.png";
-import rank9 from "../../assets/img/rank9.png";
-import rank10 from "../../assets/img/rank10.png";
+import rank1 from "../../../assets/img/rank1.png";
+import rank2 from "../../../assets/img/rank2.png";
+import rank3 from "../../../assets/img/rank3.png";
+import rank4 from "../../../assets/img/rank4.png";
+import rank5 from "../../../assets/img/rank5.png";
+import rank6 from "../../../assets/img/rank6.png";
+import rank7 from "../../../assets/img/rank7.png";
+import rank8 from "../../../assets/img/rank8.png";
+import rank9 from "../../../assets/img/rank9.png";
+import rank10 from "../../../assets/img/rank10.png";
 
 function WeeklyRanking() {
     return (

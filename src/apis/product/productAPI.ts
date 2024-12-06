@@ -15,7 +15,7 @@ export const getProductList = async (creatorId: string): Promise<IProductList[]>
 };
 
 // 상품 조회
-export const getProductRead = async (productNo : number) : Promise<IProduct> => {
-    const res = await axios.get(`${host}/detail/${productNo}`);
+export const getProductRead = async (creatorId : string, productNo : number) : Promise<IProduct> => {
+    const res = await axios.get(`${host}/${creatorId}/detail/${productNo}`);
     return res.data;
 }

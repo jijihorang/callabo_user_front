@@ -1,3 +1,5 @@
+import {IReview} from "../review/ireview.ts";
+
 export interface IProduct {
     productNo : number;
     productName : string;
@@ -10,6 +12,8 @@ export interface IProduct {
     productImages: IProductImage[];
 
     categoryName?: string;
+
+    reviews?: IReview[]; // 해당 상품과 연결된 리뷰 리스트
 }
 
 export interface IProductList {
@@ -18,6 +22,7 @@ export interface IProductList {
     productPrice: number; // 상품 가격
     productImageUrl: string | null; // 상품 이미지 URL (null 가능)
     productStatus: string; // 상품 상태 (예: '1' 등)
+    creatorId: string;
 }
 
 export interface IProductImage {

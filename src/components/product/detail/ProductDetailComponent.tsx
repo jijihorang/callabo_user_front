@@ -1,22 +1,22 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import ProductImageSlider from "../slider/ProductImageSlider.tsx";
-import ProductInfoComponent from "./detail/ProductInfoComponent.tsx";
-import ProductDescriptionComponent from "./detail/ProductDescriptionComponent.tsx";
-import ProductFAQComponent from "./detail/ProductFAQComponent.tsx";
-import ProductReviewComponent from "./detail/ProductReviewComponent.tsx";
+import ProductImageSlider from "../../slider/ProductImageSlider.tsx";
+import ProductInfoComponent from "./ProductInfoComponent.tsx";
+import ProductDescriptionComponent from "./ProductDescriptionComponent.tsx";
+import ProductFAQComponent from "./ProductFAQComponent.tsx";
+import ProductReviewComponent from "./ProductReviewComponent.tsx";
 
-import { getProductRead } from "../../apis/product/productAPI.ts";
-import { IProduct } from "../../types/product/iproduct.ts";
+import { getProductRead } from "../../../apis/product/productAPI.ts";
+import { IProduct } from "../../../types/product/iproduct.ts";
 
-import heart from "../../assets/icons/heart.png";
-import close from "../../assets/icons/close.png";
+import heart from "../../../assets/icons/heart.png";
+import close from "../../../assets/icons/close.png";
 function ProductDetailComponent() {
     const [activeTab, setActiveTab] = useState("description"); // 탭 상태 관리
     const [showPurchasePopup, setShowPurchasePopup] = useState(false); // 구매 팝업 상태
     const [isMobile, setIsMobile] = useState(false); // 화면 크기 상태
     const [product, setProduct] = useState<IProduct | null>(null); // 상품 데이터 상태
-    const { productNo } = useParams<{ productNo: string }>();
+    const { creatorId, productNo } = useParams<{ creatorId: string, productNo: string }>();
     // 화면 크기 체크
     useEffect(() => {
         const handleResize = () => {
@@ -28,12 +28,13 @@ function ProductDetailComponent() {
             window.removeEventListener("resize", handleResize);
         };
     }, []);
+
     // 상품 데이터 가져오기
     useEffect(() => {
-        if (productNo) {
+        if (creatorId && productNo) {
             const fetchProduct = async () => {
                 try {
-                    const productData = await getProductRead(parseInt(productNo, 10));
+                    const productData = await getProductRead(creatorId, parseInt(productNo, 10));
                     setProduct(productData);
                 } catch (error) {
                     console.error("Failed to fetch product data:", error);
@@ -61,8 +62,8 @@ function ProductDetailComponent() {
                     )}
                 </div>
                 <div className="flex-1 flex flex-col justify-center ml-4">
-                    {productNo ? (
-                        <ProductInfoComponent productNo={parseInt(productNo, 10)}/>
+                    {creatorId && productNo ? (
+                        <ProductInfoComponent creatorId={creatorId} productNo={parseInt(productNo, 10)}/>
                     ) : (
                         <p className="text-center text-gray-500">상품 번호가 유효하지 않습니다.</p>
                     )}
@@ -93,7 +94,9 @@ function ProductDetailComponent() {
                     <ProductDescriptionComponent productDescription={product.productDescription}/>
                 )}
                 {activeTab === "faq" && <ProductFAQComponent/>}
-                {activeTab === "review" && <ProductReviewComponent/>}
+                {activeTab === "review" && product && (
+                    <ProductReviewComponent reviews={product.reviews} productNo={product.productNo}/>
+                )}
             </div>
 
             {/* 하단 고정 구매 영역 (모바일에서만 표시) */}

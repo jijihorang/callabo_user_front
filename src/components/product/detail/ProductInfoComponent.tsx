@@ -5,13 +5,13 @@ import {getProductRead} from "../../../apis/product/productAPI.ts";
 
 import wheart from "../../../assets/icons/whiteheart.png";
 
-function ProductInfoComponent({ productNo }: { productNo: number }) {
+function ProductInfoComponent({ creatorId, productNo }: { creatorId : string, productNo: number }) {
     const [product, setProduct] = useState<IProduct | null>(null);
 
     useEffect(() => {
         const fetchProductInfo = async () => {
             try {
-                const productData = await getProductRead(productNo);
+                const productData = await getProductRead(creatorId,productNo);
 
                 setProduct(productData);
             } catch (error) {

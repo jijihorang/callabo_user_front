@@ -1,11 +1,11 @@
-import profileImg from "../../assets/img/pro1.png";
-import heartIcon from "../../assets/icons/redheart.png";
-import heart from "../../assets/icons/redheart.png";
+import profileImg from "../../../assets/img/pro1.png";
+import heartIcon from "../../../assets/icons/redheart.png";
+import heart from "../../../assets/icons/redheart.png";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
-import { getLikedCreators } from "../../apis/customer/customerAPI.ts";
-import useAuthStore from "../../stores/customer/AuthStore.ts";
-import {ILikedCreators} from "../../types/wishlist/iwishlist.ts";
+import { getLikedCreators } from "../../../apis/customer/customerAPI.ts";
+import useAuthStore from "../../../stores/customer/AuthStore.ts";
+import {ILikedCreators} from "../../../types/wishlist/iwishlist.ts";
 
 function WishlistCreatorComponent() {
     const navigate = useNavigate();

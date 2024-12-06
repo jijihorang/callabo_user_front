@@ -1,8 +1,8 @@
-import heartIcon from "../../assets/icons/whiteheart.png";
+import heartIcon from "../../../assets/icons/whiteheart.png";
 
 import {useEffect, useState} from "react";
-import {ICreator} from "../../types/creator/icreator.ts";
-import {getCreatorList} from "../../apis/creator/creatorAPI.ts";
+import {ICreator} from "../../../types/creator/icreator.ts";
+import {getCreatorList} from "../../../apis/creator/creatorAPI.ts";
 import {useNavigate} from "react-router-dom";
 
 function CreatorAllListComponent() {

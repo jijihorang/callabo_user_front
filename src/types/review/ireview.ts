@@ -1,3 +1,5 @@
+import {IProductImage} from "../product/iproduct.ts";
+
 export interface IReviewImage {
     reviewImageNo: number;
     reviewImageUrl: string;
@@ -10,9 +12,13 @@ export interface IReview {
     productName: string;
     createdAt: string;
 
+    productPrice: number;
 
+    productImageUrl?: string;
+    productImages: IProductImage[];
 
     reviewNo: number;
+
     customerName: string;
     creatorName: string;
     productDescription: string;

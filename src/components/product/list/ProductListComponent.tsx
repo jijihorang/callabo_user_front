@@ -1,14 +1,14 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { IProductList} from "../../types/product/iproduct.ts";
-import { ICreator } from "../../types/creator/icreator.ts";
-import { getProductList } from "../../apis/product/productAPI.ts";
-import { getCreatorList } from "../../apis/creator/creatorAPI.ts";
+import { IProductList} from "../../../types/product/iproduct.ts";
+import { ICreator } from "../../../types/creator/icreator.ts";
+import { getProductList } from "../../../apis/product/productAPI.ts";
+import { getCreatorList } from "../../../apis/creator/creatorAPI.ts";
 
-import wheart from "../../assets/icons/whiteheart.png";
-import cart2 from "../../assets/icons/cart.png";
-import useAuthStore from "../../stores/customer/AuthStore.ts";
-import useCartStore from "../../stores/cart/cartStore.ts";
+import wheart from "../../../assets/icons/whiteheart.png";
+import cart2 from "../../../assets/icons/cart.png";
+import useAuthStore from "../../../stores/customer/AuthStore.ts";
+import useCartStore from "../../../stores/cart/cartStore.ts";
 
 function ProductListComponent() {
     const { creatorId } = useParams(); // URL에서 creatorId 추출
@@ -111,7 +111,7 @@ function ProductListComponent() {
                     {/* "See More" / "Close" 버튼 */}
                     {products.length > productsPerPage && (
                         <button
-                            className="px-6 py-2 text-gray-500 border border-gray-400 rounded-lg transition"
+                            className="px-3 py-2 text-gray-500 border border-gray-400 rounded-lg transition"
                             onClick={toggleProductVisibility}
                         >
                             {expanded ? "Close" : "See More"}
@@ -125,14 +125,13 @@ function ProductListComponent() {
                             key={`${product.productNo}-${index}`}
                             className="relative bg-white rounded-lg shadow-md hover:shadow-lg transition-all"
                         >
-                            <Link to={`/product/detail/${product.productNo}`}>
-                                {/* 상품 이미지 */}
+                            <Link to={`/product/${product.creatorId}/detail/${product.productNo}`}>
                                 {/* 상품 이미지 */}
                                 <div className="w-full h-48 overflow-hidden rounded-t-lg">
                                     <img
                                         src={
                                             product.productImageUrl // productImageUrl 필드를 사용
-                                                ? product.productImageUrl // 이미지 URL이 있을 경우 사용
+                                                ? product.productImageUrl // 이미지 URL 있을 경우 사용
                                                 : "https://via.placeholder.com/150" // 기본 이미지 URL
                                         }
                                         alt={product.productName} // 상품 이름을 alt 속성으로 설정

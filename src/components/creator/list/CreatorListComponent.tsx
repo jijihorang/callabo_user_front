@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
-import useCreatorStore from "../../stores/creator/CreatorStore.ts";
-import { getCreatorList } from "../../apis/creator/creatorAPI.ts";
-import click from "../../assets/icons/click.png";
-import { ICreator } from "../../types/creator/icreator.ts";
-import useAuthStore from "../../stores/customer/AuthStore.ts";
+import useCreatorStore from "../../../stores/creator/CreatorStore.ts";
+import { getCreatorList } from "../../../apis/creator/creatorAPI.ts";
+import click from "../../../assets/icons/click.png";
+import { ICreator } from "../../../types/creator/icreator.ts";
+import useAuthStore from "../../../stores/customer/AuthStore.ts";
 
 function CreatorListComponent() {
     const { creators, selectedCreator, searchQuery, isInitialized, setCreators, setSelectedCreator, setSearchQuery, setInitialized } = useCreatorStore();
@@ -113,6 +113,7 @@ function CreatorListComponent() {
                         </>
                     )}
                 </div>
+
                 {/* 제작자 상세 정보 */}
                 <div className="w-full md:w-3/4 p-8 bg-white shadow-lg rounded-xl h-auto border border-gray-200">
                     {selectedCreator ? (

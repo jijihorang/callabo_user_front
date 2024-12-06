@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 
-import useAuthStore from "../../stores/customer/AuthStore.ts";
+import useAuthStore from "../../../stores/customer/AuthStore.ts";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 
