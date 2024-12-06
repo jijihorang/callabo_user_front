@@ -7,12 +7,12 @@ interface Product {
     price: number;
     category: string;
     quantity: number;
-    creatorId: string; // 추가: 상품에 creatorId 포함
+    creatorId: string; // 상품에 creatorId 포함
 }
 
 interface CartGroup {
     groupName: string; // Optional for better labeling
-    creatorId: string; // 추가: 그룹을 creatorId로 분류
+    creatorId: string; // 그룹을 creatorId로 분류
     products: Product[];
     shippingFee: number;
 }
@@ -54,17 +54,16 @@ const useCartStore = create<CartState>((set) => ({
             }
 
             // 새로운 그룹 생성
-            return {
-                cartGroups: [
-                    ...state.cartGroups,
-                    {
-                        groupName: `Creator ${product.creatorId}`, // Optional group name
-                        creatorId: product.creatorId, // 그룹의 creatorId 설정
-                        products: [{ ...product, quantity: product.quantity }],
-                        shippingFee: 0, // 기본 배송비 설정 (필요 시 수정 가능)
-                    },
-                ],
-            };
+            const newCartGroups = [
+                ...state.cartGroups,
+                {
+                    groupName: `Creator ${product.creatorId}`, // Optional group name
+                    creatorId: product.creatorId, // 그룹의 creatorId 설정
+                    products: [{ ...product, quantity: product.quantity }],
+                    shippingFee: 0, // 기본 배송비 설정 (필요 시 수정 가능)
+                },
+            ];
+            return { cartGroups: newCartGroups };
         }),
     increaseQuantity: (groupIndex, productIndex) =>
         set((state) => {

@@ -5,6 +5,9 @@ import creatorRouter from "./creatorRouter.tsx";
 import customerRouter from "./customerRouter.tsx";
 import productRouter from "./productRouter.tsx";
 import BasicLayout from "../layouts/BasicLayout.tsx";
+import tosspayRouter from "./tosspayRouter.tsx";
+import FailPage from "../pages/tosspay/FailPage.tsx";
+import SuccessPage from "../pages/tosspay/SuccessPage.tsx";
 
 const MainPage = lazy(() => import("../pages/MainPage.tsx"))
 
@@ -98,9 +101,18 @@ const mainRouter = createBrowserRouter([
                 path: "/faq",
                 element: <Suspense fallback={Loading}><FaqPage/></Suspense>
             },
+            {
+                path: "/fail",
+                element: <Suspense fallback={Loading}><FailPage/></Suspense>
+            },
+            {
+                path: "/success",
+                element: <Suspense fallback={Loading}><SuccessPage/></Suspense>
+            },
             creatorRouter,
             customerRouter,
             productRouter,
+            tosspayRouter,
         ]
     }
 ])

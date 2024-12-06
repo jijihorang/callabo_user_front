@@ -149,7 +149,7 @@ function ProductListComponent() {
                             key={`${product.productNo}-${index}`}
                             className="relative bg-white rounded-lg shadow-md hover:shadow-lg transition-all"
                         >
-                            <Link to={`/product/detail/${product.productNo}`}>
+                            <Link to={`/product/${creatorId}/detail/${product.productNo}`}>
                                 {/* 상품 이미지 */}
                                 <div className="w-full h-48 overflow-hidden rounded-t-lg">
                                     <img
