@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { IProduct } from "../../types/product/iproduct.ts";
+import { IProductList} from "../../types/product/iproduct.ts";
 import { ICreator } from "../../types/creator/icreator.ts";
 import { getProductList } from "../../apis/product/productAPI.ts";
 import { getCreatorList } from "../../apis/creator/creatorAPI.ts";
@@ -14,8 +14,8 @@ function ProductListComponent() {
     const { creatorId } = useParams(); // URL에서 creatorId 추출
     const { customer } = useAuthStore();
     const { addToCart } = useCartStore(); // Zustand 상태 가져오기
-    const [products, setProducts] = useState<IProduct[]>([]);
-    const [visibleProducts, setVisibleProducts] = useState<IProduct[]>([]); // 현재 화면에 보이는 상품들
+    const [products, setProducts] = useState<IProductList[]>([]);
+    const [visibleProducts, setVisibleProducts] = useState<IProductList[]>([]); // 현재 화면에 보이는 상품들
     const [creator, setCreator] = useState<ICreator | null>(null);
     const [expanded, setExpanded] = useState(false); // "See More" / "Close" 상태
     const productsPerPage = 8; // 한 페이지에 표시할 상품 수
@@ -127,35 +127,38 @@ function ProductListComponent() {
                         >
                             <Link to={`/product/detail/${product.productNo}`}>
                                 {/* 상품 이미지 */}
+                                {/* 상품 이미지 */}
                                 <div className="w-full h-48 overflow-hidden rounded-t-lg">
                                     <img
                                         src={
-                                            product.productImages && product.productImages[0]
-                                                ? product.productImages[0].productImageUrl
-                                                : "https://via.placeholder.com/150"
+                                            product.productImageUrl // productImageUrl 필드를 사용
+                                                ? product.productImageUrl // 이미지 URL이 있을 경우 사용
+                                                : "https://via.placeholder.com/150" // 기본 이미지 URL
                                         }
-                                        alt={product.productName}
+                                        alt={product.productName} // 상품 이름을 alt 속성으로 설정
                                         className="w-full h-full object-cover"
                                     />
                                 </div>
+
+
                                 {/* 상품 정보 */}
                                 <div className="p-4">
                                     <h4 className="text-[14px] font-bold text-gray-800 truncate">
                                         {product.productName}
                                     </h4>
                                     <p className="text-gray-600 text-sm mt-2">
-                                        {product.productPrice.toLocaleString()}원
+                                    {product.productPrice.toLocaleString()}원
                                     </p>
                                 </div>
                             </Link>
                             {/* 하트 아이콘 */}
                             <button
-                                className="absolute top-2 right-2 p-1 bg-white rounded-full shadow hover:bg-gray-100"
+                                className="absolute top-2 right-2 p-1"
                                 onClick={() =>
                                     console.log(`${product.productName} 좋아요 클릭`)
                                 }
                             >
-                                <img src={wheart} alt="찜" className="w-4 h-4" />
+                                <img src={wheart} alt="찜" className="w-5 h-5" />
                             </button>
                             {/* 장바구니 아이콘 */}
                             <button

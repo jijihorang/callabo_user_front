@@ -3,6 +3,7 @@ import { useDaumPostcodePopup } from "react-daum-postcode";
 
 import useAuthStore from "../../stores/customer/AuthStore.ts";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 function AccountSettingsPage() {
 
@@ -12,6 +13,8 @@ function AccountSettingsPage() {
     const [zipcode, setZipcode] = useState("");
     const [address, setAddress] = useState("");
     const [detailAddress, setDetailAddress] = useState("");
+
+    const navigate = useNavigate();
 
     const scriptUrl =
         "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
@@ -38,6 +41,10 @@ function AccountSettingsPage() {
     const handleClick = () => {
         open({ onComplete: handleAddressSelect });
     };
+
+    const handleClose = () => {
+        navigate("/header/user");
+    }
 
     const handleSave = async () => {
         const payload = {
@@ -154,6 +161,7 @@ function AccountSettingsPage() {
                     <button
                         type="button"
                         className="px-6 py-3 bg-gray-200 text-sm rounded-lg hover:bg-gray-300"
+                        onClick={handleClose}
                     >
                         취소
                     </button>
