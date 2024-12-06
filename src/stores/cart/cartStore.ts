@@ -43,13 +43,13 @@ const useCartStore = create<CartState>((set) => ({
                 if (productIndex !== -1) {
                     // 상품이 이미 존재할 경우 수량 증가
                     const newCartGroups = [...state.cartGroups];
-                    newCartGroups[groupIndex].products[productIndex].quantity += 1;
+                    newCartGroups[groupIndex].products[productIndex].quantity += product.quantity;
                     return { cartGroups: newCartGroups };
                 }
 
                 // 그룹에 새로운 상품 추가
                 const newCartGroups = [...state.cartGroups];
-                newCartGroups[groupIndex].products.push({ ...product, quantity: 1 });
+                newCartGroups[groupIndex].products.push({ ...product, quantity: product.quantity });
                 return { cartGroups: newCartGroups };
             }
 
@@ -60,7 +60,7 @@ const useCartStore = create<CartState>((set) => ({
                     {
                         groupName: `Creator ${product.creatorId}`, // Optional group name
                         creatorId: product.creatorId, // 그룹의 creatorId 설정
-                        products: [{ ...product, quantity: 1 }],
+                        products: [{ ...product, quantity: product.quantity }],
                         shippingFee: 0, // 기본 배송비 설정 (필요 시 수정 가능)
                     },
                 ],
