@@ -81,7 +81,7 @@ function ProductDetailComponent() {
                             }`}
                             onClick={() => setActiveTab(tab)}
                         >
-                            {tab === "description" ? "상품 상세" : tab === "faq" ? "FAQ" : "리뷰"}
+                            {tab === "description" ? "상품 상세" : tab === "faq" ? "F&Q" : "리뷰"}
                         </button>
                     ))}
                 </div>
