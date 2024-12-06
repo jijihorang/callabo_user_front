@@ -29,7 +29,7 @@ function WishlistCreatorComponent() {
     // 제작자 상품으로 이동
     const moveToProductList = (creatorId?: string) => {
         if (creatorId) {
-            navigate(`/product/read/${creatorId}`);
+            navigate(`/product/list/${creatorId}`);
         }
     };
 

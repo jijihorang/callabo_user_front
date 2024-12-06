@@ -1,12 +1,12 @@
-import memenu1 from "../../assets/img/알치날.png";
-import memenu2 from "../../assets/img/스마트톡.png";
-import memenu3 from "../../assets/img/알치날.png";
-import memenu4 from "../../assets/img/스마트톡.png";
-import shirt from "../../assets/img/shirt.png";
-import { useState } from "react";
-import CreatorReviewReadComponent from "./CreatorReviewReadComponent";
+import memenu1 from "../../../assets/img/알치날.png";
+import memenu2 from "../../../assets/img/스마트톡.png";
+import memenu3 from "../../../assets/img/알치날.png";
+import memenu4 from "../../../assets/img/스마트톡.png";
+import {useState} from "react";
+import shirt from "../../../assets/img/shirt.png";
+import CreatorReviewReadComponent from "./CreatorReviewReadComponent.tsx";
 
-function CreatorReviews() {
+function CreatorReviewListComponent() {
     const allReviews = [
         { image: memenu1, title: "마이비누 스터디덕의 티셔츠", price: "20,500 원", date: "2024.11.03" },
         { image: memenu2, title: "MMMN 스몰 로고 티셔츠 블랙", price: "19,500 원", date: "2024.11.04" },
@@ -32,7 +32,7 @@ function CreatorReviews() {
         setExpanded(!expanded); // 상태 토글
     };
 
-    const openModal = (review) => {
+    const openModal = (review: any) => {
         setSelectedReview(review);
         setIsModalOpen(true);
     };
@@ -107,5 +107,4 @@ function CreatorReviews() {
         </div>
     );
 }
-
-export default CreatorReviews;
+export default CreatorReviewListComponent;
