@@ -61,7 +61,6 @@ function ProductDetailComponent() {
 
     const handleAddToCart = () => {
         if (product) {
-            // 장바구니에 추가
             addToCart({
                 id: product.productNo,
                 img: product.productImages?.[0]?.productImageUrl || "https://via.placeholder.com/150",
@@ -71,8 +70,8 @@ function ProductDetailComponent() {
                 quantity, // 선택한 수량만큼 추가
                 creatorId: creatorId || "unknown",
             });
-            alert(`${quantity}개가 장바구니에 추가되었습니다.`); // 수량 반영
-            setShowPurchasePopup(false); // 팝업 닫기
+            alert(`${quantity}개가 장바구니에 추가되었습니다.`);
+            setShowPurchasePopup(false);
         }
     };
 
@@ -80,21 +79,25 @@ function ProductDetailComponent() {
         if (product) {
             navigate("/order", {
                 state: {
-                    products: [
+                    cartGroups: [
                         {
-                            id: product.productNo,
-                            img: product.productImages?.[0]?.productImageUrl || "https://via.placeholder.com/150",
-                            name: product.productName,
-                            price: product.productPrice,
-                            category: product.categoryName || "기타",
-                            quantity, // 선택한 수량만큼 구매
-                            creatorId: creatorId || "unknown",
+                            products: [
+                                {
+                                    id: product.productNo,
+                                    name: product.productName,
+                                    price: product.productPrice,
+                                    imageUrl: product.productImages?.[0]?.productImageUrl || "https://via.placeholder.com/150",
+                                    quantity: quantity,
+                                    category: product.categoryName || "기타",
+                                },
+                            ],
                         },
                     ],
                 },
             });
         }
     };
+
 
     return (
         <div className="container mx-auto mt-5 pb-5">
@@ -109,7 +112,13 @@ function ProductDetailComponent() {
                 </div>
                 <div className="flex-1 flex flex-col justify-center ml-4">
                     {productNo ? (
-                        <ProductInfoComponent productNo={parseInt(productNo, 10)} />
+                        <ProductInfoComponent
+                            product={product!}
+                            onAddToCart={handleAddToCart}
+                            onBuyNow={handleBuyNow}
+                            quantity={quantity}
+                            setQuantity={setQuantity}
+                        />
                     ) : (
                         <p className="text-center text-gray-500">상품 번호가 유효하지 않습니다.</p>
                     )}
