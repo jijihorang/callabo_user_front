@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 
-import pro from "../../assets/img/pro1.png";
+import useAuthStore from "../../stores/customer/AuthStore.ts";
+import axios from "axios";
 
 function AccountSettingsPage() {
-    const [email] = useState("jiho7213@gmail.com");
-    const [nickname, setNickname] = useState("");
+
+    const { customer } = useAuthStore();
+
     const [phone, setPhone] = useState("");
     const [zipcode, setZipcode] = useState("");
     const [address, setAddress] = useState("");
@@ -37,6 +39,26 @@ function AccountSettingsPage() {
         open({ onComplete: handleAddressSelect });
     };
 
+    const handleSave = async () => {
+        const payload = {
+            customerPhone: phone,
+            customerZipcode: zipcode,
+            customerAddr: address,
+            customerAddrDetail: detailAddress,
+        }
+        try {
+            // API 호출
+            await axios.put(
+                `http://localhost:8080/api2/customer/${customer?.customerId}`,
+                payload
+            );
+            alert("저장되었습니다.");
+        } catch (error) {
+            console.error("저장 중 오류:", error);
+            alert("저장에 실패했습니다.");
+        }
+    };
+
     return (
         <div className="container mx-auto py-8 px-4">
             <h1 className="text-2xl md:text-3xl font-bold text-center mb-8">계정 설정</h1>
@@ -44,16 +66,10 @@ function AccountSettingsPage() {
                 <div className="flex justify-center">
                     <div className="relative">
                         <img
-                            src={pro}
+                            src={customer?.customerProfileImage}
                             alt="프로필"
                             className="w-32 h-32 md:w-40 md:h-40 rounded-full"
                         />
-                        <button
-                            type="button"
-                            className="absolute bottom-0 right-0 px-3 py-1 text-xs bg-blue-500 text-white rounded-full hover:bg-blue-600"
-                        >
-                            수정
-                        </button>
                     </div>
                 </div>
 
@@ -65,7 +81,7 @@ function AccountSettingsPage() {
                     <div className="flex space-x-4">
                         <input
                             type="email"
-                            value={email}
+                            value={customer?.customerId}
                             className="flex-1 border rounded-lg px-4 py-2 text-sm"
                             disabled
                         />
@@ -75,14 +91,14 @@ function AccountSettingsPage() {
 
                 {/* 닉네임 */}
                 <div>
-                    <label className="block text-sm font-medium mb-1">닉네임</label>
+                    <label className="block text-sm font-medium mb-1">이름</label>
                     <input
                         type="text"
-                        value={nickname}
-                        onChange={(e) => setNickname(e.target.value)}
+                        value={customer?.customerName}
                         className="w-full border rounded-lg px-4 py-2 text-sm"
+                        disabled
                     />
-                    <p className="text-sm text-green-500 mt-2">✔️ 특수문자 불가 ✔️ 자음/모음 단독 사용 불가</p>
+                    {/*<p className="text-sm text-green-500 mt-2">✔️ 특수문자 불가 ✔️ 자음/모음 단독 사용 불가</p>*/}
                 </div>
 
                 {/* 연락처 */}
@@ -144,6 +160,7 @@ function AccountSettingsPage() {
                     <button
                         type="button"
                         className="px-6 py-3 bg-blue-500 text-white text-sm rounded-lg hover:bg-blue-600"
+                        onClick={handleSave}
                     >
                         저장하기
                     </button>

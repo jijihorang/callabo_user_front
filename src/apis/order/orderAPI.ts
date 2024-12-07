@@ -1,7 +1,7 @@
 import {IOrder} from "../../types/order/iorder.ts";
 import axios from "axios";
 
-const host = "http://localhost:8080/api/orders";
+const host = "http://localhost:8080/api2/orders";
 
 // 주문 생성
 export const createOrders = async (orders: Partial<IOrder>[]): Promise<IOrder[]> => {

@@ -1,191 +1,233 @@
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import ProductImageSlider from "../slider/ProductImageSlider.tsx";
+import ProductInfoComponent from "./detail/ProductInfoComponent.tsx";
+import ProductDescriptionComponent from "./detail/ProductDescriptionComponent.tsx";
+import ProductFAQComponent from "./detail/ProductFAQComponent.tsx";
+import ProductReviewComponent from "./detail/ProductReviewComponent.tsx";
+
+import { getProductRead } from "../../apis/product/productAPI.ts";
+import { IProduct } from "../../types/product/iproduct.ts";
+
+import heart from "../../assets/icons/heart.png";
+import close from "../../assets/icons/close.png";
 import useCartStore from "../../stores/cart/cartStore.ts";
 
-function CartPage() {
-    const { cartGroups, increaseQuantity, decreaseQuantity, removeProduct } = useCartStore();
+function ProductDetailComponent() {
+    const { creatorId } = useParams();
+    const [activeTab, setActiveTab] = useState("description"); // 탭 상태 관리
+    const [showPurchasePopup, setShowPurchasePopup] = useState(false); // 구매 팝업 상태
+    const [isMobile, setIsMobile] = useState(false); // 화면 크기 상태
+    const [product, setProduct] = useState<IProduct | null>(null); // 상품 데이터 상태
+    const [quantity, setQuantity] = useState(1); // 수량 상태
+    const { productNo } = useParams<{ productNo: string }>();
+    const { addToCart } = useCartStore(); // Zustand 상태 가져오기
     const navigate = useNavigate();
 
-    const moveToOrder = () => {
-        navigate(`/order`, { state: { cartGroups } }); // 주문 페이지로 그룹화된 데이터 전달
+    // 화면 크기 체크
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768); // 768px 이하를 모바일로 간주
+        };
+        handleResize(); // 초기 체크
+        window.addEventListener("resize", handleResize);
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
+
+    // 상품 데이터 가져오기
+    useEffect(() => {
+        if (productNo) {
+            const fetchProduct = async () => {
+                try {
+                    const productData = await getProductRead(parseInt(productNo, 10));
+                    setProduct(productData);
+                } catch (error) {
+                    console.error("Failed to fetch product data:", error);
+                }
+            };
+            fetchProduct();
+        }
+    }, [productNo]);
+
+    const handlePurchaseClick = () => {
+        setShowPurchasePopup(true);
     };
 
+    const handleClosePopup = () => {
+        setShowPurchasePopup(false);
+    };
+
+    const handleAddToCart = () => {
+        if (product) {
+            addToCart({
+                id: product.productNo,
+                img: product.productImages?.[0]?.productImageUrl || "https://via.placeholder.com/150",
+                name: product.productName,
+                price: product.productPrice,
+                category: product.categoryName || "기타",
+                quantity, // 선택한 수량만큼 추가
+                creatorId: creatorId || "unknown",
+            });
+            alert(`${quantity}개가 장바구니에 추가되었습니다.`);
+            setShowPurchasePopup(false);
+        }
+    };
+
+    const handleBuyNow = () => {
+        if (product) {
+            navigate("/order", {
+                state: {
+                    cartGroups: [
+                        {
+                            products: [
+                                {
+                                    id: product.productNo,
+                                    name: product.productName,
+                                    price: product.productPrice,
+                                    imageUrl: product.productImages?.[0]?.productImageUrl || "https://via.placeholder.com/150",
+                                    quantity: quantity,
+                                    category: product.categoryName || "기타",
+                                },
+                            ],
+                        },
+                    ],
+                },
+            });
+        }
+    };
+
+
     return (
-        <div className="container mx-auto px-4 py-8 flex flex-col md:flex-row">
-            {/* 상품 목록 영역 */}
-            <div className="w-full md:w-2/3 space-y-8">
-                <h2 className="text-2xl font-bold mb-2">장바구니</h2>
-                {cartGroups.map((group, groupIndex) => (
-                    <div key={groupIndex}>
-                        {/* 그룹 헤더 */}
-                        <div className="border-t-2 border-gray-400 pb-4 pt-3 flex items-center">
-                            <input type="checkbox" className="mr-4" />
-                            <h3 className="text-lg font-bold flex items-center">
-                                {group.groupName || `Creator ${group.creatorId}`}
-                                <span role="img" aria-label="배송" className="ml-2">
-                                    📦
-                                </span>
-                            </h3>
-                        </div>
-
-                        {/* 그룹 내 상품 목록 */}
-                        {group.products.map((product, productIndex) => (
-                            <div
-                                key={product.id}
-                                className="py-3 flex flex-col space-y-3 relative border rounded-lg p-4"
-                            >
-                                {/* 삭제 버튼 */}
-                                <button
-                                    onClick={() => removeProduct(groupIndex, productIndex)}
-                                    className="absolute top-2 right-2 w-6 h-6 flex justify-center items-center text-gray-500 hover:text-red-600"
-                                    aria-label="삭제"
-                                >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        strokeWidth={2}
-                                        stroke="currentColor"
-                                        className="w-5 h-5"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M6 18L18 6M6 6l12 12"
-                                        />
-                                    </svg>
-                                </button>
-                                {/* 상품 정보 */}
-                                <div className="flex items-center">
-                                    <input type="checkbox" className="mr-4" />
-                                    <img
-                                        src={product.img}
-                                        alt={product.name}
-                                        className="w-24 h-24 object-cover rounded-lg"
-                                    />
-                                    <div className="ml-5 flex-grow">
-                                        <div className="font-semibold text-lg">{product.name}</div>
-                                        <div className="text-gray-400 text-sm mt-1">
-                                            {product.category}
-                                        </div>
-                                        <div className="text-lg font-bold mt-2">
-                                            {product.price.toLocaleString()}원
-                                        </div>
-                                    </div>
-                                </div>
-                                {/* 수량 및 가격 정보 */}
-                                <div className="flex justify-between items-center bg-gray-100 p-3 rounded-md mb-4">
-                                    <div className="flex items-center space-x-2">
-                                        <span>수량 / {product.quantity}개</span>
-                                        <button
-                                            className="w-6 h-6 flex justify-center items-center bg-gray-200 hover:bg-gray-300 rounded-full text-sm"
-                                            onClick={() => decreaseQuantity(groupIndex, productIndex)}
-                                        >
-                                            -
-                                        </button>
-                                        <button
-                                            className="w-6 h-6 flex justify-center items-center bg-gray-200 hover:bg-gray-300 rounded-full text-sm"
-                                            onClick={() => increaseQuantity(groupIndex, productIndex)}
-                                        >
-                                            +
-                                        </button>
-                                    </div>
-                                    <div className="font-bold">
-                                        {(product.price * product.quantity).toLocaleString()}원
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                        {/* 그룹 요약 */}
-                        <div className="text-center mt-5 font-semibold border-t-2 border-gray-400 pt-5">
-                            상품금액{" "}
-                            {group.products
-                                .reduce((acc, p) => acc + p.price * p.quantity, 0)
-                                .toLocaleString()}
-                            원 + 배송비 {group.shippingFee.toLocaleString()}원 = 주문금액{" "}
-                            <span className="font-bold">
-                                {(
-                                    group.products.reduce(
-                                        (acc, p) => acc + p.price * p.quantity,
-                                        0
-                                    ) + group.shippingFee
-                                ).toLocaleString()}
-                                원
-                            </span>
-                        </div>
-                    </div>
-                ))}
-            </div>
-
-            {/* 주문 정보 영역 */}
-            <div className="w-full md:w-1/3 md:ml-12 bg-white z-50 p-4 relative">
-                <div className="border border-gray-300 rounded-lg p-6 bg-white shadow-md">
-                    <h2 className="text-xl font-bold mb-6 border-b-2 border-gray-400 pb-3 text-center">
-                        주문정보
-                    </h2>
-                    <div className="flex justify-between mb-4">
-                        <span className="text-gray-600">총 수량</span>
-                        <span className="font-semibold">
-                            {cartGroups.reduce(
-                                (acc, group) =>
-                                    acc +
-                                    group.products.reduce((sum, p) => sum + p.quantity, 0),
-                                0
-                            )}
-                            개
-                        </span>
-                    </div>
-                    <div className="flex justify-between mb-4">
-                        <span className="text-gray-600">총 상품금액</span>
-                        <span className="font-semibold">
-                            {cartGroups
-                                .reduce(
-                                    (acc, group) =>
-                                        acc +
-                                        group.products.reduce(
-                                            (sum, p) => sum + p.price * p.quantity,
-                                            0
-                                        ),
-                                    0
-                                )
-                                .toLocaleString()}
-                            원
-                        </span>
-                    </div>
-                    <div className="flex justify-between mb-4">
-                        <span className="text-gray-600">총 배송비</span>
-                        <span className="font-semibold">
-                            {cartGroups.reduce((acc, group) => acc + group.shippingFee, 0).toLocaleString()}
-                            원
-                        </span>
-                    </div>
-                    <div className="border-t border-gray-200 pt-4 flex justify-between text-lg font-bold">
-                        <span>총 주문금액</span>
-                        <span className="text-blue-600">
-                            {cartGroups
-                                .reduce(
-                                    (acc, group) =>
-                                        acc +
-                                        group.products.reduce(
-                                            (sum, p) => sum + p.price * p.quantity,
-                                            0
-                                        ) +
-                                        group.shippingFee,
-                                    0
-                                )
-                                .toLocaleString()}
-                            원
-                        </span>
-                    </div>
-                    <button
-                        className="w-full mt-6 bg-blue-600 text-white py-3 rounded-md font-semibold text-center hover:bg-blue-500"
-                        onClick={moveToOrder}
-                    >
-                        주문서 작성
-                    </button>
+        <div className="container mx-auto mt-5 pb-5">
+            {/* 상품 이미지 및 정보 섹션 */}
+            <div className="flex flex-col lg:flex-row items-stretch gap-4">
+                <div className="flex-1 flex justify-center">
+                    {product?.productImages ? (
+                        <ProductImageSlider productImages={product.productImages} />
+                    ) : (
+                        <p className="text-center text-gray-500">이미지를 불러오는 중입니다...</p>
+                    )}
+                </div>
+                <div className="flex-1 flex flex-col justify-center ml-4">
+                    {productNo ? (
+                        <ProductInfoComponent
+                            product={product!}
+                            onAddToCart={handleAddToCart}
+                            onBuyNow={handleBuyNow}
+                            quantity={quantity}
+                            setQuantity={setQuantity}
+                        />
+                    ) : (
+                        <p className="text-center text-gray-500">상품 번호가 유효하지 않습니다.</p>
+                    )}
                 </div>
             </div>
+
+            {/* 탭 메뉴 */}
+            <div className="mt-8 border-b">
+                <div className="flex justify-center space-x-8">
+                    {["description", "faq", "review"].map((tab) => (
+                        <button
+                            key={tab}
+                            className={`py-2 ${
+                                activeTab === tab
+                                    ? "text-blue-600 font-bold border-b-2 border-blue-600 text-lg"
+                                    : "text-gray-400 text-lg"
+                            }`}
+                            onClick={() => setActiveTab(tab)}
+                        >
+                            {tab === "description" ? "상품 상세" : tab === "faq" ? "FAQ" : "리뷰"}
+                        </button>
+                    ))}
+                </div>
+            </div>
+
+            {/* 탭 내용 */}
+            <div className="mt-8 mb-20 m-5">
+                {activeTab === "description" && product && (
+                    <ProductDescriptionComponent productDescription={product.productDescription} />
+                )}
+                {activeTab === "faq" && <ProductFAQComponent />}
+                {activeTab === "review" && <ProductReviewComponent />}
+            </div>
+
+            {/* 하단 고정 구매 영역 (모바일에서만 표시) */}
+            {isMobile && (
+                <div className="fixed bottom-0 left-0 w-full bg-white flex justify-between items-center px-4 py-3 z-50">
+                    <button
+                        className="text-gray-500 font-bold flex items-center"
+                        onClick={() => console.log("찜하기 클릭됨")}
+                    >
+                        <img src={heart} alt="찜하기" className="w-5 h-5 mr-2" />
+                    </button>
+                    <div className="flex gap-4">
+                        <button
+                            className="bg-blue-600 text-white px-10 py-2 rounded-lg hover:bg-blue-700"
+                            onClick={handlePurchaseClick}
+                        >
+                            구매하기
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            {/* 구매 팝업 (모바일에서만 표시) */}
+            {isMobile && showPurchasePopup && (
+                <>
+                    <div className="fixed inset-0 bg-black bg-opacity-50 z-40"></div>
+                    <div className="fixed bottom-0 left-0 w-full bg-white shadow-lg z-50 px-4 py-6 rounded-t-2xl">
+                        <div className="flex justify-end items-center mb-4">
+                            <button onClick={handleClosePopup} className="text-gray-500">
+                                <img src={close} alt="닫기" className="w-5 h-5" />
+                            </button>
+                        </div>
+                        <div className="mb-4">
+                            <div className="flex items-center justify-between mb-2">
+                                <span className="text-gray-700">수량</span>
+                                <div className="flex items-center gap-2">
+                                    <button
+                                        className="px-2 py-1 font-bold text-lg"
+                                        onClick={() => setQuantity((prev) => Math.max(prev - 1, 1))}
+                                    >
+                                        −
+                                    </button>
+                                    <span className="text-lg font-semibold text-gray-800">{quantity}</span>
+                                    <button
+                                        className="px-2 py-1 font-bold text-lg"
+                                        onClick={() => setQuantity((prev) => prev + 1)}
+                                    >
+                                        +
+                                    </button>
+                                </div>
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <span className="text-gray-700">총 상품 금액</span>
+                                <span className="text-2xl font-bold">
+                                    {product && (product.productPrice * quantity).toLocaleString()}원
+                                </span>
+                            </div>
+                        </div>
+                        <div className="flex gap-4">
+                            <button
+                                className="flex-1 border border-gray-300 py-2 rounded-lg text-gray-700 hover:bg-gray-100"
+                                onClick={handleAddToCart}
+                            >
+                                장바구니
+                            </button>
+                            <button
+                                className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
+                                onClick={handleBuyNow}
+                            >
+                                바로 구매
+                            </button>
+                        </div>
+                    </div>
+                </>
+            )}
         </div>
     );
 }
 
-export default CartPage;
+export default ProductDetailComponent;

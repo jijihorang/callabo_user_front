@@ -1,10 +1,9 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { IProduct } from "../../types/product/iproduct.ts";
+import { IProduct, IProductList } from "../../types/product/iproduct.ts";
 import { ICreator } from "../../types/creator/icreator.ts";
 import { getProductList } from "../../apis/product/productAPI.ts";
 import { getCreatorList } from "../../apis/creator/creatorAPI.ts";
-
 import wheart from "../../assets/icons/whiteheart.png";
 import cart2 from "../../assets/icons/cart.png";
 import useAuthStore from "../../stores/customer/AuthStore.ts";
@@ -14,8 +13,8 @@ function ProductListComponent() {
     const { creatorId } = useParams(); // URL에서 creatorId 추출
     const { customer } = useAuthStore();
     const { addToCart } = useCartStore(); // Zustand 상태 가져오기
-    const [products, setProducts] = useState<IProduct[]>([]);
-    const [visibleProducts, setVisibleProducts] = useState<IProduct[]>([]); // 현재 화면에 보이는 상품들
+    const [products, setProducts] = useState<IProductList[]>([]);
+    const [visibleProducts, setVisibleProducts] = useState<IProductList[]>([]); // 현재 화면에 보이는 상품들
     const [creator, setCreator] = useState<ICreator | null>(null);
     const [expanded, setExpanded] = useState(false); // "See More" / "Close" 상태
     const productsPerPage = 8; // 한 페이지에 표시할 상품 수
@@ -60,6 +59,31 @@ function ProductListComponent() {
             setVisibleProducts(products); // 모든 상품 표시
         }
         setExpanded(!expanded); // 상태 토글
+    };
+
+    // 장바구니에 상품 추가
+    const handleAddToCart = (product: IProductList) => {
+        // IProduct로 변환, creatorId를 명시적으로 전달
+        const productData: IProduct = {
+            ...product,
+            productDescription: product.productDescription || "", // 필요시 기본값 설정
+            productImages: product.productImages || [], // 필요시 기본값 설정
+        };
+
+        // creatorId가 없을 경우 대체값을 넣거나, 예외 처리를 할 수 있습니다.
+        const productCreatorId = creatorId || "unknown"; // creatorId를 명시적으로 설정
+
+        // 장바구니에 추가
+        addToCart({
+            id: productData.productNo,
+            img: productData.productImages?.[0]?.productImageUrl || "https://via.placeholder.com/150",
+            name: productData.productName,
+            price: productData.productPrice,
+            category: productData.categoryName || "기타",
+            quantity: 1, // 선택한 수량만큼 추가
+            creatorId: productCreatorId, // creatorId를 명시적으로 설정
+        });
+        alert(`${1}개가 장바구니에 추가되었습니다.`); // 수량 반영
     };
 
     // 데이터 로딩 중 상태
@@ -125,19 +149,20 @@ function ProductListComponent() {
                             key={`${product.productNo}-${index}`}
                             className="relative bg-white rounded-lg shadow-md hover:shadow-lg transition-all"
                         >
-                            <Link to={`/product/detail/${product.productNo}`}>
+                            <Link to={`/product/${creatorId}/detail/${product.productNo}`}>
                                 {/* 상품 이미지 */}
                                 <div className="w-full h-48 overflow-hidden rounded-t-lg">
                                     <img
                                         src={
-                                            product.productImages && product.productImages[0]
-                                                ? product.productImages[0].productImageUrl
+                                            product.productImageUrl
+                                                ? product.productImageUrl
                                                 : "https://via.placeholder.com/150"
                                         }
                                         alt={product.productName}
                                         className="w-full h-full object-cover"
                                     />
                                 </div>
+
                                 {/* 상품 정보 */}
                                 <div className="p-4">
                                     <h4 className="text-[14px] font-bold text-gray-800 truncate">
@@ -148,28 +173,19 @@ function ProductListComponent() {
                                     </p>
                                 </div>
                             </Link>
+
                             {/* 하트 아이콘 */}
                             <button
                                 className="absolute top-2 right-2 p-1 bg-white rounded-full shadow hover:bg-gray-100"
-                                onClick={() =>
-                                    console.log(`${product.productName} 좋아요 클릭`)
-                                }
+                                onClick={() => console.log(`${product.productName} 좋아요 클릭`)}
                             >
                                 <img src={wheart} alt="찜" className="w-4 h-4" />
                             </button>
+
                             {/* 장바구니 아이콘 */}
                             <button
                                 className="absolute bottom-4 right-4 p-2 bg-white rounded-full shadow border hover:bg-gray-100"
-                                onClick={() =>
-                                    addToCart({
-                                        id: product.productNo,
-                                        img: product.productImages?.[0]?.productImageUrl || "",
-                                        name: product.productName,
-                                        price: product.productPrice,
-                                        category: product.categoryName || "기타",
-                                        quantity: 1,
-                                    })
-                                }
+                                onClick={() => handleAddToCart(product)} // IProductList를 IProduct로 변환하여 사용
                             >
                                 <img src={cart2} alt="장바구니" className="w-5 h-5" />
                             </button>

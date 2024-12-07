@@ -1,6 +1,6 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import useCartStore from "../../stores/cart/cartStore.ts";
+import {useState} from "react";
 
 function CartComponent() {
     const {
@@ -11,11 +11,11 @@ function CartComponent() {
     } = useCartStore(); // Zustand에서 상태 가져오기
     const navigate = useNavigate();
 
-    const [isCollapsed, setIsCollapsed] = React.useState(true); // 슬라이드 상태 초기화
-    const [startY, setStartY] = React.useState(0); // 터치 시작 위치
+    const [isCollapsed, setIsCollapsed] = useState(true); // 슬라이드 상태 초기화
+    const [startY, setStartY] = useState(0); // 터치 시작 위치
 
     const moveToOrder = () => {
-        navigate(`/order`);
+        navigate(`/order`, { state: { cartGroups: cartGroups } });
     };
 
     // 터치 시작
@@ -89,8 +89,8 @@ function CartComponent() {
                                         <div className="text-gray-400 text-sm mt-1">
                                             {product.category}
                                         </div>
-                                        <div className="text-lg font-bold mt-2">
-                                            {product.price.toLocaleString()}원
+                                        <div className="text-blue-600 font-bold mb-2">
+                                            {(product.price ?? 0).toLocaleString()}원
                                         </div>
                                     </div>
                                 </div>

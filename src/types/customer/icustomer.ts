@@ -28,3 +28,11 @@ export interface IProductLike {
     likeStatus: boolean; // 좋아요 상태 (true: 좋아요, false: 취소)
     productNo: number; // 상품 번호
 }
+
+export interface UpdateCustomerDTO {
+    customerPhone?: string;
+    customerZipcode?: string;
+    customerAddr?: string;
+    customerAddrDetail?: string;
+    customerProfileImage?: string;
+}
