@@ -1,12 +1,17 @@
-import useAuthStore from "../../../stores/customer/AuthStore.ts";
-import {useState} from "react";
-import {useDaumPostcodePopup} from "react-daum-postcode";
-import {createOrders} from "../../../apis/order/orderAPI.ts";
-import down from "../../../assets/icons/down.png";
+import { useState } from "react";
+import { useDaumPostcodePopup } from "react-daum-postcode";
+import useAuthStore from "../../stores/customer/AuthStore.ts";
+import { createOrders } from "../../apis/order/orderAPI.ts";
+import {useLocation, useNavigate} from "react-router-dom";
+import uuid from "react-uuid";
 
 function ProductOrderComponent() {
-    const { customer } = useAuthStore();
 
+    const { customer } = useAuthStore();
+    const { state } = useLocation();
+    const { cartGroups } = state || {};
+
+    const navigate = useNavigate();
     const [customerId] = useState(customer?.customerId || "");
     const [recipientName, setRecipientName] = useState(customer?.customerName || "");
     const [recipientPhone, setRecipientPhone] = useState("");
@@ -51,34 +56,37 @@ function ProductOrderComponent() {
                 return;
             }
 
-            const orderData = [
-                {
-                    creatorId: "creator1",
-                    customerId,
-                    recipientName,
-                    recipientPhone,
-                    customerAddress: address,
-                    customerAddrDetail: addressDetail,
-                    totalAmount: 1,
-                    totalPrice: 18000,
-                    items: [
-                        {
-                            productNo: 1,
-                            productName: "[한정수량] 망나니 잔 (2024년 12월 배송)",
-                            quantity: 1,
-                            unitPrice: 15000,
-                        },
-                    ],
-                },
-            ];
+            if (!recipientName || !recipientPhone || !address || !addressDetail) {
+                alert("모든 필드를 입력해주세요.");
+                return;
+            }
 
-            const response = await createOrders(orderData);
+            const orderData = {
+                orderId: uuid(),
+                creatorId: "creator1",
+                customerId,
+                recipientName,
+                recipientPhone,
+                customerAddress: address,
+                customerAddrDetail: addressDetail,
+                totalAmount: cartGroups?.reduce((acc, group) => acc + group.products.reduce((sum, p) => sum + p.quantity, 0), 0) || 0,
+                totalPrice: cartGroups?.reduce((acc, group) => acc + group.products.reduce((sum, p) => sum + (p.price * p.quantity), 0), 0) || 0,
+                items: cartGroups?.flatMap(group => group.products.map(product => ({
+                    productNo: product.id,
+                    productName: product.name,
+                    quantity: product.quantity,
+                    unitPrice: product.price,
+                }))),
+            };
+
+            const response = await createOrders([orderData]);
             console.log("Order created successfully:", response);
 
-            alert("주문이 성공적으로 완료되었습니다!");
+            // navigate를 사용하여 결제 화면으로 이동
+            navigate("/tosspay/checkout", { state: { orderData } });
         } catch (error: any) {
             console.error("Order creation failed:", error.message);
-            alert("주문 생성에 실패했습니다. 다시 시도해주세요.");
+
         }
     };
 
@@ -128,7 +136,6 @@ function ProductOrderComponent() {
                         <input
                             type="text"
                             value={address}
-                            onChange={(e) => setAddress(e.target.value)}
                             placeholder="기본 주소"
                             className="mt-3 block w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                             readOnly
@@ -143,33 +150,22 @@ function ProductOrderComponent() {
                     </div>
                     <div className="relative">
                         <label className="block text-sm font-medium text-gray-700 mb-2">배송 메모</label>
-                        <div className="relative">
-                            <select
-                                value={deliveryMemo}
-                                onChange={(e) => setDeliveryMemo(e.target.value)}
-                                className="block w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 appearance-none"
-                            >
-                                <option value="">배송 메모를 선택해주세요.</option>
-                                <option value="문 앞에 놓아주세요.">문 앞에 놓아주세요.</option>
-                                <option value="직접 전달 바랍니다.">직접 전달 바랍니다.</option>
-                            </select>
-                            <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
-                                <img src={down} alt="다운 사진" className="w-8 h-8" />
-                            </div>
-                        </div>
+                        <select
+                            value={deliveryMemo}
+                            onChange={(e) => setDeliveryMemo(e.target.value)}
+                            className="block w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                        >
+                            <option value="">배송 메모를 선택해주세요.</option>
+                            <option value="문 앞에 놓아주세요.">문 앞에 놓아주세요.</option>
+                            <option value="직접 전달 바랍니다.">직접 전달 바랍니다.</option>
+                        </select>
                     </div>
                 </div>
             </div>
 
             {/* 주문 정보 및 결제 버튼 */}
             <div
-                className={`w-full lg:w-1/3 lg:ml-12 bg-white z-50 p-4 ${
-                    window.innerWidth < 1024
-                        ? `transition-transform duration-300 fixed bottom-0 left-0 shadow-lg ${
-                            isCollapsed ? "translate-y-[80%]" : "translate-y-0"
-                        }`
-                        : "relative"
-                }`}
+                className={`w-full lg:w-1/3 lg:ml-12 bg-white z-50 p-4 ${window.innerWidth < 1024 ? `transition-transform duration-300 fixed bottom-0 left-0 shadow-lg ${isCollapsed ? "translate-y-[80%]" : "translate-y-0"}` : "relative"}`}
                 onTouchStart={window.innerWidth < 1024 ? handleTouchStart : undefined}
                 onTouchMove={window.innerWidth < 1024 ? handleTouchMove : undefined}
             >
@@ -177,42 +173,42 @@ function ProductOrderComponent() {
                     <h2 className="text-xl font-bold mb-6 text-gray-800 text-center border-b-2 border-gray-400 pb-3">
                         결제 내용
                     </h2>
-                    <div className="flex items-center gap-4 mb-6 border-b pb-4">
-                        <img
-                            src="/path/to/product-image.jpg"
-                            alt="상품 이미지"
-                            className="w-16 h-16 object-cover rounded-lg"
-                        />
-                        <div>
-                            <h3 className="text-sm font-semibold text-gray-800">
-                                [한정수량] 망나니 잔 (2024년 12월 배송)
-                            </h3>
-                            <p className="text-sm text-gray-500">유리컵/머그컵</p>
-                            <p className="text-lg font-bold text-gray-800 mt-2">15,000원</p>
-                        </div>
-                    </div>
+                    {cartGroups?.map((group) => (
+                        group.products.map((product) => (
+                            <div className="flex items-center gap-4 mb-6 border-b pb-4" key={product.id}>
+                                <img
+                                    src={product.imageUrl}
+                                    alt={product.name}
+                                    className="w-16 h-16 object-cover rounded-lg"
+                                />
+                                <div>
+                                    <h3 className="text-sm font-semibold text-gray-800">{product.name}</h3>
+                                    <p className="text-sm text-gray-500">{product.category}</p>
+                                    <p className="text-lg font-bold text-gray-800 mt-2">{product.price.toLocaleString()}원</p>
+                                </div>
+                            </div>
+                        ))
+                    ))}
                     <div className="space-y-4 text-gray-700">
                         <div className="flex justify-between">
                             <span>총 수량</span>
-                            <span>1개</span>
+                            <span>{cartGroups?.reduce((acc, group) => acc + group.products.reduce((sum, p) => sum + p.quantity, 0), 0)}개</span>
                         </div>
                         <div className="flex justify-between">
                             <span>총 상품금액</span>
-                            <span>15,000원</span>
+                            <span>
+                                {cartGroups?.reduce((acc, group) => acc + group.products.reduce((sum, p) => sum + (p.price * p.quantity), 0), 0).toLocaleString()}원
+                            </span>
                         </div>
-                        <div className="flex justify-between">
-                            <span>총 배송비</span>
-                            <span>3,000원</span>
+                        <div className="flex justify-between font-bold">
+                            <span>총 결제금액</span>
+                            <span className="text-blue-500">
+                                {cartGroups?.reduce((acc, group) => acc + group.products.reduce((sum, p) => sum + (p.price * p.quantity), 0), 0).toLocaleString()}원
+                            </span>
                         </div>
-                        <div className="border-t border-gray-300 pt-4 flex justify-between text-lg font-bold">
-                            <span>총 주문금액</span>
-                            <span>18,000원</span>
-                        </div>
-                    </div>
-                    <div className="mt-8">
                         <button
-                            className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-500 font-semibold"
                             onClick={handlePayment}
+                            className="block w-full py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg mt-6"
                         >
                             결제하기
                         </button>
@@ -222,4 +218,5 @@ function ProductOrderComponent() {
         </div>
     );
 }
+
 export default ProductOrderComponent;

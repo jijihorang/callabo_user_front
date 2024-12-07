@@ -8,6 +8,7 @@ import BasicLayout from "../layouts/BasicLayout.tsx";
 import headerRouter from "./headerRouter.tsx";
 import eventRouter from "./eventRouter.tsx";
 import reviewRouter from "./reviewRouter.tsx";
+import tosspayRouter from "./tosspayRouter.tsx";
 
 const MainPage = lazy(() => import("../pages/MainPage.tsx"))
 
@@ -16,6 +17,10 @@ const LoginPage = lazy(() => import("../pages/login/LoginPage.tsx"))
 const WeekRankingPage = lazy(() => import("../pages/weekranking/WeekRankingPage.tsx"))
 
 const FaqPage = lazy(() => import("../pages/faq/FaqPage.tsx"))
+
+const FailPage = lazy(() => impoty("../pages/tosspay/FailPage.tsx"))
+
+const SuccessPage = lazy(() => impoty("../pages/tosspay/SuccessPage.tsx"))
 
 export const Loading = <LoadingPage></LoadingPage>
 
@@ -47,12 +52,21 @@ const mainRouter = createBrowserRouter([
                 path: "/faq",
                 element: <Suspense fallback={Loading}><FaqPage/></Suspense>
             },
+            {
+                path: "/fail",
+                element: <Suspense fallback={Loading}><FailPage/></Suspense>
+            },
+            {
+                path: "/success",
+                element: <Suspense fallback={Loading}><SuccessPage/></Suspense>
+            },
             headerRouter,
             eventRouter,
             creatorRouter,
             customerRouter,
             productRouter,
-            reviewRouter
+            reviewRouter,
+            tosspayRouter,
         ]
     }
 ])

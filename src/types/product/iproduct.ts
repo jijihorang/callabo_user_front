@@ -6,6 +6,7 @@ export interface IProduct {
     productDescription : string;
     productPrice : number;
     productStatus ?: string;
+    creatorId? : string;
 
     stock ?: string;
 
@@ -22,7 +23,8 @@ export interface IProductList {
     productPrice: number; // 상품 가격
     productImageUrl: string | null; // 상품 이미지 URL (null 가능)
     productStatus: string; // 상품 상태 (예: '1' 등)
-    creatorId: string;
+    productDescription?: string;
+    productImages?: IProductImage[];
 }
 
 export interface IProductImage {
