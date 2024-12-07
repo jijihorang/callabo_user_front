@@ -9,31 +9,34 @@ import "swiper/css";
 // @ts-expect-error
 import "swiper/css/pagination";
 
-import product1 from "../../assets/img/prod1.png";
-import product2 from "../../assets/img/prod1.png";
-import product3 from "../../assets/img/prod1.png";
+interface ProductImage {
+    productImageNo: number;
+    productImageUrl: string;
+    productImageOrd: number;
+}
 
-function ProductImageSlider() {
-    const productImages = [product1, product2, product3];
+function ProductImageSlider({ productImages }: { productImages: ProductImage[] }) {
+    // 슬라이드가 충분하지 않을 경우 복제
+    const slides = productImages.length >= 3 ? productImages : [...productImages, ...productImages];
 
     return (
         <div className="w-full max-w-[500px] mx-auto">
             <Swiper
-                modules={[Navigation, Pagination]} // 필요한 모듈 추가
+                modules={[Navigation, Pagination]}
                 navigation
-                pagination={{clickable: true}} // Pagination 활성화
-                loop={true}
-                spaceBetween={10} // 슬라이드 간격
-                className="relative w-full h-[400px]" // 슬라이더 크기 설정
+                pagination={{ clickable: true }}
+                loop={slides.length > 3} // 슬라이드가 충분할 경우에만 loop 활성화
+                spaceBetween={10}
+                className="relative w-full h-[400px]"
             >
-                {productImages.map((image, index) => (
+                {slides.map((image, index) => (
                     <SwiperSlide
                         key={index}
                         className="flex justify-center items-center"
                     >
                         <img
-                            src={image}
-                            alt={`Product ${index + 1}`}
+                            src={image.productImageUrl}
+                            alt={`Product Image ${image.productImageNo}`}
                             className="w-auto h-full object-contain"
                         />
                     </SwiperSlide>
@@ -44,3 +47,4 @@ function ProductImageSlider() {
 }
 
 export default ProductImageSlider;
+

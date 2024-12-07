@@ -1,13 +1,44 @@
+import { useEffect, useState } from "react";
+
+import {IProduct} from "../../../types/product/iproduct.ts";
+import {getProductRead} from "../../../apis/product/productAPI.ts";
+
 import wheart from "../../../assets/icons/whiteheart.png";
 
-function ProductInfoComponent() {
+function ProductInfoComponent({ productNo }: { productNo: number }) {
+    const [product, setProduct] = useState<IProduct | null>(null);
+
+    useEffect(() => {
+        const fetchProductInfo = async () => {
+            try {
+                const productData = await getProductRead(productNo);
+
+                setProduct(productData);
+            } catch (error) {
+                console.error("Failed to fetch product info:", error);
+            }
+        };
+
+        fetchProductInfo();
+    }, [productNo]);
+
+    if (!product) {
+        return (
+            <div className="w-full max-w-md mx-auto text-gray-800">
+                <p className="text-center text-gray-500">상품 정보를 불러오는 중입니다...</p>
+            </div>
+        );
+    }
+
     return (
         <div className="w-full max-w-md mx-auto text-gray-800">
             <div className="mb-6">
                 {/* 카테고리 및 제목 */}
-                <p className="text-sm text-gray-500 mb-1">리빙 &gt; 유리컵/머그컵</p>
+                <p className="text-sm text-gray-500 mb-1">
+                    {product.categoryName || "카테고리 없음"}
+                </p>
                 <div className="flex items-center justify-between">
-                    <h1 className="text-3xl font-bold">망나니 잔</h1>
+                    <h1 className="text-3xl font-bold">{product.productName}</h1>
                     {/* 찜 버튼 (웹에서만 표시) */}
                     <button className="p-2 transition hidden lg:block">
                         <img src={wheart} alt="상품 찜" className="w-6 h-6" />
@@ -15,7 +46,7 @@ function ProductInfoComponent() {
                 </div>
 
                 {/* 가격 */}
-                <p className="text-2xl font-bold text-gray-800 mt-4">21,000원</p>
+                <p className="text-2xl font-bold text-gray-800 mt-4">{product.productPrice}원</p>
                 <p className="mt-2">19개 리뷰보기</p>
             </div>
 
@@ -39,7 +70,7 @@ function ProductInfoComponent() {
                     <h3 className="text-lg font-medium">총 상품 금액</h3>
                 </div>
                 <div>
-                    <p className="text-2xl font-bold">21,000원</p>
+                    <p className="text-2xl font-bold">{product.productPrice}원</p>
                 </div>
             </div>
 

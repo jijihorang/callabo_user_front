@@ -1,7 +1,7 @@
 import heartIcon from "../../assets/icons/whiteheart.png";
 
 import {useEffect, useState} from "react";
-import {ICreator} from "../../types/creator/creator.ts";
+import {ICreator} from "../../types/creator/icreator.ts";
 import {getCreatorList} from "../../apis/creator/creatorAPI.ts";
 import {useNavigate} from "react-router-dom";
 

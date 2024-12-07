@@ -1,13 +1,10 @@
-import AccountSettingsComponent from "../../components/login/AccountSettingsComponent.tsx";
-import BasicLayout from "../../layouts/BasicLayout.tsx";
+import AccountSettingsComponent from "../../components/customer/AccountSettingsComponent.tsx";
 
 function AccountSettingsPage() {
     return (
-        <BasicLayout>
             <div>
                 <AccountSettingsComponent/>
             </div>
-        </BasicLayout>
     );
 }
 

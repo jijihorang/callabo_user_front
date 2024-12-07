@@ -35,7 +35,7 @@ function MainFractionSlider() {
                         />
                         {/* 텍스트 콘텐츠 */}
                         <div
-                            className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent flex items-center px-6 md:px-16">
+                            className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent flex items-center px-6 md:px-16">
                             <div className="text-white space-y-4 max-w-lg">
                                 <h3 className="text-sm md:text-lg uppercase">Logo Shop</h3>
                                 <h1 className="text-2xl md:text-4xl font-bold leading-snug">
@@ -48,7 +48,7 @@ function MainFractionSlider() {
                                 </p>
                                 <button
                                     className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 mt-4 rounded-lg text-sm md:text-base">
-                                    산리오 굿즈 샵 바로가기 →
+                                    굿즈 샵 바로가기 →
                                 </button>
                             </div>
                         </div>

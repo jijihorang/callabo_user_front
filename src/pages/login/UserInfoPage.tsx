@@ -1,13 +1,10 @@
-import UserInfoComponent from "../../components/login/UserInfoComponent.tsx";
-import BasicLayout from "../../layouts/BasicLayout.tsx";
+import UserInfoComponent from "../../components/customer/UserInfoComponent.tsx";
 
 function UserInfoPage() {
     return (
-        <BasicLayout>
             <div>
                 <UserInfoComponent></UserInfoComponent>
             </div>
-        </BasicLayout>
     );
 }
 

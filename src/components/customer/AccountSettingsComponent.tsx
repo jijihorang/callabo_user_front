@@ -5,7 +5,7 @@ import pro from "../../assets/img/pro1.png";
 
 function AccountSettingsPage() {
     const [email] = useState("jiho7213@gmail.com");
-    const [nickname, setNickname] = useState("최지호");
+    const [nickname, setNickname] = useState("");
     const [phone, setPhone] = useState("");
     const [zipcode, setZipcode] = useState("");
     const [address, setAddress] = useState("");

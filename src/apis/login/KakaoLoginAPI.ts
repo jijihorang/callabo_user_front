@@ -16,9 +16,15 @@ export const getKakaoLoginLink = () => {
 
 export const getMemberWithAccessToken = async (accessToken:string)  => {
 
-    const res = await axios.get(`${host}?accessToken=${accessToken}`)
+    try {
+        const res = await axios.get(`${host}?accessToken=${accessToken}`);
 
-    return res.data
+        console.log("User Data Response:", res.data); // API 응답 디버깅
+        return res.data;
+    } catch (error) {
+        console.error("Error fetching user data:", error); // 오류 디버깅
+        throw error;
+    }
 }
 
 export const getAccessToken = async (authCode:string) => {
