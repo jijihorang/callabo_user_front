@@ -1,11 +1,11 @@
 import profileImg from "../../../assets/img/pro1.png";
-import heartIcon from "../../../assets/icons/redheart.png";
 import heart from "../../../assets/icons/redheart.png";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getLikedCreators } from "../../../apis/customer/customerAPI.ts";
 import useAuthStore from "../../../stores/customer/AuthStore.ts";
 import {ILikedCreators} from "../../../types/wishlist/iwishlist.ts";
+import likeIcon from "../../../assets/icons/redheart.png";
 
 function WishlistCreatorComponent() {
     const navigate = useNavigate();
@@ -41,7 +41,7 @@ function WishlistCreatorComponent() {
                 </div>
             ) : creators.length > 0 ? (
                 <>
-                    <h2 className="text-xl font-bold mb-6">제작자 {creators.length}</h2>
+                    <h2 className="text-xl font-bold mb-6">좋아요한 제작자 ({creators.length})</h2>
                     {/* 반응형 그리드: 웹 4개, 앱 2개 */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         {creators.map((creator) => (
@@ -59,24 +59,14 @@ function WishlistCreatorComponent() {
                                 {/* 이름 */}
                                 <h3 className="text-base font-semibold">{creator.name}</h3>
 
-                                {/* 찜 수 */}
-                                <div className="flex items-center mt-2">
-                                    <img
-                                        src={heartIcon}
-                                        alt="좋아요"
-                                        className="w-5 h-5 mr-1"
-                                    />
-                                    <span className="text-blue-600 text-base font-medium">
-                                        {(creator.likes || 0).toLocaleString()}
-                                    </span>
-                                </div>
-
                                 <button
-                                    className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg"
+                                    className="flex space-x-2 mt-3 bg-blue-500 text-white rounded-full px-4 py-2 shadow-lg hover:bg-blue-600 transition-all duration-300"
                                     onClick={() => moveToProductList(creator.creatorId)}
                                 >
-                                    상품 보기
+                                    <img src={likeIcon} alt="찜" className="w-5 h-5"/>
+                                    <span className="font-semibold">상품 보기</span>
                                 </button>
+
                             </div>
                         ))}
                     </div>

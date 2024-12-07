@@ -95,7 +95,7 @@ function ProductDetailComponent() {
                 )}
                 {activeTab === "faq" && <ProductFAQComponent/>}
                 {activeTab === "review" && product && (
-                    <ProductReviewComponent reviews={product.reviews} productNo={product.productNo}/>
+                    <ProductReviewComponent productNo={product.productNo} />
                 )}
             </div>
 

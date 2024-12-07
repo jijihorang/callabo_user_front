@@ -8,9 +8,9 @@ import {ILikedProducts} from "../../../types/wishlist/iwishlist.ts";
 
 function WishlistProductComponent() {
     const navigate = useNavigate();
-    const customerId = useAuthStore((state) => state.customer?.customerId); // Zustand에서 customerId 가져오기
+    const customerId = useAuthStore((state) => state.customer?.customerId); // Zustand customerId 가져오기
 
-    // React Query로 좋아요한 상품 가져오기
+    // React Query 좋아요한 상품 가져오기
     const { data: likedProducts = [], isLoading } = useQuery<ILikedProducts[]>({
         queryKey: ["likedProducts", customerId],
         queryFn: async () => {
@@ -36,14 +36,14 @@ function WishlistProductComponent() {
             ) : likedProducts.length > 0 ? (
                 <>
                     <h2 className="text-xl font-bold mb-6">좋아요한 상품 ({likedProducts.length})</h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
                         {likedProducts.map((product) => (
                             <div
                                 key={product.id}
-                                className="border border-gray-200 rounded-lg p-4 flex flex-col items-center"
+                                className="rounded-lg bg-gradient-to-b from-gray-100 to-gray-200 p-5 shadow-md flex flex-col items-center w-full"
                             >
                                 <img
-                                    src={product.img || likeIcon} // 이미지가 없을 때 기본 이미지 사용
+                                    src={product.img} // 이미지가 없을 때 기본 이미지 사용
                                     alt={product.name}
                                     className="w-40 h-40 object-cover rounded-md mb-4"
                                 />
@@ -53,7 +53,7 @@ function WishlistProductComponent() {
                                 </div>
                                 <button
                                     className="flex space-x-2 mt-3 bg-blue-500 text-white rounded-full px-4 py-2 shadow-lg hover:bg-blue-600 transition-all duration-300"
-                                    onClick={() => navigate(`/product/detail/${product.id}`)}
+                                    onClick={() => navigate(`/product/${product.creatorId}/detail/${product.id}`)}
                                 >
                                     <img src={likeIcon} alt="찜" className="w-5 h-5" />
                                     <span className="font-semibold">상품 보기</span>

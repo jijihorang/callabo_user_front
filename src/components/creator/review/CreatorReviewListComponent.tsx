@@ -14,8 +14,6 @@ function CreatorReviews() {
     const [selectedReview, setSelectedReview] = useState<IReview | null>(null); // 선택된 리뷰 데이터
     const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
 
-    const maxStars = 5; // 별점 최대값
-
     // API 호출
     useEffect(() => {
         const fetchReviews = async () => {
@@ -97,14 +95,16 @@ function CreatorReviews() {
                         <div className="flex justify-between space-x-2 mb-2">
                             {/* 별점 */}
                             <div className="flex items-center space-x-1">
-                                {Array.from({ length: maxStars }).map((_, i) => (
-                                    <img
-                                        key={i}
-                                        src={i < review.rating ? star1 : noStar1}
-                                        alt={i < review.rating ? "별점 채움" : "별점 비움"}
-                                        className="w-4 h-4"
-                                    />
-                                ))}
+                                {Array(5)
+                                    .fill(0)
+                                    .map((_, i) => (
+                                        <img
+                                            key={i}
+                                            src={i < review.rating ? star1 : noStar1}
+                                            alt={i < review.rating ? "별점 채움" : "별점 비움"}
+                                            className="w-4 h-4"
+                                        />
+                                    ))}
                             </div>
                             <span className="text-gray-400 text-sm md:text-base">{review.createdAt}</span>
                         </div>

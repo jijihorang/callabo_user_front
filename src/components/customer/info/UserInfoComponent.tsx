@@ -62,7 +62,7 @@ function UserInfoComponent() {
                 </Link>
                 <Link to="" className="text-center">
                     <img src={review} alt="리뷰" className="w-16 h-16 mx-auto"/>
-                    <p className="text-sm mt-2 font-semibold">리뷰</p>
+                    <p className="text-sm mt-2 font-semibold">작성한 리뷰</p>
                 </Link>
                 <Link to="/faq" className="text-center">
                     <img src={faq} alt="FAQ" className="w-16 h-16 mx-auto"/>
