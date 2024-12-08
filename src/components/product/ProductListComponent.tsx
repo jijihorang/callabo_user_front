@@ -9,6 +9,7 @@ import wheart from "../../assets/icons/whiteheart.png";
 import cart2 from "../../assets/icons/cart.png";
 import useAuthStore from "../../stores/customer/AuthStore.ts";
 import useCartStore from "../../stores/cart/cartStore.ts";
+import LikeButton from "./ProductLikeButton.tsx";
 
 function ProductListComponent() {
     const { creatorId } = useParams(); // URL에서 creatorId 추출
@@ -51,6 +52,20 @@ function ProductListComponent() {
         fetchCreatorInfo();
         fetchProducts();
     }, [creatorId]); // creatorId 변경 시 재호출
+
+    const handleLikeStatusChange = (productId: number, newStatus: boolean) => {
+        setProducts((prevProducts) =>
+            prevProducts.map((product) =>
+                product.productNo === productId ? { ...product, likeStatus: newStatus } : product
+            )
+        );
+        setVisibleProducts((prevVisibleProducts) =>
+            prevVisibleProducts.map((product) =>
+                product.productNo === productId ? { ...product, likeStatus: newStatus } : product
+            )
+        );
+    };
+
 
     // "See More" / "Close" 버튼 클릭 핸들러
     const toggleProductVisibility = () => {
@@ -152,14 +167,14 @@ function ProductListComponent() {
                                 </div>
                             </Link>
                             {/* 하트 아이콘 */}
-                            <button
-                                className="absolute top-2 right-2 p-1"
-                                onClick={() =>
-                                    console.log(`${product.productName} 좋아요 클릭`)
-                                }
-                            >
-                                <img src={wheart} alt="찜" className="w-5 h-5" />
-                            </button>
+
+                            <LikeButton
+                                customerId={customer?.customerId || ""}
+                                productId={product.productNo}
+                                currentStatus={product.likeStatus || false}
+                                onToggle={(newStatus) => handleLikeStatusChange(product.productNo, newStatus)}
+                            />
+
                             {/* 장바구니 아이콘 */}
                             <button
                                 className="absolute bottom-4 right-4 p-2 bg-white rounded-full shadow border hover:bg-gray-100"
