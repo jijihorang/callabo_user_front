@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import shop1 from "../../assets/img/shop1.png";
-import map from "../../assets/img/map.png";
-import shop2 from "../../assets/img/shop2.png";
+import shop1 from "../../../assets/img/shop1.png";
+import map from "../../../assets/img/map.png";
+import shop2 from "../../../assets/img/shop2.png";
 
 // 데이터 타입 정의
 interface StoreType {
