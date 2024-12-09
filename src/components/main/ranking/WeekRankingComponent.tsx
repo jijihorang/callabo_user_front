@@ -7,188 +7,85 @@ import rank6 from "../../../assets/img/rank6.png";
 import rank7 from "../../../assets/img/rank7.png";
 import rank8 from "../../../assets/img/rank8.png";
 import rank9 from "../../../assets/img/rank9.png";
-import rank10 from "../../../assets/img/rank10.png";
 
 function WeeklyRanking() {
+    const creators = [
+        { rank: "Top2", name: "차린건쥐뿔도없지만", img: rank2, change: "-" },
+        { rank: "Top3", name: "싸이코드 감제이", img: rank3, change: "▲1" },
+        { rank: "Top4", name: "러끼", img: rank4, change: "▼1" },
+        { rank: "Top5", name: "약국 2025 캘린더", img: rank5, change: "NEW" },
+        { rank: "Top6", name: "토심이", img: rank6, change: "NEW" },
+        { rank: "Top7", name: "토마토", img: rank7, change: "NEW" },
+        { rank: "Top8", name: "칠보기", img: rank8, change: "NEW" },
+        { rank: "Top9", name: "49", img: rank9, change: "NEW" },
+    ];
+
     return (
-        <div className="p-6">
-            {/* 제목과 더보기 버튼을 한 줄에 배치 */}
+        <div className="container mx-auto p-4 mb-20">
+            {/* 제목 */}
             <div className="flex items-center justify-between mb-6">
-                <div className="text-left">
-                    <h3 className="text-sm text-gray-500">12월 1주차 인기 크리에이터 랭킹</h3>
-                    <h1 className="text-2xl font-bold">WEEKLY CREATOR TOP 10</h1>
+                <div>
+                    <h3 className="text-sm text-gray-500">인기 크리에이터 랭킹</h3>
+                    <h1 className="text-2xl font-bold">CREATOR TOP 10</h1>
                 </div>
-                <button className="text-blue-500 font-bold">See More</button>
             </div>
 
-            <div className="flex flex-col md:flex-row md:space-x-6">
+            <div className="flex flex-col lg:flex-row gap-6">
                 {/* 메인 랭킹 */}
-                <div className="flex-1 md:max-w-[20%] bg-green-900 text-white p-6 rounded-lg relative">
+                <div className="flex-1 bg-gradient-to-r from-gray-700 via-gray-800 to-gray-700 text-white p-6 rounded-lg">
                     <h2 className="text-sm font-bold">WEEKLY RANKING</h2>
-                    <h1 className="text-4xl font-bold mb-4">TOP 1</h1>
-                    <div className="w-full h-auto mb-4 relative">
-                        <div
-                            className="w-44 h-44 bg-green-500 mask-heart flex items-center justify-center mx-auto overflow-hidden p-2">
-                            <img
-                                src={rank1}
-                                alt="또간집"
-                                className="w-full h-full object-contain"
-                            />
-                        </div>
+                    <h1 className="text-4xl font-bold mb-4">TOP 1 <span className="text-blue-400 text-sm">NEW</span></h1>
+                    <div className="w-48 h-48 mx-auto mb-4">
+                        <img
+                            src={rank1}
+                            alt="또간집"
+                            className="w-full h-full object-contain rounded-md"
+                        />
                     </div>
-                    <div className="text-2xl font-bold mb-2">또간집 X 더마비 44❤️</div>
+                    <div className="text-2xl font-bold text-center">또간집 X 더마비 44❤️</div>
                 </div>
 
                 {/* 나머지 랭킹 */}
-                <div className="flex-1 md:max-w-[80%] bg-gray-100 text-black p-4 rounded-lg">
-                    <div className="grid grid-cols-2 gap-1 md:grid-cols-3">
-                        {/* 예시 항목 1 */}
-                        <div className="flex items-center w-full p-3 border-b border-gray-300">
-                            <div className="text-right mr-4">
-                                <div className="font-bold">Top2</div>
-                                <div className="text-sm font-bold text-blue-500">-</div>
+                <div className="flex-1 text-black p-4 rounded-lg">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                        {creators.map((creator, index) => (
+                            <div
+                                key={index}
+                                className="flex flex-col items-center p-3 bg-white shadow-lg rounded-md"
+                            >
+                                <div className="text-center mb-2">
+                                    <div className="font-bold">{creator.rank}</div>
+                                    <div
+                                        className={`text-sm font-bold ${
+                                            creator.change.includes("▲")
+                                                ? "text-green-500"
+                                                : creator.change.includes("▼")
+                                                    ? "text-red-500"
+                                                    : "text-blue-500"
+                                        }`}
+                                    >
+                                        {creator.change}
+                                    </div>
+                                </div>
+                                <img
+                                    src={creator.img}
+                                    alt={creator.name}
+                                    className="w-16 h-16 rounded-full mb-2"
+                                />
+                                <div
+                                    className="text-center font-bold text-sm truncate"
+                                    title={creator.name}
+                                >
+                                    {creator.name}
+                                </div>
                             </div>
-                            <img
-                                src={rank2}
-                                alt="차린건쥐뿔도쥐뿔도없지만"
-                                className="w-16 h-16 rounded-full"
-                            />
-                            <div className="ml-4">
-                                <div className="font-bold">차린건쥐뿔도없지만</div>
-                                <div className="text-sm text-gray-500">유튜버</div>
-                            </div>
-                        </div>
-
-                        {/* 예시 항목 2 */}
-                        <div className="flex items-center w-full p-3 border-b border-gray-300">
-                            <div className="text-right mr-4">
-                                <div className="font-bold">Top3</div>
-                                <div className="text-sm font-bold text-green-500">▲1</div>
-                            </div>
-                            <img
-                                src={rank3}
-                                alt="싸이코드 감제이"
-                                className="w-16 h-16 rounded-full"
-                            />
-                            <div className="ml-4">
-                                <div className="font-bold">싸이코드 감제이</div>
-                                <div className="text-sm text-gray-500">버츄얼</div>
-                            </div>
-                        </div>
-
-                        {/* 나머지 항목들 */}
-                        <div className="flex items-center w-full p-3 border-b border-gray-300">
-                            <div className="text-right mr-4">
-                                <div className="font-bold">Top4</div>
-                                <div className="text-sm font-bold text-red-500">▼1</div>
-                            </div>
-                            <img
-                                src={rank4}
-                                alt="러끼"
-                                className="w-16 h-16 rounded-full"
-                            />
-                            <div className="ml-4">
-                                <div className="font-bold">러끼</div>
-                                <div className="text-sm text-gray-500">유튜버</div>
-                            </div>
-                        </div>
-
-                        <div className="flex items-center w-full p-3 border-b border-gray-300">
-                            <div className="text-right mr-4">
-                                <div className="font-bold">Top5</div>
-                                <div className="text-sm font-bold text-blue-500">NEW</div>
-                            </div>
-                            <img
-                                src={rank5}
-                                alt="약국 2025 캘린더"
-                                className="w-16 h-16 rounded-full"
-                            />
-                            <div className="ml-4">
-                                <div className="font-bold">약국 2025 캘린더</div>
-                            </div>
-                        </div>
-
-                        <div className="flex items-center w-full p-3 border-b border-gray-300">
-                            <div className="text-right mr-4">
-                                <div className="font-bold">Top6</div>
-                                <div className="text-sm font-bold text-red-500">▼1</div>
-                            </div>
-                            <img
-                                src={rank6}
-                                alt="잿쓰비"
-                                className="w-16 h-16 rounded-full"
-                            />
-                            <div className="ml-4">
-                                <div className="font-bold">잿쓰비</div>
-                            </div>
-                        </div>
-
-                        <div className="flex items-center w-full p-3 border-b border-gray-300">
-                            <div className="text-right mr-4">
-                                <div className="font-bold">Top7</div>
-                                <div className="text-sm font-bold text-blue-500">NEW</div>
-                            </div>
-                            <img
-                                src={rank7}
-                                alt="Khundi Panda"
-                                className="w-16 h-16 rounded-full"
-                            />
-                            <div className="ml-4">
-                                <div className="font-bold">Khundi Panda</div>
-                            </div>
-                        </div>
-
-                        <div className="flex items-center w-full p-3 border-b border-gray-300">
-                            <div className="text-right mr-4">
-                                <div className="font-bold">Top8</div>
-                                <div className="text-sm font-bold text-green-500">▲1</div>
-                            </div>
-                            <img
-                                src={rank8}
-                                alt="곰국집"
-                                className="w-16 h-16 rounded-full"
-                            />
-                            <div className="ml-4">
-                                <div className="font-bold">곰국집</div>
-                            </div>
-                        </div>
-
-                        <div className="flex items-center w-full p-3 border-b border-gray-300">
-                            <div className="text-right mr-4">
-                                <div className="font-bold">Top9</div>
-                                <div className="text-sm font-bold text-blue-500">NEW</div>
-                            </div>
-                            <img
-                                src={rank9}
-                                alt="너진짜똑똑하다"
-                                className="w-16 h-16 rounded-full"
-                            />
-                            <div className="ml-4">
-                                <div className="font-bold">너진짜똑똑하다</div>
-                                <div className="text-sm text-gray-500">유튜버</div>
-                            </div>
-                        </div>
-
-                        <div className="flex items-center w-full p-3 border-b border-gray-300">
-                            <div className="text-right mr-4">
-                                <div className="font-bold">Top10</div>
-                                <div className="text-sm font-bold text-blue-500">NEW</div>
-                            </div>
-                            <img
-                                src={rank10}
-                                alt="서월"
-                                className="w-16 h-16 rounded-full"
-                            />
-                            <div className="ml-4">
-                                <div className="font-bold">서월</div>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </div>
         </div>
-
     );
 }
 
 export default WeeklyRanking;
+

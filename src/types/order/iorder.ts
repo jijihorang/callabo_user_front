@@ -3,7 +3,7 @@ export interface IOrder {
     recipientName : string;
     recipientPhone : string;
     customerAddress : string;
-    customerAddrDetail : string;
+    customerAddressDetail : string;
     totalAmount: number;
     totalPrice: number;
     items: {

@@ -2,10 +2,13 @@ import { IReview } from "../../../types/review/ireview.ts";
 import star3 from "../../../assets/icons/star.png";
 import noStar3 from "../../../assets/icons/gstar.png";
 import { useEffect, useState } from "react";
-import { getReviewList } from "../../../apis/review/reviewAPI.ts";
+import {getReviewList} from "../../../apis/review/reviewAPI.ts";
+
+import {useParams} from "react-router-dom";
 import CreatorReviewReadComponent from "../../creator/review/CreatorReviewReadComponent.tsx";
 
 function ProductReviewComponent({ productNo }: { productNo: number }) {
+    const { creatorId } = useParams();
     const [reviews, setReviews] = useState<IReview[]>([]);
     const [selectedReview, setSelectedReview] = useState<IReview | null>(null); // 선택된 리뷰 데이터
     const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
@@ -22,7 +25,7 @@ function ProductReviewComponent({ productNo }: { productNo: number }) {
 
     useEffect(() => {
         // 특정 상품의 리뷰 가져오기
-        getReviewList(undefined, productNo)
+        getReviewList(creatorId, productNo)
             .then((data) => {
                 setReviews(data);
             })
@@ -82,7 +85,7 @@ function ProductReviewComponent({ productNo }: { productNo: number }) {
             {/* 모달 컴포넌트 */}
             {isModalOpen && selectedReview && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                        <CreatorReviewReadComponent review={selectedReview} closeModal={closeModal} />
+                    <CreatorReviewReadComponent review={selectedReview} closeModal={closeModal} />
                 </div>
             )}
         </div>

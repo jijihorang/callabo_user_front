@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useDaumPostcodePopup } from "react-daum-postcode";
-import useAuthStore from "../../stores/customer/AuthStore.ts";
-import { createOrders } from "../../apis/order/orderAPI.ts";
+
 import {useLocation, useNavigate} from "react-router-dom";
 import uuid from "react-uuid";
+import useAuthStore from "../../../stores/customer/AuthStore.ts";
+import {createOrders} from "../../../apis/order/orderAPI.ts";
 
 function ProductOrderComponent() {
 
@@ -177,13 +178,12 @@ function ProductOrderComponent() {
                         group.products.map((product) => (
                             <div className="flex items-center gap-4 mb-6 border-b pb-4" key={product.id}>
                                 <img
-                                    src={product.imageUrl}
+                                    src={product.img}
                                     alt={product.name}
                                     className="w-16 h-16 object-cover rounded-lg"
                                 />
                                 <div>
                                     <h3 className="text-sm font-semibold text-gray-800">{product.name}</h3>
-                                    <p className="text-sm text-gray-500">{product.category}</p>
                                     <p className="text-lg font-bold text-gray-800 mt-2">{product.price.toLocaleString()}원</p>
                                 </div>
                             </div>

@@ -1,13 +1,14 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { IProduct, IProductList } from "../../types/product/iproduct.ts";
-import { ICreator } from "../../types/creator/icreator.ts";
-import { getProductList } from "../../apis/product/productAPI.ts";
-import { getCreatorList } from "../../apis/creator/creatorAPI.ts";
-import wheart from "../../assets/icons/whiteheart.png";
-import cart2 from "../../assets/icons/cart.png";
-import useAuthStore from "../../stores/customer/AuthStore.ts";
-import useCartStore from "../../stores/cart/cartStore.ts";
+
+import wheart from "../../../assets/icons/whiteheart.png";
+import cart2 from "../../../assets/icons/cart.png";
+import useAuthStore from "../../../stores/customer/AuthStore.ts";
+import useCartStore from "../../../stores/cart/cartStore.ts";
+import { IProduct, IProductList } from "../../../types/product/iproduct.ts";
+import { ICreator } from "../../../types/creator/icreator.ts";
+import { getProductList } from "../../../apis/product/productAPI.ts";
+import { getCreatorList } from "../../../apis/creator/creatorAPI.ts";
 
 function ProductListComponent() {
     const { creatorId } = useParams(); // URL에서 creatorId 추출
@@ -25,8 +26,15 @@ function ProductListComponent() {
             try {
                 if (creatorId) {
                     const data = await getProductList(creatorId); // creatorId로 필터링된 상품 목록 가져오기
-                    setProducts(data);
-                    setVisibleProducts(data.slice(0, productsPerPage)); // 첫 페이지의 상품만 표시
+
+                    // 상품 번호 기준으로 중복 제거
+                    const uniqueProducts = data.filter(
+                        (product, index, self) =>
+                            self.findIndex((p) => p.productNo === product.productNo) === index
+                    );
+
+                    setProducts(uniqueProducts);
+                    setVisibleProducts(uniqueProducts.slice(0, productsPerPage)); // 첫 페이지의 상품만 표시
                 }
             } catch (error) {
                 console.error("상품 데이터를 가져오는 중 에러 발생:", error);
@@ -76,7 +84,7 @@ function ProductListComponent() {
         // 장바구니에 추가
         addToCart({
             id: productData.productNo,
-            img: productData.productImages?.[0]?.productImageUrl || "https://via.placeholder.com/150",
+            img: product.productImageUrl || "https://via.placeholder.com/150",
             name: productData.productName,
             price: productData.productPrice,
             category: productData.categoryName || "기타",
@@ -104,9 +112,7 @@ function ProductListComponent() {
 
             {/* 제작자 정보 */}
             <div className="text-center mb-8">
-                <div
-                    className="relative inline-block w-24 h-24 lg:w-28 lg:h-28 rounded-full overflow-hidden border-4 border-white shadow-md -mt-12"
-                >
+                <div className="relative inline-block w-24 h-24 lg:w-28 lg:h-28 rounded-full overflow-hidden border-4 border-white shadow-md -mt-12">
                     <img
                         src={creator.logoImg}
                         alt="제작자 프로필"
@@ -120,7 +126,6 @@ function ProductListComponent() {
                     className="flex items-center mx-auto mt-4 bg-gray-100 rounded-full px-4 py-2 shadow-md hover:shadow-lg transition-shadow"
                 >
                     <img src={wheart} alt="찜" className="w-5 h-5 text-blue-500" />
-                    <span className="ml-2 text-gray-700 font-medium text-sm">1,600</span>
                 </button>
             </div>
 
@@ -173,14 +178,6 @@ function ProductListComponent() {
                                     </p>
                                 </div>
                             </Link>
-
-                            {/* 하트 아이콘 */}
-                            <button
-                                className="absolute top-2 right-2 p-1 bg-white rounded-full shadow hover:bg-gray-100"
-                                onClick={() => console.log(`${product.productName} 좋아요 클릭`)}
-                            >
-                                <img src={wheart} alt="찜" className="w-4 h-4" />
-                            </button>
 
                             {/* 장바구니 아이콘 */}
                             <button

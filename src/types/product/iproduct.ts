@@ -9,6 +9,8 @@ export interface IProduct {
     creatorId? : string;
 
     stock ?: string;
+    productImageUrl: string | null;
+
 
     productImages: IProductImage[];
 

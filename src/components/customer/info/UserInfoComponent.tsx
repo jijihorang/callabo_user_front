@@ -68,11 +68,11 @@ function UserInfoComponent() {
                     <img src={faq} alt="FAQ" className="w-16 h-16 mx-auto"/>
                     <p className="text-sm mt-2 font-semibold">FAQ</p>
                 </Link>
-                <Link to="" className="text-center">
+                <Link to="/qna/list" className="text-center">
                     <img src={qa} alt="Q&A" className="w-16 h-16 mx-auto"/>
                     <p className="text-sm mt-2 font-semibold">Q&A</p>
                 </Link>
-                <Link to="" className="text-center">
+                <Link to="/order/list" className="text-center">
                     <img src={order} alt="배송조회" className="w-16 h-16 mx-auto"/>
                     <p className="text-sm mt-2 font-semibold">주문 내역</p>
                 </Link>
