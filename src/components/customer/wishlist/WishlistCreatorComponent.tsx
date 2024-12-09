@@ -7,12 +7,14 @@ import useAuthStore from "../../../stores/customer/AuthStore.ts";
 import {ILikedCreators} from "../../../types/wishlist/iwishlist.ts";
 import likeIcon from "../../../assets/icons/redheart.png";
 
+import FollowButton from "../creator/FollowButton.tsx";
+
 function WishlistCreatorComponent() {
     const navigate = useNavigate();
     const customerId = useAuthStore((state) => state.customer?.customerId); // Zustand에서 customerId 가져오기
 
     // React Query로 좋아요한 크리에이터 가져오기
-    const { data: creators = [], isLoading } = useQuery<ILikedCreators[]>({
+    const { data: creators = [], isLoading, refetch } = useQuery<ILikedCreators[]>({
         queryKey: ["likedCreators", customerId],
         queryFn: async () => {
             if (!customerId) {
@@ -31,6 +33,11 @@ function WishlistCreatorComponent() {
         if (creatorId) {
             navigate(`/product/list/${creatorId}`);
         }
+    };
+
+    // 언팔로우 후 새로고침
+    const handleAfterUnfollow = () => {
+        refetch(); // 언팔로우 후 데이터를 새로 가져오기
     };
 
     return (
@@ -59,14 +66,15 @@ function WishlistCreatorComponent() {
                                 {/* 이름 */}
                                 <h3 className="text-base font-semibold">{creator.name}</h3>
 
-                                <button
-                                    className="flex space-x-2 mt-3 bg-blue-500 text-white rounded-full px-4 py-2 shadow-lg hover:bg-blue-600 transition-all duration-300"
-                                    onClick={() => moveToProductList(creator.creatorId)}
-                                >
-                                    <img src={likeIcon} alt="찜" className="w-5 h-5"/>
-                                    <span className="font-semibold">상품 보기</span>
-                                </button>
-
+                                {/* FollowButton 컴포넌트 */}
+                                <div className="mt-4">
+                                    <FollowButton
+                                        creatorId={creator.creatorId}
+                                        currentStatus={true} // 현재 팔로우 상태
+                                        customerId={customerId || ""}
+                                        onUnfollow={handleAfterUnfollow} // 언팔로우 후 새로고침
+                                    />
+                                </div>
                             </div>
                         ))}
                     </div>

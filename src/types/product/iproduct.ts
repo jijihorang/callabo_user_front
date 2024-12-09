@@ -27,6 +27,7 @@ export interface IProductList {
     productStatus: string; // 상품 상태 (예: '1' 등)
     productDescription?: string;
     productImages?: IProductImage[];
+    likeStatus? : boolean;
 }
 
 export interface IProductImage {

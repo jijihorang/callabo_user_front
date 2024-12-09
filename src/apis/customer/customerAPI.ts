@@ -57,3 +57,15 @@ export const updateCustomer = async (
         throw error;
     }
 };
+
+export const toggleProductLikeAPI = async (
+    customerId: string,
+    productId: string,
+    likeStatus: boolean
+): Promise<void> => {
+    await axios.post(`${host}/like`, {
+        customerId,
+        productId,
+        likeStatus,
+    });
+};

@@ -1,12 +1,23 @@
-import {ICreator} from "../../types/creator/icreator.ts";
-import  axios from "axios";
+import axios from "axios";
+import { ICreator } from "../../types/creator/icreator";
 
-const host = 'http://localhost:8080/api2/creator';
+const host = "http://localhost:8080/api2/creator";
 
 export const getCreatorList = async (customerId: string): Promise<ICreator[]> => {
     const res = await axios.get(`${host}/list`, {
-        params: { customerId }, // 쿼리 파라미터로 전달
+        params: { customerId },
     });
-
     return res.data;
+};
+
+export const toggleFollowStatusAPI = async (
+    customerId: string,
+    creatorId: string,
+    followStatus: boolean
+): Promise<void> => {
+    await axios.post(`${host}/follow`, {
+        customerId,
+        creatorId,
+        followStatus,
+    });
 };
