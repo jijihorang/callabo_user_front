@@ -1,4 +1,4 @@
-import ReviewRegisterComponent from "../../components/reviewwriting/ReviewRegisterComponent.tsx";
+import ReviewRegisterComponent from "../../components/review/ReviewRegisterComponent.tsx";
 
 function ReviewRegisterPage() {
     return (

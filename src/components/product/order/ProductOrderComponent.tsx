@@ -1,10 +1,10 @@
-import { useState } from "react";
-import down from "../../assets/icons/down.png";
-import { useDaumPostcodePopup } from "react-daum-postcode";
-import useAuthStore from "../../stores/customer/AuthStore.ts";
-import { createOrders } from "../../apis/order/orderAPI.ts";
+import useAuthStore from "../../../stores/customer/AuthStore.ts";
+import {useState} from "react";
+import {useDaumPostcodePopup} from "react-daum-postcode";
+import {createOrders} from "../../../apis/order/orderAPI.ts";
+import down from "../../../assets/icons/down.png";
 
-function OrderComponent() {
+function ProductOrderComponent() {
     const { customer } = useAuthStore();
 
     const [customerId] = useState(customer?.customerId || "");
@@ -222,5 +222,4 @@ function OrderComponent() {
         </div>
     );
 }
-
-export default OrderComponent;
+export default ProductOrderComponent;

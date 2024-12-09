@@ -1,18 +1,21 @@
 import profileImg from "../../assets/img/pro1.png";
-import heartIcon from "../../assets/icons/redheart.png";
-import heart from "../../assets/icons/redheart.png";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getLikedCreators } from "../../apis/customer/customerAPI.ts";
 import useAuthStore from "../../stores/customer/AuthStore.ts";
-import {ILikedCreators} from "../../types/wishlist/iwishlist.ts";
+import { ILikedCreators } from "../../types/wishlist/iwishlist.ts";
+import FollowButton from "../creator/FollowButton.tsx";
 
 function WishlistCreatorComponent() {
     const navigate = useNavigate();
     const customerId = useAuthStore((state) => state.customer?.customerId); // Zustand에서 customerId 가져오기
 
     // React Query로 좋아요한 크리에이터 가져오기
-    const { data: creators = [], isLoading } = useQuery<ILikedCreators[]>({
+    const {
+        data: creators = [],
+        isLoading,
+        refetch, // 새로고침을 위한 함수
+    } = useQuery<ILikedCreators[]>({
         queryKey: ["likedCreators", customerId],
         queryFn: async () => {
             if (!customerId) {
@@ -29,8 +32,13 @@ function WishlistCreatorComponent() {
     // 제작자 상품으로 이동
     const moveToProductList = (creatorId?: string) => {
         if (creatorId) {
-            navigate(`/product/read/${creatorId}`);
+            navigate(`/product/list/${creatorId}`);
         }
+    };
+
+    // 언팔로우 후 새로고침
+    const handleAfterUnfollow = () => {
+        refetch(); // 언팔로우 후 데이터를 새로 가져오기
     };
 
     return (
@@ -51,7 +59,7 @@ function WishlistCreatorComponent() {
                             >
                                 {/* 프로필 이미지 */}
                                 <img
-                                    src={creator.profileImg || profileImg} // 기본 이미지 처리
+                                    src={creator.profileImg || profileImg}
                                     alt={creator.name}
                                     className="w-20 h-20 object-cover rounded-full mb-4 border-4 border-white shadow-md"
                                 />
@@ -59,16 +67,14 @@ function WishlistCreatorComponent() {
                                 {/* 이름 */}
                                 <h3 className="text-base font-semibold">{creator.name}</h3>
 
-                                {/* 찜 수 */}
-                                <div className="flex items-center mt-2">
-                                    <img
-                                        src={heartIcon}
-                                        alt="좋아요"
-                                        className="w-5 h-5 mr-1"
+                                {/* FollowButton 컴포넌트 */}
+                                <div className="mt-4">
+                                    <FollowButton
+                                        creatorId={creator.creatorId}
+                                        currentStatus={true} // 현재 팔로우 상태
+                                        customerId={customerId || ""}
+                                        onUnfollow={handleAfterUnfollow} // 언팔로우 후 새로고침
                                     />
-                                    <span className="text-blue-600 text-base font-medium">
-                                        {(creator.likes || 0).toLocaleString()}
-                                    </span>
                                 </div>
 
                                 <button
@@ -83,17 +89,8 @@ function WishlistCreatorComponent() {
                 </>
             ) : (
                 <div className="flex flex-col items-center justify-center h-96">
-                    <img
-                        src={heart}
-                        alt="좋아요 아이콘"
-                        className="w-20 h-20 mb-6"
-                    />
-                    <p className="text-lg font-bold mb-2">
-                        좋아요한 크리에이터가 없어요.
-                    </p>
-                    <p className="text-gray-600 mb-6">
-                        내 취향의 크리에이터를 찾아보세요.
-                    </p>
+                    <p className="text-lg font-bold mb-2">좋아요한 크리에이터가 없어요.</p>
+                    <p className="text-gray-600 mb-6">내 취향의 크리에이터를 찾아보세요.</p>
                     <button
                         className="px-6 py-2 bg-blue-500 text-white rounded-lg"
                         onClick={() => navigate(`/creator/list/all`)}

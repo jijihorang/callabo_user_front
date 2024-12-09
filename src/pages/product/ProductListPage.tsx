@@ -1,5 +1,5 @@
 import ProductListComponent from "../../components/product/ProductListComponent.tsx";
-import CreatorReviewsComponent from "../../components/review/CreatorReviewsComponent.tsx";
+import CreatorReviewListComponent from "../../components/creator/review/CreatorReviewListComponent.tsx";
 
 function ProductListPage() {
     return (
@@ -8,7 +8,7 @@ function ProductListPage() {
                 <ProductListComponent></ProductListComponent>
             </div>
             <div>
-                <CreatorReviewsComponent></CreatorReviewsComponent>
+                <CreatorReviewListComponent></CreatorReviewListComponent>
             </div>
         </div>
     );

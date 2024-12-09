@@ -15,7 +15,7 @@ function CartComponent() {
     const [startY, setStartY] = React.useState(0); // 터치 시작 위치
 
     const moveToOrder = () => {
-        navigate(`/order`);
+        navigate(`/product/order`);
     };
 
     // 터치 시작

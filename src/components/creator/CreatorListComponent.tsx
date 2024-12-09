@@ -5,24 +5,34 @@ import { getCreatorList } from "../../apis/creator/creatorAPI.ts";
 import click from "../../assets/icons/click.png";
 import { ICreator } from "../../types/creator/icreator.ts";
 import useAuthStore from "../../stores/customer/AuthStore.ts";
+import FollowButton from "./FollowButton"; // 팔로우 버튼 컴포넌트 가져오기
 
 function CreatorListComponent() {
-    const { creators, selectedCreator, searchQuery, isInitialized, setCreators, setSelectedCreator, setSearchQuery, setInitialized } = useCreatorStore();
+    const {
+        creators,
+        selectedCreator,
+        searchQuery,
+        isInitialized,
+        setCreators,
+        setSelectedCreator,
+        setSearchQuery,
+        setInitialized,
+    } = useCreatorStore();
     const customerId = useAuthStore((state) => state.customer?.customerId); // Zustand에서 customerId 가져오기
     const navigate = useNavigate();
 
     // React Query로 데이터 가져오기
     const { isLoading } = useQuery<ICreator[]>({
-        queryKey: ["creatorList", customerId], // queryKey에 customerId 포함
+        queryKey: ["creatorList", customerId],
         queryFn: () => {
             if (!customerId) {
-                return Promise.reject(new Error("Customer ID is null")); // customerId가 없을 경우 명시적으로 에러 발생
+                return Promise.reject(new Error("Customer ID is null"));
             }
-            return getCreatorList(customerId); // customerId 전달
+            return getCreatorList(customerId);
         },
         staleTime: 0,
         refetchInterval: 0,
-        enabled: !!customerId, // customerId가 있을 때만 활성화
+        enabled: !!customerId,
         initialData: creators,
         onSuccess: (data: ICreator[]) => {
             if (!isInitialized) {
@@ -31,7 +41,6 @@ function CreatorListComponent() {
             } else {
                 setCreators(data);
             }
-            console.log(data);
         },
         onError: (error) => {
             console.error("제작자 리스트를 불러오는 중 오류 발생:", error);
@@ -97,15 +106,11 @@ function CreatorListComponent() {
                                                 </span>
                                             </div>
                                             {/* 팔로우 버튼 */}
-                                            <button
-                                                className={`rounded-full px-3 py-1 text-white ${
-                                                    creator.followStatus
-                                                        ? "bg-blue-500 hover:bg-indigo-600"
-                                                        : "bg-gray-400 hover:bg-gray-200"
-                                                }`}
-                                            >
-                                                {creator.followStatus ? "팔로잉" : "팔로우"}
-                                            </button>
+                                            <FollowButton
+                                                creatorId={creator.creatorId || ""}
+                                                currentStatus={creator.followStatus ?? false}
+                                                customerId={customerId || ""}
+                                            />
                                         </li>
                                     ))}
                                 </ul>
@@ -155,7 +160,9 @@ function CreatorListComponent() {
                                 <img src={click} alt="클릭 이미지" className="w-12 h-12" />
                             </div>
                             {/* 메인 텍스트 */}
-                            <p className="text-lg font-semibold text-gray-700">제작자를 선택해주세요</p>
+                            <p className="text-lg font-semibold text-gray-700">
+                                제작자를 선택해주세요
+                            </p>
                             <p className="text-sm text-gray-500 text-center">
                                 선택된 제작자 정보가 이곳에 표시됩니다.
                             </p>
