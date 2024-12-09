@@ -68,23 +68,29 @@ function ProductOrderComponent() {
             }
 
             // creatorId 별로 주문 데이터 생성
-            const ordersData = cartGroups.map((group) => ({
-                orderId: uuid(),
-                creatorId: group.creatorId,
-                customerId,
-                recipientName,
-                recipientPhone,
-                customerAddress: address,
-                customerAddrDetail: addressDetail,
-                totalAmount: group.products.reduce((sum, p) => sum + p.quantity, 0),
-                totalPrice: group.products.reduce((sum, p) => sum + p.price * p.quantity, 0),
-                items: group.products.map((product) => ({
-                    productNo: product.id,
-                    productName: product.name,
-                    quantity: product.quantity,
-                    unitPrice: product.price,
-                })),
-            }));
+            const ordersData = cartGroups.map((group) => {
+                if (!group.creatorId) {
+                    throw new Error("creatorId가 누락된 상품이 있습니다.");
+                }
+
+                return {
+                    orderId: uuid(),
+                    creatorId: group.creatorId,
+                    customerId,
+                    recipientName,
+                    recipientPhone,
+                    customerAddress: address,
+                    customerAddrDetail: addressDetail,
+                    totalAmount: group.products.reduce((sum, p) => sum + p.quantity, 0),
+                    totalPrice: group.products.reduce((sum, p) => sum + p.price * p.quantity, 0),
+                    items: group.products.map((product) => ({
+                        productNo: product.id,
+                        productName: product.name,
+                        quantity: product.quantity,
+                        unitPrice: product.price,
+                    })),
+                };
+            });
 
             console.log("Orders Data:", ordersData);
 
@@ -95,20 +101,13 @@ function ProductOrderComponent() {
 
             console.log("Orders created successfully:", responses);
 
-            // 통합 결제 데이터 생성
-            const totalPrice = ordersData.reduce((sum, order) => sum + order.totalPrice, 0);
-            const totalAmount = ordersData.reduce((sum, order) => sum + order.totalAmount, 0);
-
+            // 전달할 결제 데이터 생성
             const paymentData = {
-                orderId: uuid(), // 통합 결제용 ID
-                customerId,
+                orderId: ordersData[0].orderId, // 대표 주문 ID
+                totalPrice: ordersData.reduce((sum, order) => sum + order.totalPrice, 0),
+                items: ordersData.flatMap((order) => order.items),
                 recipientName,
-                recipientPhone,
-                customerAddress: address,
-                customerAddrDetail: addressDetail,
-                totalPrice, // 총 결제 금액
-                totalAmount, // 총 상품 수량
-                items: ordersData.flatMap((order) => order.items), // 모든 상품 아이템 통합
+                recipientPhone
             };
 
             // 결제 페이지로 이동
