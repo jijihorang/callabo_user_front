@@ -5,9 +5,8 @@ import { useQuery } from "react-query";
 import { getLikedCreators } from "../../../apis/customer/customerAPI.ts";
 import useAuthStore from "../../../stores/customer/AuthStore.ts";
 import {ILikedCreators} from "../../../types/wishlist/iwishlist.ts";
-import likeIcon from "../../../assets/icons/redheart.png";
 
-import FollowButton from "../creator/FollowButton.tsx";
+import FollowButton from "../../creator/FollowButton.tsx";
 
 function WishlistCreatorComponent() {
     const navigate = useNavigate();
@@ -61,6 +60,7 @@ function WishlistCreatorComponent() {
                                     src={creator.profileImg || profileImg} // 기본 이미지 처리
                                     alt={creator.name}
                                     className="w-20 h-20 object-cover rounded-full mb-4 border-4 border-white shadow-md"
+                                    onClick={() => moveToProductList(creator.creatorId)}
                                 />
 
                                 {/* 이름 */}

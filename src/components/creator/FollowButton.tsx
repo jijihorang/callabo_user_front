@@ -43,8 +43,8 @@ const FollowButton: React.FC<FollowButtonProps> = ({
                 onMouseLeave={() => setIsHovered(false)}
                 className={`flex items-center justify-center gap-2 px-4 py-2 rounded-full font-semibold text-white transition-colors duration-300 shadow-md ${
                     currentStatus
-                        ? "bg-blue-300 hover:bg-red-600"
-                        : "bg-emerald-300 hover:bg-green-600"
+                        ? "bg-blue-500 hover:bg-blue-300"
+                        : "bg-gray-500 hover:bg-gray-300"
                 }`}
             >
                 <span className="relative">
@@ -59,12 +59,12 @@ const FollowButton: React.FC<FollowButtonProps> = ({
                 </span>
             </button>
 
-            {/* 툴팁 */}
-            {isHovered && (
-                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1 bg-gray-700 text-white text-xs rounded-md shadow-lg whitespace-nowrap">
-                    {currentStatus ? "팔로우 취소" : "팔로우 추가"}
-                </div>
-            )}
+            {/*/!* 툴팁 *!/*/}
+            {/*{isHovered && (*/}
+            {/*    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1 bg-gray-700 text-white text-xs rounded-md shadow-lg whitespace-nowrap">*/}
+            {/*        {currentStatus ? "팔로우 취소" : "팔로우 추가"}*/}
+            {/*    </div>*/}
+            {/*)}*/}
         </div>
     );
 };
