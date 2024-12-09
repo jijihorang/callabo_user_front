@@ -26,14 +26,13 @@ function ReviewRegisterComponent() {
     return (
         <div className="container mx-auto mt-5 pb-5 px-4 lg:px-8">
             <div className="bg-white p-6 rounded-lg max-w-2xl mx-auto">
-                <h1 className="text-2xl font-bold mb-2 text-center">리뷰 작성</h1>
-                <p className="text-sm text-gray-500 mb-8 text-center">리뷰를 통해 다른 고객에게 도움을 주세요.</p>
+                <h1 className="text-2xl font-bold mb-2 text-center">QnA 작성</h1>
 
                 {/* 리뷰 작성 섹션 */}
                 <div className="mb-6">
                     <textarea
                         rows={5}
-                        placeholder="리뷰 내용을 작성해주세요."
+                        placeholder="QnA 내용을 작성해주세요."
                         value={reviewText}
                         onChange={(e) => setReviewText(e.target.value)}
                         className="w-full p-2 mt-2 border rounded bg-gray-100"
@@ -45,7 +44,7 @@ function ReviewRegisterComponent() {
                 <div className="mb-6">
                     <h2 className="text-lg font-bold">사진 첨부 {attachments.length}/3</h2>
                     <p className="text-xs text-gray-500">
-                        상품과 관련된 이미지 최대 3개까지 등록 가능합니다.
+                    상품과 관련된 이미지 최대 3개까지 등록 가능합니다.
                     </p>
                     <div className="mt-2">
                         <input

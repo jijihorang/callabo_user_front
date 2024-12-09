@@ -5,6 +5,8 @@ const ReviewRegisterPage = lazy(() => import("../pages/review/ReviewRegisterPage
 
 const CreatorReviewReadPage = lazy(() => import("../pages/creator/review/CreatorReviewReadPage.tsx"))
 
+const ReviewListPage = lazy(() => import("../pages/review/ReviewListPage.tsx"))
+
 export const Loading = <LoadingPage></LoadingPage>
 
 const reviewRouter ={
@@ -13,6 +15,10 @@ const reviewRouter ={
         {
             path: "register",
             element: <Suspense fallback={Loading}><ReviewRegisterPage/></Suspense>
+        },
+        {
+          path: "list",
+          element: <Suspense fallback={Loading}><ReviewListPage/></Suspense>
         },
         {
             path: "read",

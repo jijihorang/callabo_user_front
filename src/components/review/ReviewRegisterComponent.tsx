@@ -1,15 +1,22 @@
 import {useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 function ReviewRegisterComponent() {
     const [rating, setRating] = useState(5); // 사용자가 평가한 별점(1~5)을 관리합니다. 초기값은 4입니다.
     const [reviewText, setReviewText] = useState(""); // 사용자가 작성한 리뷰 텍스트를 관리합니다. 초기값은 빈 문자열입니다.
     const [attachments, setAttachments] = useState<File[]>([]); // 리뷰에 첨부된 사진들을 관리합니다. 초기값은 빈 배열입니다.
 
+    const navigate = useNavigate();
+
     const handleAddAttachment = (e: React.ChangeEvent<HTMLInputElement>) => { // 첨부 파일을 추가하는 함수입니다.
         if (e.target.files && attachments.length < 5) { // 파일이 존재하고 첨부 파일이 5개 미만일 때만 추가할 수 있습니다.
             setAttachments([...attachments, e.target.files[0]]); // 첨부 파일 목록에 새 파일을 추가합니다.
         }
     };
+
+    const moveToList = () => {
+        navigate("/review/list")
+    }
 
     return (
         <div className="p-4 lg:p-10"> {/* 페이지 전체 여백을 설정합니다. 작은 화면에서는 p-4, 큰 화면에서는 p-10으로 설정합니다. */}
@@ -35,11 +42,7 @@ function ReviewRegisterComponent() {
                 {/* 리뷰 작성 섹션 */}
                 <div className="mb-6 mt-16"> {/* 리뷰 작성 영역에 여백을 줍니다. */}
                     <h2 className="text-xl font-bold">리뷰 작성 <span className="text-red-500">*</span></h2> {/* '리뷰 작성' 제목과 필수 표시를 추가합니다. */}
-                    <input
-                        type="text" // 텍스트 입력 필드입니다.
-                        placeholder="상품명" // 상품명을 입력하라는 안내 문구입니다.
-                        className="w-full p-2 border rounded mt-2 bg-gray-100"
-                    />
+                    <p className="w-full p-5 border rounded mt-2 bg-gray-100"></p>
                     <textarea
                         rows={5}
                         placeholder="리뷰 내용을 작성해 주세요."
@@ -80,7 +83,7 @@ function ReviewRegisterComponent() {
                 {/* 하단 버튼 */}
                 <div className="flex justify-center mt-8">
                     <button className="bg-gray-200 text-black px-4 py-2 rounded-lg mr-3">삭제</button>
-                    <button className="bg-blue-500 text-white px-6 py-2 rounded-lg">저장</button>
+                    <button className="bg-blue-500 text-white px-6 py-2 rounded-lg" onClick={moveToList}>저장</button>
                 </div>
             </div>
         </div>

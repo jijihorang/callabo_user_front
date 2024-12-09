@@ -1,4 +1,9 @@
+import {useNavigate} from "react-router-dom";
+
 function OrderListComponent() {
+
+    const navigate = useNavigate();
+
     const orders = [
         {
             id: 1,
@@ -9,10 +14,14 @@ function OrderListComponent() {
                 category: "포스터 (A4)",
                 price: 6000,
                 image: "https://via.placeholder.com/150",
-                status: "제작준비중",
+                status: "배송완료",
             },
         },
     ];
+
+    const moveToRegister= () => {
+        navigate("/review/register")
+    }
 
     return (
         <div className="container mx-auto mt-5 pb-5 px-4 lg:px-8">
@@ -45,8 +54,8 @@ function OrderListComponent() {
                     {/* 상태와 버튼 */}
                     <div className="flex justify-between items-center mt-4">
                         <div className="text-black font-bold">{order.product.status}</div>
-                        <button className="px-4 py-2 border border-gray-400 rounded text-sm">
-                            취소 요청
+                        <button className="px-4 py-2 border border-gray-400 rounded text-sm" onClick={moveToRegister}>
+                            리뷰 쓰기
                         </button>
                     </div>
                 </div>
