@@ -1,10 +1,10 @@
-import {createBrowserRouter, Navigate} from "react-router-dom";
+import {createBrowserRouter, Navigate, Outlet} from "react-router-dom";
 import LoadingPage from "../pages/common/LoadingPage.tsx";
 import {lazy, Suspense} from "react";
 import creatorRouter from "./creatorRouter.tsx";
 import customerRouter from "./customerRouter.tsx";
-import CreatorReviewsPage from "../pages/creatorreviews/CreatorReviewsPage.tsx";
-
+import productRouter from "./productRouter.tsx";
+import BasicLayout from "../layouts/BasicLayout.tsx";
 
 const MainPage = lazy(() => import("../pages/MainPage.tsx"))
 
@@ -18,9 +18,9 @@ const OrderPage = lazy(() => import("../pages/order/OrderPage.tsx"))
 
 const UserInfoPage = lazy(() => import("../pages/login/UserInfoPage.tsx"))
 
-const OfflineStorePage = lazy(() => import("../pages/offlinestore/OfflineStorePage.tsx"))
-
 const WeekRankingPage = lazy(() => import("../pages/weekranking/WeekRankingPage.tsx"))
+
+const OfflineStorePage = lazy(() => import("../pages/offlinestore/OfflineStorePage.tsx"))
 
 const AccountSettingPage = lazy(() => import("../pages/login/AccountSettingsPage.tsx"))
 
@@ -34,63 +34,73 @@ export const Loading = <LoadingPage></LoadingPage>
 
 const mainRouter = createBrowserRouter([
     {
-        path: "/main",
-        element: <Suspense fallback={Loading}><MainPage /></Suspense>
-    },
-    {
-        path: "/",
-        element: <Navigate to="main" replace={true}></Navigate>
-    },
-    {
-        path: "/login",
-        element: <Suspense fallback={Loading}><LoginPage/></Suspense>
-    },
-    {
-        path: "/wishlist",
-        element: <Suspense fallback={Loading}><WishListPage/></Suspense>
-    },
-    {
-        path: "/cart",
-        element: <Suspense fallback={Loading}><CartPage/></Suspense>
-    },
-    {
-        path: "/weekranking",
-        element: <Suspense fallback={Loading}><WeekRankingPage/></Suspense>
-    },
-    {
-        path: "/offlinestore",
-        element: <Suspense fallback={Loading}><OfflineStorePage/></Suspense>
-    },
-    {
-      path: "/user",
-      element: <Suspense fallback={Loading}><UserInfoPage/></Suspense>
-    },
-    {
-        path: "/order",
-        element: <Suspense fallback={Loading}><OrderPage/></Suspense>
-    },
-    {
-        path: "/account",
-        element: <Suspense fallback={Loading}><AccountSettingPage/></Suspense>
-    },
-    {
-        path: "/reviewread",
-        element: <Suspense fallback={Loading}><ReviewLeadPage/></Suspense>
-    },
-    {
-        path: "/reviewwriting",
-        element: <Suspense fallback={Loading}><ReviewWritingPage/></Suspense>
-    },
-    {
-        path: "/creatorreviews",
-        element: <Suspense fallback={Loading}><CreatorReviewsPage/></Suspense>
-    },
-    {
-        path: "/faq",
-        element: <Suspense fallback={Loading}><FaqPage/></Suspense>
-    },
-    creatorRouter,
-    customerRouter
+        element: (
+            <BasicLayout>
+                <Outlet/>
+            </BasicLayout>
+        ),
+        children: [
+            {
+                path: "/main",
+                element: <Suspense fallback={Loading}><MainPage /></Suspense>
+            },
+            {
+                path: "/",
+                element: <Navigate to="main" replace={true}></Navigate>
+            },
+            {
+                path: "/login",
+                element: <Suspense fallback={Loading}><LoginPage/></Suspense>
+            },
+            {
+                path: "/wishlist",
+                element: <Suspense fallback={Loading}><WishListPage/></Suspense>
+            },
+            {
+                path: "/cart",
+                element: <Suspense fallback={Loading}><CartPage/></Suspense>
+            },
+            {
+                path: "/weekranking",
+                element: <Suspense fallback={Loading}><WeekRankingPage/></Suspense>
+            },
+            {
+                path: "/offlinestore",
+                element: <Suspense fallback={Loading}><OfflineStorePage/></Suspense>
+            },
+            {
+                path: "/user",
+                element: <Suspense fallback={Loading}><UserInfoPage/></Suspense>
+            },
+            {
+                path: "/order",
+                element: <Suspense fallback={Loading}><OrderPage/></Suspense>
+            },
+            {
+                path: "/account",
+                element: <Suspense fallback={Loading}><AccountSettingPage/></Suspense>
+            },
+            {
+                path: "/reviewread",
+                element: <Suspense fallback={Loading}><ReviewLeadPage/></Suspense>
+            },
+            {
+                path: "/reviewwriting",
+                element: <Suspense fallback={Loading}><ReviewWritingPage/></Suspense>
+            },
+            {
+                path: "/creatorreviews",
+                element: <Suspense fallback={Loading}><CreatorReviewsPage/></Suspense>
+            },
+            {
+                path: "/faq",
+                element: <Suspense fallback={Loading}><FaqPage/></Suspense>
+            },
+            creatorRouter,
+            customerRouter,
+            productRouter,
+        ]
+    }
 ])
 
 export default mainRouter

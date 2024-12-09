@@ -1,4 +1,4 @@
-import { ICreator } from "../../types/creator/creator.ts";
+import { ICreator } from "../../types/creator/icreator.ts";
 import { create } from "zustand";
 import {createJSONStorage, persist} from "zustand/middleware";
 
