@@ -62,34 +62,63 @@ function ProductOrderComponent() {
                 return;
             }
 
-            const orderData = {
+            if (!cartGroups || cartGroups.length === 0) {
+                alert("장바구니가 비어 있습니다.");
+                return;
+            }
+
+            // creatorId 별로 주문 데이터 생성
+            const ordersData = cartGroups.map((group) => ({
                 orderId: uuid(),
-                creatorId: "creator1",
+                creatorId: group.creatorId,
                 customerId,
                 recipientName,
                 recipientPhone,
                 customerAddress: address,
                 customerAddrDetail: addressDetail,
-                totalAmount: cartGroups?.reduce((acc, group) => acc + group.products.reduce((sum, p) => sum + p.quantity, 0), 0) || 0,
-                totalPrice: cartGroups?.reduce((acc, group) => acc + group.products.reduce((sum, p) => sum + (p.price * p.quantity), 0), 0) || 0,
-                items: cartGroups?.flatMap(group => group.products.map(product => ({
+                totalAmount: group.products.reduce((sum, p) => sum + p.quantity, 0),
+                totalPrice: group.products.reduce((sum, p) => sum + p.price * p.quantity, 0),
+                items: group.products.map((product) => ({
                     productNo: product.id,
                     productName: product.name,
                     quantity: product.quantity,
                     unitPrice: product.price,
-                }))),
+                })),
+            }));
+
+            console.log("Orders Data:", ordersData);
+
+            // 백엔드로 각각의 주문 데이터 전송
+            const responses = await Promise.all(
+                ordersData.map((orderData) => createOrders([orderData]))
+            );
+
+            console.log("Orders created successfully:", responses);
+
+            // 통합 결제 데이터 생성
+            const totalPrice = ordersData.reduce((sum, order) => sum + order.totalPrice, 0);
+            const totalAmount = ordersData.reduce((sum, order) => sum + order.totalAmount, 0);
+
+            const paymentData = {
+                orderId: uuid(), // 통합 결제용 ID
+                customerId,
+                recipientName,
+                recipientPhone,
+                customerAddress: address,
+                customerAddrDetail: addressDetail,
+                totalPrice, // 총 결제 금액
+                totalAmount, // 총 상품 수량
+                items: ordersData.flatMap((order) => order.items), // 모든 상품 아이템 통합
             };
 
-            const response = await createOrders([orderData]);
-            console.log("Order created successfully:", response);
-
-            // navigate를 사용하여 결제 화면으로 이동
-            navigate("/tosspay/checkout", { state: { orderData } });
+            // 결제 페이지로 이동
+            navigate("/tosspay/checkout", { state: { orderData: paymentData } });
         } catch (error: any) {
             console.error("Order creation failed:", error.message);
-
+            alert("주문 생성 중 오류가 발생했습니다.");
         }
     };
+
 
     return (
         <div className="container mx-auto px-4 py-12 flex flex-col lg:flex-row gap-8">
