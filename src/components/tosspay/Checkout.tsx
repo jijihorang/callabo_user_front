@@ -69,6 +69,11 @@ function CheckoutPage() {
     const handlePayment = async (): Promise<void> => {
         if (!widgets) return;
 
+        console.log("orderData:", orderData);
+        console.log("items:", orderData.items);
+        console.log("items length:", orderData.items?.length);
+
+
         try {
             await widgets.requestPayment({
                 orderId: orderData.orderId || "DEFAULT_ORDER_ID", // orderId는 전달받은 데이터 사용

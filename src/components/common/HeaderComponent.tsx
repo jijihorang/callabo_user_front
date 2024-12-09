@@ -14,7 +14,7 @@ function HeaderComponent() {
 
     const handleUserIconClick = () => {
         if (isLoggedIn) {
-            navigate("/user"); // 로그인 상태일 때 사용자 정보 페이지로 이동
+            navigate("/header/user"); // 로그인 상태일 때 사용자 정보 페이지로 이동
         } else {
             navigate("/login"); // 로그인되지 않은 상태라면 로그인 페이지로 이동
         }
@@ -36,7 +36,7 @@ function HeaderComponent() {
                     <Link to="/creator" className="hover:text-blue-500">
                         Creator
                     </Link>
-                    <Link to="/offlinestore" className="hover:text-blue-500">
+                    <Link to="/event/offlineStore" className="hover:text-blue-500">
                         Event
                     </Link>
                 </nav>
@@ -49,10 +49,10 @@ function HeaderComponent() {
 
             {/* 오른쪽 아이콘 (데스크톱 전용) */}
             <div className="hidden lg:flex items-center space-x-5">
-                <Link to="/wishlist">
+                <Link to="/header/wishlist">
                     <img src={heart} alt="찜하기" className="w-6 h-6 cursor-pointer" />
                 </Link>
-                <Link to="/cart">
+                <Link to="/header/cart">
                     <img src={cart} alt="장바구니" className="w-7 h-7 cursor-pointer" />
                 </Link>
                 <button onClick={handleUserIconClick} className="cursor-pointer">
@@ -76,7 +76,7 @@ function HeaderComponent() {
                         </li>
                         <li>
                             <Link
-                                to="/offlinestore"
+                                to="/event/offlineStore"
                                 className="text-[18px] font-medium hover:text-blue-500"
                                 onClick={() => setIsMenuOpen(false)}
                             >
@@ -87,7 +87,7 @@ function HeaderComponent() {
                         {/* 오른쪽 메뉴 아이콘 대신 텍스트로 */}
                         <li>
                             <Link
-                                to="/wishlist"
+                                to="/header/wishlist"
                                 className="text-[18px] font-medium hover:text-blue-500"
                                 onClick={() => setIsMenuOpen(false)}
                             >
@@ -96,7 +96,7 @@ function HeaderComponent() {
                         </li>
                         <li>
                             <Link
-                                to="/cart"
+                                to="/header/cart"
                                 className="text-[18px] font-medium hover:text-blue-500"
                                 onClick={() => setIsMenuOpen(false)}
                             >

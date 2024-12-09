@@ -1,6 +1,6 @@
 import { useState } from "react";
-import WishlistProductComponent from "../../components/wishlist/WishlistProductComponent.tsx";
-import WishlistCreatorComponent from "../../components/wishlist/WishlistCreatorComponent.tsx";
+import WishlistProductComponent from "../../components/customer/wishlist/WishlistProductComponent.tsx";
+import WishlistCreatorComponent from "../../components/customer/wishlist/WishlistCreatorComponent.tsx";
 
 function WishlistPage() {
     const [activeTab, setActiveTab] = useState("products"); // 상태로 탭 전환 관리

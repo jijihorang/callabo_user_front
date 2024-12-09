@@ -1,24 +1,27 @@
-export interface IReview {
-    reviewNo : number;
-    rating ?: number;
-    comment ?: string;
-    reply ?: string;
-    reviewLike ?: number;
+import {IProductImage} from "../product/iproduct.ts";
 
-    customerName: string;
-
-    createdAt: string;
-
-    creatorName: string;
-
-    productName: string;
-    productPrice ?: string;
-
-    reviewImages ?: {
-        reviewImageNo: number;
-        reviewImageUrl: string;
-        reviewImageOrd: number;
-    }[];
+export interface IReviewImage {
+    reviewImageNo: number;
+    reviewImageUrl: string;
+    reviewImageOrd: number;
 }
 
+export interface IReview {
+    reviewImages: IReviewImage[];
+    rating: number;
+    productName: string;
+    createdAt: string;
 
+    productPrice: number;
+
+    productImageUrl?: string;
+    productImages: IProductImage[];
+
+    reviewNo: number;
+
+    customerName: string;
+    creatorName: string;
+    productDescription: string;
+    comment: string;
+    reply: string;
+}

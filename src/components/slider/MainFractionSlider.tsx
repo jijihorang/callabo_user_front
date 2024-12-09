@@ -5,11 +5,11 @@ import { Navigation, Pagination } from "swiper/modules";
 // @ts-expect-error
 import "swiper/css";
 
-import img1 from "../../assets/img/img3.webp";
-import img2 from "../../assets/img/img4.webp";
-import img3 from "../../assets/img/img5.webp";
-import img4 from "../../assets/img/img6.webp";
-import img5 from "../../assets/img/img7.webp";
+import img1 from "../../assets/slider/001.png";
+import img2 from "../../assets/slider/002.png";
+import img3 from "../../assets/slider/003.png";
+import img4 from "../../assets/slider/004.png";
+import img5 from "../../assets/slider/005.png";
 
 function MainFractionSlider() {
     return (
@@ -24,7 +24,6 @@ function MainFractionSlider() {
                 loop={true}
                 className="w-full h-[500px] md:h-[600px]" // 기본 모바일 높이, 데스크톱에서는 더 높게
             >
-                {/* 슬라이드 1 */}
                 <SwiperSlide>
                     <div className="relative w-full h-full">
                         {/* 배경 이미지 */}
@@ -46,16 +45,11 @@ function MainFractionSlider() {
                                 <p className="text-sm md:text-base">
                                     [마이멜로디]의 생일 기념 한정 굿즈를 만나보세요!
                                 </p>
-                                <button
-                                    className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 mt-4 rounded-lg text-sm md:text-base">
-                                    굿즈 샵 바로가기 →
-                                </button>
                             </div>
                         </div>
                     </div>
                 </SwiperSlide>
 
-                {/* 슬라이드 2 */}
                 <SwiperSlide>
                     <div className="relative w-full h-full">
                         <img
@@ -75,16 +69,11 @@ function MainFractionSlider() {
                                 <p className="text-sm md:text-base">
                                     다양한 한정판 굿즈를 지금 확인해보세요!
                                 </p>
-                                <button
-                                    className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 mt-4 rounded-lg text-sm md:text-base">
-                                    이벤트 참여하기 →
-                                </button>
                             </div>
                         </div>
                     </div>
                 </SwiperSlide>
 
-                {/* 슬라이드 3 */}
                 <SwiperSlide>
                     <div className="relative w-full h-full">
                         <img
@@ -104,16 +93,11 @@ function MainFractionSlider() {
                                 <p className="text-sm md:text-base">
                                     특별한 한정판 굿즈를 만나보세요!
                                 </p>
-                                <button
-                                    className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 mt-4 rounded-lg text-sm md:text-base">
-                                    자세히 보기 →
-                                </button>
                             </div>
                         </div>
                     </div>
                 </SwiperSlide>
 
-                {/* 슬라이드 1 */}
                 <SwiperSlide>
                     <div className="relative w-full h-full">
                         {/* 배경 이미지 */}
@@ -135,16 +119,11 @@ function MainFractionSlider() {
                                 <p className="text-sm md:text-base">
                                     [마플샵]의 겨울 한정 굿즈를 만나보세요!
                                 </p>
-                                <button
-                                    className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 mt-4 rounded-lg text-sm md:text-base">
-                                    굿즈 샵 바로가기 →
-                                </button>
                             </div>
                         </div>
                     </div>
                 </SwiperSlide>
 
-                {/* 슬라이드 1 */}
                 <SwiperSlide>
                     <div className="relative w-full h-full">
                         {/* 배경 이미지 */}
@@ -166,15 +145,10 @@ function MainFractionSlider() {
                                 <p className="text-sm md:text-base">
                                     [마이멜로디]의 생일 기념 한정 굿즈를 만나보세요!
                                 </p>
-                                <button
-                                    className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 mt-4 rounded-lg text-sm md:text-base">
-                                    산리오 굿즈 샵 바로가기 →
-                                </button>
                             </div>
                         </div>
                     </div>
                 </SwiperSlide>
-
             </Swiper>
         </div>
     );

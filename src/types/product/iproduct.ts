@@ -1,3 +1,5 @@
+import {IReview} from "../review/ireview.ts";
+
 export interface IProduct {
     productNo : number;
     productName : string;
@@ -7,10 +9,14 @@ export interface IProduct {
     creatorId? : string;
 
     stock ?: string;
+    productImageUrl: string | null;
+
 
     productImages: IProductImage[];
 
     categoryName?: string;
+
+    reviews?: IReview[]; // 해당 상품과 연결된 리뷰 리스트
 }
 
 export interface IProductList {

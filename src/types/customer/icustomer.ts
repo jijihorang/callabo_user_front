@@ -29,7 +29,7 @@ export interface IProductLike {
     productNo: number; // 상품 번호
 }
 
-export interface UpdateCustomerDTO {
+export interface IUpdateCustomer {
     customerPhone?: string;
     customerZipcode?: string;
     customerAddr?: string;
