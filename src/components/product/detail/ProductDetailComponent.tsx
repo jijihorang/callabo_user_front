@@ -82,6 +82,7 @@ function ProductDetailComponent() {
                 state: {
                     cartGroups: [
                         {
+                            creatorId,
                             products: [
                                 {
                                     id: product.productNo,
