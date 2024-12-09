@@ -9,10 +9,9 @@ export const getProductList = async (creatorId: string): Promise<IProductList[]>
         params: { creatorId }, // 쿼리 파라미터로 전달
     });
 
-    console.log(res)
-
     return res.data;
 };
+
 
 // 상품 조회
 export const getProductRead = async (creatorId : string, productNo : number) : Promise<IProduct> => {

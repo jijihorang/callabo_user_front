@@ -6,6 +6,8 @@ import click from "../../../assets/icons/click.png";
 import { ICreator } from "../../../types/creator/icreator.ts";
 import useAuthStore from "../../../stores/customer/AuthStore.ts";
 
+import FollowButton from "../FollowButton";
+
 function CreatorListComponent() {
     const { creators, selectedCreator, searchQuery, isInitialized, setCreators, setSelectedCreator, setSearchQuery, setInitialized } = useCreatorStore();
     const customerId = useAuthStore((state) => state.customer?.customerId); // Zustand에서 customerId 가져오기
@@ -97,15 +99,11 @@ function CreatorListComponent() {
                                                 </span>
                                             </div>
                                             {/* 팔로우 버튼 */}
-                                            <button
-                                                className={`rounded-full px-3 py-1 text-white ${
-                                                    creator.followStatus
-                                                        ? "bg-blue-500 hover:bg-indigo-600"
-                                                        : "bg-gray-400 hover:bg-gray-200"
-                                                }`}
-                                            >
-                                                {creator.followStatus ? "팔로잉" : "팔로우"}
-                                            </button>
+                                            <FollowButton
+                                                creatorId={creator.creatorId || ""}
+                                                currentStatus={creator.followStatus ?? false}
+                                                customerId={customerId || ""}
+                                            />
                                         </li>
                                     ))}
                                 </ul>
