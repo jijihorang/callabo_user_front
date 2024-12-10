@@ -1,6 +1,5 @@
 import QnAReadComponent from "./QnAReadComponent.tsx";
 import { useState } from "react";
-import {Link} from "react-router-dom";
 
 function QnAListComponent() {
     const data = [
@@ -72,15 +71,6 @@ function QnAListComponent() {
                         </div>
                     ))}
                 </div>
-
-                <div className="flex justify-end mt-4">
-                    <button
-                        className="px-4 py-2 bg-blue-500 text-white text-sm font-semibold rounded-lg shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 transition-all"
-                    >
-                        <Link to={"/qna/register"}>글쓰기</Link>
-                    </button>
-                </div>
-
             </div>
 
             {selectedQuestion && (

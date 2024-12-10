@@ -23,6 +23,10 @@ function OrderListComponent() {
         navigate("/review/register")
     }
 
+    const moveToQnARegister= () => {
+        navigate("/qna/register")
+    }
+
     return (
         <div className="container mx-auto mt-5 pb-5 px-4 lg:px-8">
 
@@ -52,12 +56,28 @@ function OrderListComponent() {
                     </div>
 
                     {/* 상태와 버튼 */}
+                    {/* 상태와 버튼 */}
                     <div className="flex justify-between items-center mt-4">
-                        <div className="text-black font-bold">{order.product.status}</div>
-                        <button className="px-4 py-2 border border-gray-400 rounded text-sm" onClick={moveToRegister}>
-                            리뷰 쓰기
-                        </button>
+                        {/* 상태 표시 */}
+                        <div className="text-black font-bold flex-1">{order.product.status}</div>
+
+                        {/* 버튼 그룹 */}
+                        <div className="flex space-x-2">
+                            <button
+                                className="px-4 py-2 border border-gray-400 rounded text-sm hover:bg-gray-100"
+                                onClick={moveToRegister}
+                            >
+                                리뷰 쓰기
+                            </button>
+                            <button
+                                className="px-4 py-2 border border-gray-400 rounded text-sm hover:bg-gray-100"
+                                onClick={moveToQnARegister}
+                            >
+                                Q&A 쓰기
+                            </button>
+                        </div>
                     </div>
+
                 </div>
             ))}
         </div>

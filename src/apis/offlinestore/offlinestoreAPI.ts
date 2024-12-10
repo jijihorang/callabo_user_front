@@ -1,5 +1,5 @@
-import {IOfflineStore} from "../../types/creator/icreator.ts";
 import axios from "axios";
+import {IOfflineStore} from "../../types/offlinestore/iofflinestore.ts";
 
 const host = "http://localhost:8080/api2/offlinestore";
 
