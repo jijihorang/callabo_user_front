@@ -1,5 +1,5 @@
 import axios from "axios";
-import {IQnaRequest} from "../../types/qna/iqna.ts";
+import {IQna, IQnaRequest} from "../../types/qna/iqna.ts";
 
 const host = "http://localhost:8080/api2/qna";
 
@@ -50,3 +50,15 @@ export const qnaImageUpload = async (
         throw new Error("An error occurred while uploading the QnA images.");
     }
 };
+
+// qna 리스트
+export const getQnAList = async (): Promise<IQna> => {
+    const res = await axios.get(`${host}/list`);
+    return res.data;
+}
+
+// qna 조회
+export const getQnaRead = async (qnaNo: number): Promise<IQna> => {
+    const res = await axios.get(`${host}/read/${qnaNo}`);
+    return res.data;
+}

@@ -27,6 +27,7 @@ export interface IOrderItem {
 export interface IOrderList {
     orderNo: number;            // 주문 번호
     orderDate: string;          // 주문 날짜
+    creatorId: string;
     creatorName: string;        // 제작자 이름
     customerName: string;       // 고객 이름
     totalAmount: number;        // 총 수량

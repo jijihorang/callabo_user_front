@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import {useLocation, useNavigate} from "react-router-dom";
+import { useState } from "react";
 import { IQnaRequest } from "../../types/qna/iqna";
 import { uploadS3Images } from "../../apis/image/imageUploadAPI";
 import { addQnA } from "../../apis/qna/qnaAPI";
-import useAuthStore from "../../stores/customer/AuthStore.ts";
 
 const initialState: IQnaRequest = {
     qnaNo: 0,
@@ -14,13 +14,16 @@ const initialState: IQnaRequest = {
 };
 
 function QnARegisterComponent() {
-    const { customer } = useAuthStore();
+    const location = useLocation();
+    const { state } = location as { state: { productNo: number; creatorId: string; customerId: string } };
+    const { productNo, creatorId, customerId } = state;
 
     const [question, setQuestion] = useState(initialState.question);
-    const [customerId] = useState(customer?.customerId || "");
     const [imageFiles, setImageFiles] = useState<(File | undefined)[]>([undefined, undefined, undefined]);
     const [previewImages, setPreviewImages] = useState<(string | undefined)[]>([undefined, undefined, undefined]);
     const [loading, setLoading] = useState(false);
+
+    const navigate = useNavigate();
 
     const handleImageUpload = (file: File, index: number) => {
         const reader = new FileReader();
@@ -71,19 +74,24 @@ function QnARegisterComponent() {
 
             // QnA 데이터 준비
             const qnaData: IQnaRequest = {
-                ...initialState,
+                qnaNo: 0,
                 question,
+                creatorId,
                 customerId,
+                productNo,
                 qnaImages: uploadedUrls.map((url, index) => ({
                     qnaImageUrl: url,
                     qnaImageOrd: index,
                 })),
             };
 
+            console.log("qnaData", qnaData);
+
             // QnA 등록 API 호출
             await addQnA(qnaData);
-
+            navigate("/order/list")
             alert("QnA가 성공적으로 등록되었습니다.");
+
             resetForm();
         } catch (error) {
             console.error("QnA 등록 실패:", error);
@@ -102,13 +110,32 @@ function QnARegisterComponent() {
     return (
         <div className="container mx-auto mt-5 pb-5 px-4 lg:px-8">
             <div className="bg-white p-6 rounded-lg max-w-2xl mx-auto">
-                <h1 className="text-2xl font-bold mb-2 text-center">QnA 작성</h1>
+                <h1 className="text-2xl font-bold mb-4 text-center">QnA 작성</h1>
 
-                <div>
-                    {customer?.customerId}
+                <div className="flex flex-col space-y-1 mb-2">
+                    <label className="text-sm font-medium text-gray-700">상품 번호</label>
+                    <div
+                        className="w-full p-3 border rounded bg-gray-100 focus-within:ring-2 focus-within:ring-blue-500">
+                        <span>{productNo}</span>
+                    </div>
                 </div>
 
-                {/* 질문 작성 */}
+                <div className="flex flex-col space-y-1 mb-2">
+                    <label className="text-sm font-medium text-gray-700">제작자명</label>
+                    <div
+                        className="w-full p-3 border rounded bg-gray-100 focus-within:ring-2 focus-within:ring-blue-500">
+                        <span>{creatorId}</span>
+                    </div>
+                </div>
+
+                <div className="flex flex-col space-y-1 mb-2">
+                    <label className="text-sm font-medium text-gray-700">사용자명</label>
+                    <div
+                        className="w-full p-3 border rounded bg-gray-100 focus-within:ring-2 focus-within:ring-blue-500">
+                        <span>{customerId}</span>
+                    </div>
+                </div>
+
                 <div className="mb-6">
                     <textarea
                         rows={5}
@@ -120,13 +147,11 @@ function QnARegisterComponent() {
                     <div className="text-right text-gray-500 text-sm mt-1">{question.length}/500</div>
                 </div>
 
-                {/* 이미지 업로드 */}
                 <div className="mb-6">
-                    <h2 className="text-lg font-bold">사진 첨부 (최대 3개)</h2>
-                    <p className="text-xs text-gray-500">상품과 관련된 이미지 최대 3개까지 등록 가능합니다.</p>
+                    <h2 className="text-lg font-bold mb-2">사진 첨부 (최대 3개)</h2>
                     <div className="grid grid-cols-3 gap-4">
                         {previewImages.map((image, index) => (
-                            <div key={index} className="relative w-full h-32 border-2 border-dashed rounded-lg">
+                            <div key={index} className="relative w-full h-32 border-4 border-dashed rounded-lg">
                                 {image ? (
                                     <>
                                         <img
@@ -164,7 +189,6 @@ function QnARegisterComponent() {
                     </div>
                 </div>
 
-                {/* 하단 버튼 */}
                 <div className="flex justify-center mt-8">
                     <button
                         type="button"
