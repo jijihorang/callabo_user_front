@@ -1,7 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-import wheart from "../../../assets/icons/whiteheart.png";
 import cart2 from "../../../assets/icons/cart.png";
 import useAuthStore from "../../../stores/customer/AuthStore.ts";
 import useCartStore from "../../../stores/cart/cartStore.ts";
@@ -9,8 +8,7 @@ import { IProduct, IProductList } from "../../../types/product/iproduct.ts";
 import { ICreator } from "../../../types/creator/icreator.ts";
 import { getProductList } from "../../../apis/product/productAPI.ts";
 import { getCreatorList } from "../../../apis/creator/creatorAPI.ts";
-
-import LikeButton from "../ProductLikeButton.tsx";
+import FollowButton from "../../creator/FollowButton.tsx";
 
 function ProductListComponent() {
     const { creatorId } = useParams(); // URL에서 creatorId 추출
@@ -60,19 +58,6 @@ function ProductListComponent() {
         fetchCreatorInfo();
         fetchProducts();
     }, [creatorId]); // creatorId 변경 시 재호출
-
-    const handleLikeStatusChange = (productId: number, newStatus: boolean) => {
-        setProducts((prevProducts) =>
-            prevProducts.map((product) =>
-                product.productNo === productId ? { ...product, likeStatus: newStatus } : product
-            )
-        );
-        setVisibleProducts((prevVisibleProducts) =>
-            prevVisibleProducts.map((product) =>
-                product.productNo === productId ? { ...product, likeStatus: newStatus } : product
-            )
-        );
-    };
 
     // "See More" / "Close" 버튼 클릭 핸들러
     const toggleProductVisibility = () => {
@@ -127,7 +112,8 @@ function ProductListComponent() {
 
             {/* 제작자 정보 */}
             <div className="text-center mb-8">
-                <div className="relative inline-block w-24 h-24 lg:w-28 lg:h-28 rounded-full overflow-hidden border-4 border-white shadow-md -mt-12">
+                <div
+                    className="relative inline-block w-24 h-24 lg:w-28 lg:h-28 rounded-full overflow-hidden border-4 border-white shadow-md -mt-12">
                     <img
                         src={creator.logoImg}
                         alt="제작자 프로필"
@@ -137,11 +123,22 @@ function ProductListComponent() {
                 <h2 className="text-2xl lg:text-3xl font-bold mt-4">
                     {creator.creatorName || "제작자 이름 없음"}
                 </h2>
-                <button
-                    className="flex items-center mx-auto mt-4 bg-gray-100 rounded-full px-4 py-2 shadow-md hover:shadow-lg transition-shadow"
+                {/*<button*/}
+                {/*    className="flex items-center mx-auto mt-4 bg-gray-100 rounded-full px-4 py-2 shadow-md hover:shadow-lg transition-shadow"*/}
+                {/*>*/}
+                {/*    <img src={wheart} alt="찜" className="w-5 h-5 text-blue-500" />*/}
+                {/*</button>*/}
+                <div
+                    className="flex items-center justify-center bg-gray-100 rounded-full px-4 py-2 shadow-md hover:shadow-lg transition-shadow max-w-max mx-auto"
                 >
-                    <img src={wheart} alt="찜" className="w-5 h-5 text-blue-500" />
-                </button>
+                    <FollowButton
+                        creatorId={creator?.creatorId || ""}
+                        currentStatus={creator.followStatus ?? false}
+                        customerId={customer?.customerId || ""}
+                    />
+                </div>
+
+
             </div>
 
             {/* 상품 리스트 */}
@@ -196,12 +193,12 @@ function ProductListComponent() {
 
                             {/* 하트 아이콘 */}
 
-                            <LikeButton
-                                customerId={customer?.customerId || ""}
-                                productId={product.productNo}
-                                currentStatus={product.likeStatus || false}
-                                onToggle={(newStatus) => handleLikeStatusChange(product.productNo, newStatus)}
-                            />
+                            {/*<LikeButton*/}
+                            {/*    customerId={customer?.customerId || ""}*/}
+                            {/*    productId={product.productNo}*/}
+                            {/*    currentStatus={product.likeStatus || false}*/}
+                            {/*    onToggle={(newStatus) => handleLikeStatusChange(product.productNo, newStatus)}*/}
+                            {/*/>*/}
 
                             {/* 장바구니 아이콘 */}
                             <button
