@@ -1,16 +1,19 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useAuthStore from "../../stores/customer/AuthStore.ts"; // Zustand Store
 import logo from "../../assets/icons/atom.png";
 import heart from "../../assets/icons/heart.png";
 import cart from "../../assets/icons/cart.png";
 import info from "../../assets/icons/info.png";
 import menu from "../../assets/icons/menu.png";
+import closeIcon from "../../assets/icons/close.png"; // 닫기 버튼 아이콘
 
 function HeaderComponent() {
     const navigate = useNavigate();
     const { isLoggedIn } = useAuthStore(); // Zustand 상태 가져오기
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isHeaderVisible, setIsHeaderVisible] = useState(true); // 헤더 표시 상태
+    const [lastScrollY, setLastScrollY] = useState(0); // 이전 스크롤 위치
 
     const handleUserIconClick = () => {
         if (isLoggedIn) {
@@ -20,103 +23,127 @@ function HeaderComponent() {
         }
     };
 
-    return (
-        <header className="container mx-auto flex items-center justify-between px-5 py-5">
-            {/* 로고 + 네비게이션 메뉴 */}
-            <div className="flex items-center">
-                {/* 로고 */}
-                <h1 className="text-[30px] font-bold">
-                    <Link to="/main">
-                        <img src={logo} alt="로고 이미지" className="w-12 h-12 cursor-pointer" />
-                    </Link>
-                </h1>
+    useEffect(() => {
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
 
-                {/* 네비게이션 메뉴 (데스크톱 전용) */}
-                <nav className="hidden lg:flex items-center space-x-6 text-[18px] font-medium ml-8">
-                    <Link to="/creator" className="hover:text-blue-500">
+            if (currentScrollY > lastScrollY) {
+                setIsHeaderVisible(false); // 스크롤 다운 → 헤더 숨김
+            } else {
+                setIsHeaderVisible(true); // 스크롤 업 → 헤더 표시
+            }
+
+            setLastScrollY(currentScrollY); // 마지막 스크롤 위치 업데이트
+        };
+
+        window.addEventListener("scroll", handleScroll);
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll); // 클린업
+        };
+    }, [lastScrollY]);
+
+    return (
+        <header
+            className={`fixed top-0 left-0 w-full z-50 bg-white shadow-md transition-transform duration-300 ${
+                isHeaderVisible ? "translate-y-0" : "-translate-y-full"
+            }`}
+        >
+            <div className="container mx-auto flex items-center justify-between px-5 py-3">
+                {/* 로고 + 네비게이션 메뉴 */}
+                <div className="flex items-center">
+                    {/* 로고 */}
+                    <h1 className="text-[30px] font-bold">
+                        <Link to="/main">
+                            <img src={logo} alt="로고 이미지" className="w-12 h-12 cursor-pointer" />
+                        </Link>
+                    </h1>
+
+                    {/* 네비게이션 메뉴 (데스크톱 전용) */}
+                    <nav className="hidden lg:flex items-center space-x-6 text-[18px] font-medium ml-8">
+                        <Link to="/creator" className="hover:text-blue-500">
+                            Creator
+                        </Link>
+                        <Link to="/event/offlineStore" className="hover:text-blue-500">
+                            Event
+                        </Link>
+                    </nav>
+                </div>
+
+                {/* 모바일 메뉴 아이콘 */}
+                <button className="lg:hidden" onClick={() => setIsMenuOpen(true)}>
+                    <img src={menu} alt="메뉴" className="w-7 h-7 cursor-pointer" />
+                </button>
+
+                {/* 오른쪽 아이콘 (데스크톱 전용) */}
+                <div className="hidden lg:flex items-center space-x-5">
+                    <Link to="/header/wishlist">
+                        <img src={heart} alt="찜하기" className="w-6 h-6 cursor-pointer" />
+                    </Link>
+                    <Link to="/header/cart">
+                        <img src={cart} alt="장바구니" className="w-7 h-7 cursor-pointer" />
+                    </Link>
+                    <button onClick={handleUserIconClick} className="cursor-pointer">
+                        <img src={info} alt="사용자" className="w-7 h-7" />
+                    </button>
+                </div>
+            </div>
+
+            {/* 모바일 메뉴 (화면 전체를 덮는 방식) */}
+            <div
+                className={`fixed inset-0 bg-white z-50 h-screen w-full transform transition-transform duration-300 lg:hidden ${
+                    isMenuOpen ? "translate-x-0" : "translate-x-full"
+                }`}
+            >
+                {/* 닫기 버튼 */}
+                <div className="flex justify-between items-center px-5 py-4 border-b">
+                    <h1 className="text-lg font-bold">Menu</h1>
+                    <button onClick={() => setIsMenuOpen(false)}>
+                        <img src={closeIcon} alt="닫기 버튼" className="w-6 h-6 cursor-pointer" />
+                    </button>
+                </div>
+
+                {/* 메뉴 리스트 */}
+                <nav className="flex flex-col items-start space-y-6 px-6 py-4 text-[18px] font-medium">
+                    <Link
+                        to="/creator"
+                        className="hover:text-blue-500"
+                        onClick={() => setIsMenuOpen(false)}
+                    >
                         Creator
                     </Link>
-                    <Link to="/event/offlineStore" className="hover:text-blue-500">
+                    <Link
+                        to="/event/offlineStore"
+                        className="hover:text-blue-500"
+                        onClick={() => setIsMenuOpen(false)}
+                    >
                         Event
                     </Link>
+                    <Link
+                        to="/header/wishlist"
+                        className="hover:text-blue-500"
+                        onClick={() => setIsMenuOpen(false)}
+                    >
+                        Wishlist
+                    </Link>
+                    <Link
+                        to="/header/cart"
+                        className="hover:text-blue-500"
+                        onClick={() => setIsMenuOpen(false)}
+                    >
+                        Cart
+                    </Link>
+                    <button
+                        onClick={() => {
+                            handleUserIconClick();
+                            setIsMenuOpen(false);
+                        }}
+                        className="hover:text-blue-500"
+                    >
+                        My Page
+                    </button>
                 </nav>
             </div>
-
-            {/* 모바일 메뉴 아이콘 */}
-            <button className="lg:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-                <img src={menu} alt="메뉴" className="w-7 h-7 cursor-pointer" />
-            </button>
-
-            {/* 오른쪽 아이콘 (데스크톱 전용) */}
-            <div className="hidden lg:flex items-center space-x-5">
-                <Link to="/header/wishlist">
-                    <img src={heart} alt="찜하기" className="w-6 h-6 cursor-pointer" />
-                </Link>
-                <Link to="/header/cart">
-                    <img src={cart} alt="장바구니" className="w-7 h-7 cursor-pointer" />
-                </Link>
-                <button onClick={handleUserIconClick} className="cursor-pointer">
-                    <img src={info} alt="사용자" className="w-7 h-7" />
-                </button>
-            </div>
-
-            {/* 모바일 메뉴 (토글) */}
-            {isMenuOpen && (
-                <nav className="absolute top-16 left-0 w-full bg-white shadow-lg lg:hidden">
-                    <ul className="flex flex-col items-center space-y-4 py-4">
-                        {/* 네비게이션 메뉴 */}
-                        <li>
-                            <Link
-                                to="/creator"
-                                className="text-[18px] font-medium hover:text-blue-500"
-                                onClick={() => setIsMenuOpen(false)}
-                            >
-                                Creator
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                to="/event/offlineStore"
-                                className="text-[18px] font-medium hover:text-blue-500"
-                                onClick={() => setIsMenuOpen(false)}
-                            >
-                                Event
-                            </Link>
-                        </li>
-
-                        {/* 오른쪽 메뉴 아이콘 대신 텍스트로 */}
-                        <li>
-                            <Link
-                                to="/header/wishlist"
-                                className="text-[18px] font-medium hover:text-blue-500"
-                                onClick={() => setIsMenuOpen(false)}
-                            >
-                                Wishlist
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                to="/header/cart"
-                                className="text-[18px] font-medium hover:text-blue-500"
-                                onClick={() => setIsMenuOpen(false)}
-                            >
-                                Cart
-                            </Link>
-                        </li>
-                        <li>
-                            <button
-                                onClick={() => {
-                                    handleUserIconClick();
-                                    setIsMenuOpen(false);
-                                }}
-                                className="text-[18px] font-medium hover:text-blue-500"
-                            >
-                                My Page
-                            </button>
-                        </li>
-                    </ul>
-                </nav>
-            )}
         </header>
     );
 }

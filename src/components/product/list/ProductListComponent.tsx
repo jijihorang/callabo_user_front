@@ -13,7 +13,6 @@ import "swiper/css/pagination";
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-import wheart from "../../../assets/icons/whiteheart.png";
 import cart2 from "../../../assets/icons/cart.png";
 import useAuthStore from "../../../stores/customer/AuthStore.ts";
 import useCartStore from "../../../stores/cart/cartStore.ts";
@@ -24,6 +23,8 @@ import { getCreatorList } from "../../../apis/creator/creatorAPI.ts";
 
 import { SweetAlertOptions } from "sweetalert2";
 import AlertComponent from "../../common/AlertComponent.tsx";
+
+import FollowButton from "../../creator/FollowButton.tsx";
 
 function ProductListComponent() {
     const { creatorId } = useParams(); // URL에서 creatorId 추출
@@ -134,11 +135,11 @@ function ProductListComponent() {
                 <h2 className="text-2xl lg:text-3xl font-bold mt-4">
                     {creator.creatorName || "제작자 이름 없음"}
                 </h2>
-                <button
-                    className="flex items-center mx-auto mt-4 bg-gray-100 rounded-full px-4 py-2 shadow-md hover:shadow-lg transition-shadow"
-                >
-                    <img src={wheart} alt="찜" className="w-5 h-5 text-blue-500" />
-                </button>
+                <FollowButton
+                    creatorId={creator?.creatorId || ""}
+                    currentStatus={creator.followStatus ?? false}
+                    customerId={customer?.customerId || ""}
+                />
             </div>
 
             {/* 상품 리스트 */}
