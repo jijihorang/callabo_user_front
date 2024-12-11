@@ -101,8 +101,15 @@ function HeaderComponent() {
                     <Link to="/header/wishlist">
                         <img src={heart} alt="찜하기" className="w-6 h-6 cursor-pointer" />
                     </Link>
-                    <Link to="/header/cart">
+                    <Link to="/header/cart" className="relative">
                         <img src={cart} alt="장바구니" className="w-7 h-7 cursor-pointer" />
+                        {totalQuantity > 0 && (
+                            <span
+                                className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center"
+                            >
+                        {totalQuantity}
+                            </span>
+                        )}
                     </Link>
                     <button onClick={handleUserIconClick} className="cursor-pointer">
                         <img src={info} alt="사용자" className="w-7 h-7" />
