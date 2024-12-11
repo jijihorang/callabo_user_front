@@ -1,6 +1,6 @@
 import { IReview } from "../../../types/review/ireview.ts";
-import star2 from "../../../assets/icons/star.png";
-import noStar2 from "../../../assets/icons/gstar.png";
+import star2 from "../../../../public/icons/star.png";
+import noStar2 from "../../../../public/icons/gstar.png";
 
 function CreatorReviewReadComponent({ review, closeModal }: { review: IReview; closeModal: () => void }) {
 

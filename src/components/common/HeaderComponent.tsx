@@ -1,12 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import useAuthStore from "../../stores/customer/AuthStore.ts"; // Zustand Store
-import logo from "../../assets/icons/atom.png";
-import heart from "../../assets/icons/heart.png";
-import cart from "../../assets/icons/cart.png";
-import info from "../../assets/icons/info.png";
-import menu from "../../assets/icons/menu.png";
-import closeIcon from "../../assets/icons/close.png";
+import logo from "../../../public/icons/atom.png";
+import heart from "../../../public/icons/heart.png";
+import cart from "../../../public/icons/cart.png";
+import info from "../../../public/icons/info.png";
+import menu from "../../../public/icons/menu.png";
+import closeIcon from "../../../public/icons/close.png";
 import useCartStore from "../../stores/cart/cartStore.ts"; // 닫기 버튼 아이콘
 
 function HeaderComponent() {
@@ -144,7 +144,7 @@ function HeaderComponent() {
                             className="flex items-center space-x-6 hover:text-blue-500 transition"
                         >
                             <img
-                                src="/src/assets/icons/userprofile.png"
+                                src="/icons/userprofile.png"
                                 alt="내 계정"
                                 className="w-8 h-8 object-cover"
                             />
@@ -157,7 +157,7 @@ function HeaderComponent() {
                             className="flex items-center space-x-6 hover:text-blue-500 transition"
                             onClick={() => setIsMenuOpen(false)}
                         >
-                            <img src="/src/assets/icons/creator.png" alt="크리에이터" className="w-8 h-8" />
+                            <img src="/icons/creator.png" alt="크리에이터" className="w-8 h-8" />
                             <span className="text-lg font-medium text-gray-800">크리에이터</span>
                         </Link>
 
@@ -167,7 +167,7 @@ function HeaderComponent() {
                             className="flex items-center space-x-6 hover:text-blue-500 transition"
                             onClick={() => setIsMenuOpen(false)}
                         >
-                            <img src="/src/assets/icons/offlinestore.png" alt="오프라인 스토어" className="w-8 h-8" />
+                            <img src="/icons/offlinestore.png" alt="오프라인 스토어" className="w-8 h-8" />
                             <span className="text-lg font-medium text-gray-800">오프라인 스토어</span>
                         </Link>
 
@@ -177,7 +177,7 @@ function HeaderComponent() {
                             className="flex items-center space-x-6 hover:text-blue-500 transition"
                             onClick={() => setIsMenuOpen(false)}
                         >
-                            <img src="/src/assets/icons/heart.png" alt="찜한 상품" className="w-8 h-8" />
+                            <img src="/icons/heart.png" alt="찜한 상품" className="w-8 h-8" />
                             <span className="text-lg font-medium text-gray-800">찜한 상품</span>
                         </Link>
 

@@ -2,10 +2,10 @@ import {useNavigate} from "react-router-dom";
 import {useQuery} from "react-query";
 import useCreatorStore from "../../../stores/creator/CreatorStore.ts";
 import {getCreatorList} from "../../../apis/creator/creatorAPI.ts";
-import click from "../../../assets/icons/click.png";
+import click from "../../../../public/icons/click.png";
 import {ICreator} from "../../../types/creator/icreator.ts";
 import useAuthStore from "../../../stores/customer/AuthStore.ts";
-import heart from "../../../assets/icons/redheart.png";
+import heart from "../../../../public/icons/redheart.png";
 
 function CreatorListComponent() {
     const {
@@ -115,7 +115,7 @@ function CreatorListComponent() {
                                             <div className="flex items-center gap-2 text-sm font-medium text-gray-600 bg-gray-100 px-3 py-1 rounded-lg shadow-sm">
                                                 <img src={heart} alt="팔로워 아이콘" className="w-4 h-4" />
                                                 <span>
-                                                    <span className="font-bold text-gray-800">{creator.followerCount || 0}</span>명
+                                                    {/*<span className="font-bold text-gray-800">{creator.followerCount || 0}</span>명*/}
                                                 </span>
                                             </div>
                                         </li>

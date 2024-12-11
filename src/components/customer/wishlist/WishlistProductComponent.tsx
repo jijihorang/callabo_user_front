@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import useAuthStore from "../../../stores/customer/AuthStore.ts";
-import heart from "../../../assets/icons/redheart.png";
-import likeIcon from "../../../assets/icons/redheart.png";
+import heart from "../../../../public/icons/redheart.png";
+import likeIcon from "../../../../public/icons/redheart.png";
 import { getLikedProducts } from "../../../apis/customer/customerAPI.ts";
 import {ILikedProducts} from "../../../types/wishlist/iwishlist.ts";
 

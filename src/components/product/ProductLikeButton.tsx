@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import wheart from "../../assets/icons/whiteheart.png";
-import redHeart from "../../assets/icons/redheart.png";
+import wheart from "../../../public/icons/whiteheart.png";
+import redHeart from "../../../public/icons/redheart.png";
 import { toggleProductLikeAPI, checkProductLikeStatusAPI } from "../../apis/customer/customerAPI";
 
 interface LikeButtonProps {

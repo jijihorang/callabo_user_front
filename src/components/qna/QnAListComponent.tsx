@@ -5,7 +5,7 @@ import { getQnaRead } from "../../apis/qna/qnaAPI.ts";
 import QnAReadComponent from "./QnAReadComponent.tsx";
 
 import useAuthStore from "../../stores/customer/AuthStore.ts";
-import heart from "../../assets/icons/heart.png"
+import heart from "../../../public/icons/heart.png"
 import {useNavigate} from "react-router-dom";
 
 function QnAListComponent() {

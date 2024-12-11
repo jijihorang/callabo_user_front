@@ -1,5 +1,5 @@
-import profileImg from "../../../assets/img/pro1.png";
-import heart from "../../../assets/icons/redheart.png";
+import profileImg from "../../../../public/img/pro1.png";
+import heart from "../../../../public/icons/redheart.png";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getLikedCreators } from "../../../apis/customer/customerAPI.ts";

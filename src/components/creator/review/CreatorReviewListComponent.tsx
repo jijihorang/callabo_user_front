@@ -3,8 +3,8 @@ import { useParams } from "react-router-dom"; // useParams import 추가
 import CreatorReviewReadComponent from "./CreatorReviewReadComponent";
 import { IReview } from "../../../types/review/ireview.ts";
 import { getReviewList } from "../../../apis/review/reviewAPI.ts";
-import star1 from "../../../assets/icons/star.png";
-import noStar1 from "../../../assets/icons/gstar.png";
+import star1 from "../../../../public/icons/star.png";
+import noStar1 from "../../../../public/icons/gstar.png";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import {Pagination, Autoplay, Navigation} from "swiper/modules";
@@ -19,8 +19,8 @@ import "swiper/css/navigation";
 // @ts-expect-error
 import "swiper/css/pagination";
 
-import prev2 from "../../../assets/icons/prev.png"
-import next2 from "../../../assets/icons/next.png"
+import prev2 from "../../../../public/icons/prev.png"
+import next2 from "../../../../public/icons/next.png"
 
 function CreatorReviews() {
     const { creatorId } = useParams<{ creatorId: string }>(); // URL에서 creatorId 추출

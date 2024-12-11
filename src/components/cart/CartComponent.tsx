@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import useCartStore from "../../stores/cart/cartStore.ts";
 import { useState } from "react";
-import cart2 from "../../assets/icons/shoppingcart.png";
+import cart2 from "../../../public/icons/shoppingcart.png";
 
 function CartComponent() {
     const {

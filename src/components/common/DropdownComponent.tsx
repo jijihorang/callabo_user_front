@@ -1,6 +1,6 @@
 import {useState} from "react";
 
-import down from "../../assets/icons/down.png"
+import down from "../../../public/icons/down.png"
 
 interface DropdownProps {
     selectedOption: string;

@@ -1,4 +1,4 @@
-import heartIcon from "../../../assets/icons/whiteheart.png";
+import heartIcon from "../../../../public/icons/whiteheart.png";
 
 import {useEffect, useState} from "react";
 import {ICreator} from "../../../types/creator/icreator.ts";
