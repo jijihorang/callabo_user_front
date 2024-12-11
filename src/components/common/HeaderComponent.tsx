@@ -101,8 +101,15 @@ function HeaderComponent() {
                     <Link to="/header/wishlist">
                         <img src={heart} alt="찜하기" className="w-6 h-6 cursor-pointer" />
                     </Link>
-                    <Link to="/header/cart">
+                    <Link to="/header/cart" className="relative">
                         <img src={cart} alt="장바구니" className="w-7 h-7 cursor-pointer" />
+                        {totalQuantity > 0 && (
+                            <span
+                                className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center"
+                            >
+                        {totalQuantity}
+                            </span>
+                        )}
                     </Link>
                     <button onClick={handleUserIconClick} className="cursor-pointer">
                         <img src={info} alt="사용자" className="w-7 h-7" />
@@ -125,38 +132,65 @@ function HeaderComponent() {
                 </div>
 
                 {/* 메뉴 리스트 */}
-                <nav className="flex flex-col items-start space-y-6 px-6 py-4 text-[18px] font-medium">
-                    <Link
-                        to="/creator"
-                        className="hover:text-blue-500"
-                        onClick={() => setIsMenuOpen(false)}
-                    >
-                        Creator
-                    </Link>
-                    <Link
-                        to="/event/offlineStore"
-                        className="hover:text-blue-500"
-                        onClick={() => setIsMenuOpen(false)}
-                    >
-                        Event
-                    </Link>
-                    <Link
-                        to="/header/wishlist"
-                        className="hover:text-blue-500"
-                        onClick={() => setIsMenuOpen(false)}
-                    >
-                        Wishlist
-                    </Link>
-                    <button
-                        onClick={() => {
-                            handleUserIconClick();
-                            setIsMenuOpen(false);
-                        }}
-                        className="hover:text-blue-500"
-                    >
-                        My Page
-                    </button>
-                </nav>
+                <div className="bg-white h-full overflow-y-auto">
+                    <nav className="space-y-8 px-8 py-6">
+                        {/* 내 계정 */}
+                        <button
+                            onClick={() => {
+                                handleUserIconClick();
+                                setIsMenuOpen(false);
+                            }}
+                            className="flex items-center space-x-6 hover:text-blue-500 transition"
+                        >
+                            <img
+                                src="/src/assets/icons/userprofile.png"
+                                alt="내 계정"
+                                className="w-8 h-8 object-cover"
+                            />
+                            <span className="text-lg font-medium text-gray-800">내 계정</span>
+                        </button>
+
+                        {/* 크리에이터 */}
+                        <Link
+                            to="/creator"
+                            className="flex items-center space-x-6 hover:text-blue-500 transition"
+                            onClick={() => setIsMenuOpen(false)}
+                        >
+                            <img src="/src/assets/icons/creator.png" alt="크리에이터" className="w-8 h-8" />
+                            <span className="text-lg font-medium text-gray-800">크리에이터</span>
+                        </Link>
+
+                        {/* 오프라인 스토어 */}
+                        <Link
+                            to="/event/offlineStore"
+                            className="flex items-center space-x-6 hover:text-blue-500 transition"
+                            onClick={() => setIsMenuOpen(false)}
+                        >
+                            <img src="/src/assets/icons/offlinestore.png" alt="오프라인 스토어" className="w-8 h-8" />
+                            <span className="text-lg font-medium text-gray-800">오프라인 스토어</span>
+                        </Link>
+
+                        {/* 찜한 상품 */}
+                        <Link
+                            to="/header/wishlist"
+                            className="flex items-center space-x-6 hover:text-blue-500 transition"
+                            onClick={() => setIsMenuOpen(false)}
+                        >
+                            <img src="/src/assets/icons/heart.png" alt="찜한 상품" className="w-8 h-8" />
+                            <span className="text-lg font-medium text-gray-800">찜한 상품</span>
+                        </Link>
+
+                        {/* 장바구니 */}
+                        <Link
+                            to="/header/cart"
+                            className="flex items-center space-x-6 hover:text-blue-500 transition"
+                            onClick={() => setIsMenuOpen(false)}
+                        >
+                            <img src="/src/assets/icons/cart.png" alt="장바구니" className="w-8 h-8" />
+                            <span className="text-lg font-medium text-gray-800">장바구니</span>
+                        </Link>
+                    </nav>
+                </div>
             </div>
         </header>
     );
