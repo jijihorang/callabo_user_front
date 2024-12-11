@@ -88,7 +88,7 @@ function ProductOrderComponent() {
             const phoneRegex = /^010\d{8}$/; // 010으로 시작하고 숫자 8자리가 따라오는 형식
             if (!phoneRegex.test(recipientPhone)) {
                 setAlertOptions({
-                    title: "전화번호 형식이 잘못되었습니다. 01012341234 형식으로 입력해주세요.",
+                    title: "숫자 10자리 형식으로 입력해주세요.",
                     icon: "warning",
                     confirmButtonText: "확인",
                 });

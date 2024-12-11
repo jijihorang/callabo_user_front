@@ -28,7 +28,7 @@ function OrderListComponent() {
         const loadOrders = async () => {
             try {
                 setLoading(true);
-                const fetchedOrders = await fetchOrdersByCustomer(customerId); // API 호출
+                const fetchedOrders = await fetchOrdersByCustomer(customer?.customerId || ""); // API 호출
                 setOrders(fetchedOrders);
             } catch (err: any) {
                 setError(err.message || "주문 내역을 불러오는 중 문제가 발생했습니다.");
