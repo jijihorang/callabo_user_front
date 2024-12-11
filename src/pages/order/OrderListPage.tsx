@@ -1,4 +1,4 @@
-import OrderListComponent from "../../components/product/OrderListComponent";
+import OrderListComponent from "../../components/product/order/OrderListComponent.tsx";
 
 
 function OrderListPage() {

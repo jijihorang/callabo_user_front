@@ -1,34 +1,33 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper/modules";
+import {Autoplay} from "swiper/modules";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
 import "swiper/css";
 
-import img1 from "../../assets/slider/001.png";
-import img2 from "../../assets/slider/002.png";
-import img3 from "../../assets/slider/003.png";
-import img4 from "../../assets/slider/004.png";
-import img5 from "../../assets/slider/005.png";
+import img1 from "../../assets/slider/main/001.png";
+import img2 from "../../assets/slider/main/002.png";
+import img3 from "../../assets/slider/main/003.png";
+import img4 from "../../assets/slider/main/004.png";
+import img5 from "../../assets/slider/main/005.png";
 
 function MainFractionSlider() {
     return (
         <div className="relative w-full">
             <Swiper
-                modules={[Navigation, Pagination]}
-                navigation
-                pagination={{
-                    clickable: true,
-                    dynamicBullets: true,
+                modules={[Autoplay]}
+                autoplay = {{
+                    delay: 3000,
+                    disableOnInteraction: false,
                 }}
                 loop={true}
-                className="w-full h-[500px] md:h-[600px]" // 기본 모바일 높이, 데스크톱에서는 더 높게
+                className="w-full h-[60vh] md:h-[50vh]" // 기본 모바일 높이, 데스크톱에서는 더 높게
             >
                 <SwiperSlide>
                     <div className="relative w-full h-full">
                         {/* 배경 이미지 */}
                         <img
-                            src={img1}
+                            src={img2}
                             alt="Slide Background"
                             className="w-full h-full object-cover"
                         />
@@ -53,7 +52,7 @@ function MainFractionSlider() {
                 <SwiperSlide>
                     <div className="relative w-full h-full">
                         <img
-                            src={img2}
+                            src={img1}
                             alt="Slide Background"
                             className="w-full h-full object-cover"
                         />

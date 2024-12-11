@@ -42,7 +42,6 @@ function WeeklyRanking() {
                             className="w-full h-full object-contain rounded-md"
                         />
                     </div>
-                    <div className="text-2xl font-bold text-center">또간집 X 더마비 44❤️</div>
                 </div>
 
                 {/* 나머지 랭킹 */}

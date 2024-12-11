@@ -12,6 +12,8 @@ import ProductInfoComponent from "./ProductInfoComponent.tsx";
 import ProductDescriptionComponent from "./ProductDescriptionComponent.tsx";
 import ProductFAQComponent from "./ProductFAQComponent.tsx";
 import ProductReviewComponent from "./ProductReviewComponent.tsx";
+import {SweetAlertOptions} from "sweetalert2";
+import AlertComponent from "../../common/AlertComponent.tsx";
 
 
 function ProductDetailComponent() {
@@ -23,6 +25,8 @@ function ProductDetailComponent() {
     const [quantity, setQuantity] = useState(1); // 수량 상태
     const { addToCart } = useCartStore(); // Zustand 상태 가져오기
     const navigate = useNavigate();
+
+    const [alertOptions, setAlertOptions] = useState<SweetAlertOptions | null>(null);
 
     // 화면 크기 체크
     useEffect(() => {
@@ -71,7 +75,13 @@ function ProductDetailComponent() {
                 quantity, // 선택한 수량만큼 추가
                 creatorId: creatorId || "unknown",
             });
-            alert(`${quantity}개가 장바구니에 추가되었습니다.`);
+
+            setAlertOptions({
+                title: "장바구니 추가",
+                text: `${quantity}개가 장바구니에 추가되었습니다.`,
+                icon: "success",
+                confirmButtonText: "확인",
+            });
             setShowPurchasePopup(false);
         }
     };
@@ -102,6 +112,14 @@ function ProductDetailComponent() {
 
     return (
         <div className="container mx-auto mt-5 pb-5">
+
+            {alertOptions && (
+                <AlertComponent
+                    options={alertOptions}
+                    onClose={() => setAlertOptions(null)} // 알림 닫힐 때 초기화
+                />
+            )}
+
             {/* 상품 이미지 및 정보 섹션 */}
             <div className="flex flex-col lg:flex-row items-stretch gap-4">
                 <div className="flex-1 flex justify-center">

@@ -1,5 +1,6 @@
 import { IProduct } from "../../../types/product/iproduct.ts";
-import wheart from "../../../assets/icons/whiteheart.png";
+import LikeButton from "../ProductLikeButton.tsx";
+import useAuthStore from "../../../stores/customer/AuthStore.ts";
 
 function ProductInfoComponent({
                                   product,
@@ -14,6 +15,8 @@ function ProductInfoComponent({
     quantity: number;
     setQuantity: (value: number) => void;
 }) {
+    const { customer } = useAuthStore();
+
     if (!product) {
         return (
             <div className="w-full max-w-md mx-auto text-gray-800">
@@ -26,14 +29,14 @@ function ProductInfoComponent({
         <div className="w-full max-w-md mx-auto text-gray-800">
             <div className="mb-6">
                 <p className="text-sm text-gray-500 mb-1">{product.categoryName || "카테고리 없음"}</p>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between relative">
                     <h1 className="text-3xl font-bold">{product.productName}</h1>
-                    <button className="p-2 transition hidden lg:block">
-                        <img src={wheart} alt="상품 찜" className="w-6 h-6" />
-                    </button>
+                    <LikeButton
+                        customerId={customer?.customerId || ""}
+                        productId={product.productNo}
+                    />
                 </div>
                 <p className="text-2xl font-bold text-gray-800 mt-4">{product.productPrice.toLocaleString()}원</p>
-                <p className="mt-2">19개 리뷰보기</p>
             </div>
 
             {/* 수량 선택 */}

@@ -60,12 +60,28 @@ export const updateCustomer = async (
 
 export const toggleProductLikeAPI = async (
     customerId: string,
-    productId: string,
-    likeStatus: boolean
+    productId: string
 ): Promise<void> => {
     await axios.post(`${host}/like`, {
         customerId,
         productId,
-        likeStatus,
     });
+};
+
+export const checkProductLikeStatusAPI = async (
+    customerId: string,
+    productId: string
+): Promise<boolean> => {
+    try {
+        const response = await axios.get(`${host}/like/status`, {
+            params: {
+                customerId,
+                productId,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error("좋아요 상태 확인 중 오류 발생:", error);
+        throw new Error("좋아요 상태 확인에 실패했습니다.");
+    }
 };

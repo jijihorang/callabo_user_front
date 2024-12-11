@@ -9,19 +9,38 @@ import shoopringcart from "../../../assets/icons/shoppingcart.png"
 import review from "../../../assets/icons/review.png"
 
 import user from "../../../assets/icons/userprofile.png"
+import {useState} from "react";
+import {SweetAlertOptions} from "sweetalert2";
+import AlertComponent from "../../common/AlertComponent.tsx";
 
 function UserInfoComponent() {
     const { customer, logout } = useAuthStore();
     const navigate = useNavigate();
 
+    const [alertOptions, setAlertOptions] = useState<SweetAlertOptions | null>(null);
+
     const handleLogout = () => {
         logout();
-        alert("로그아웃 되었습니다.");
         navigate("/");
+
+        setAlertOptions({
+            title: "로그아웃",
+            icon: "success",
+            confirmButtonText: "확인",
+        });
+
     };
 
     return (
         <div className="flex flex-col items-center justify-center py-12 px-4">
+
+            {alertOptions && (
+                <AlertComponent
+                    options={alertOptions}
+                    onClose={() => setAlertOptions(null)} // 알림 닫힐 때 초기화
+                />
+            )}
+
             {/* 프로필 섹션 */}
             <div className="p-8 w-full max-w-lg mb-10 text-center">
                 <img
@@ -60,7 +79,7 @@ function UserInfoComponent() {
                     <img src={shoopringcart} alt="장바구니" className="w-16 h-16 mx-auto"/>
                     <p className="text-sm mt-2 font-semibold">장바구니</p>
                 </Link>
-                <Link to="" className="text-center">
+                <Link to="/review/list" className="text-center">
                     <img src={review} alt="리뷰" className="w-16 h-16 mx-auto"/>
                     <p className="text-sm mt-2 font-semibold">작성한 리뷰</p>
                 </Link>

@@ -1,4 +1,4 @@
-function QnAReadComponent({question, closeModal,}: {
+function QnAReadComponent({ question, closeModal }: {
     question: {
         title: string;
         date: string;
@@ -25,19 +25,21 @@ function QnAReadComponent({question, closeModal,}: {
                 </div>
 
                 {/* 첨부 파일 */}
-                <div className="mb-4">
-                    <h3 className="text-sm font-bold text-gray-700 mb-2">첨부 파일</h3>
-                    <div className="flex space-x-2">
-                        {question.attachments.map((attachment, index) => (
-                            <img
-                                key={index}
-                                src={attachment}
-                                alt={`첨부 파일 ${index + 1}`}
-                                className="w-20 h-20 object-cover rounded-lg border"
-                            />
-                        ))}
+                {question.attachments.length > 0 && (
+                    <div className="mb-4">
+                        <h3 className="text-sm font-bold text-gray-700 mb-2">첨부 파일</h3>
+                        <div className="flex space-x-2">
+                            {question.attachments.map((attachment, index) => (
+                                <img
+                                    key={index}
+                                    src={attachment}
+                                    alt={`첨부 파일 ${index + 1}`}
+                                    className="w-20 h-20 object-cover rounded-lg border"
+                                />
+                            ))}
+                        </div>
                     </div>
-                </div>
+                )}
 
                 {/* 답변 */}
                 <div className="mt-4 p-4 bg-gray-100 border border-gray-300 rounded-lg">

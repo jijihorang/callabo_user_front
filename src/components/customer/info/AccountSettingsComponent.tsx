@@ -4,6 +4,8 @@ import { useDaumPostcodePopup } from "react-daum-postcode";
 import useAuthStore from "../../../stores/customer/AuthStore.ts";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import {SweetAlertOptions} from "sweetalert2";
+import AlertComponent from "../../common/AlertComponent.tsx";
 
 function AccountSettingsPage() {
 
@@ -15,6 +17,8 @@ function AccountSettingsPage() {
     const [detailAddress, setDetailAddress] = useState("");
 
     const navigate = useNavigate();
+
+    const [alertOptions, setAlertOptions] = useState<SweetAlertOptions | null>(null);
 
     const scriptUrl =
         "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
@@ -59,15 +63,33 @@ function AccountSettingsPage() {
                 `http://localhost:8080/api2/customer/${customer?.customerId}`,
                 payload
             );
-            alert("저장되었습니다.");
+            setAlertOptions({
+                title: "사용자 정보",
+                text: `저장되었습니다`,
+                icon: "success",
+                confirmButtonText: "확인",
+            });
         } catch (error) {
             console.error("저장 중 오류:", error);
-            alert("저장에 실패했습니다.");
+            setAlertOptions({
+                title: "사용자 정보",
+                text: `저장 실패하였습니다.`,
+                icon: "error",
+                confirmButtonText: "확인",
+            });
         }
     };
 
     return (
         <div className="container mx-auto py-8 px-4">
+
+            {alertOptions && (
+                <AlertComponent
+                    options={alertOptions}
+                    onClose={() => setAlertOptions(null)} // 알림 닫힐 때 초기화
+                />
+            )}
+
             <h1 className="text-2xl md:text-3xl font-bold text-center mb-8">계정 설정</h1>
             <form className="space-y-8">
                 <div className="flex justify-center">
