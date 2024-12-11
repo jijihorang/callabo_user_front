@@ -33,7 +33,6 @@ function ProductInfoComponent({
                     </button>
                 </div>
                 <p className="text-2xl font-bold text-gray-800 mt-4">{product.productPrice.toLocaleString()}원</p>
-                <p className="mt-2">19개 리뷰보기</p>
             </div>
 
             {/* 수량 선택 */}

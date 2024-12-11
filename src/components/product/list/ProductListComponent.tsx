@@ -1,3 +1,15 @@
+import { Swiper, SwiperSlide } from "swiper/react";
+import {Autoplay, Navigation} from "swiper/modules";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
+import "swiper/css";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
+import "swiper/css/navigation";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
+import "swiper/css/pagination";
+
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
@@ -10,24 +22,23 @@ import { ICreator } from "../../../types/creator/icreator.ts";
 import { getProductList } from "../../../apis/product/productAPI.ts";
 import { getCreatorList } from "../../../apis/creator/creatorAPI.ts";
 
-import LikeButton from "../ProductLikeButton.tsx";
+import { SweetAlertOptions } from "sweetalert2";
+import AlertComponent from "../../common/AlertComponent.tsx";
 
 function ProductListComponent() {
     const { creatorId } = useParams(); // URL에서 creatorId 추출
     const { customer } = useAuthStore();
     const { addToCart } = useCartStore(); // Zustand 상태 가져오기
     const [products, setProducts] = useState<IProductList[]>([]);
-    const [visibleProducts, setVisibleProducts] = useState<IProductList[]>([]); // 현재 화면에 보이는 상품들
     const [creator, setCreator] = useState<ICreator | null>(null);
-    const [expanded, setExpanded] = useState(false); // "See More" / "Close" 상태
-    const productsPerPage = 8; // 한 페이지에 표시할 상품 수
+    const [alertOptions, setAlertOptions] = useState<SweetAlertOptions | null>(null);
 
     // 데이터 로드
     useEffect(() => {
         const fetchProducts = async () => {
             try {
                 if (creatorId) {
-                    const data = await getProductList(creatorId); // creatorId로 필터링된 상품 목록 가져오기
+                    const data = await getProductList(creatorId);
 
                     // 상품 번호 기준으로 중복 제거
                     const uniqueProducts = data.filter(
@@ -36,7 +47,6 @@ function ProductListComponent() {
                     );
 
                     setProducts(uniqueProducts);
-                    setVisibleProducts(uniqueProducts.slice(0, productsPerPage)); // 첫 페이지의 상품만 표시
                 }
             } catch (error) {
                 console.error("상품 데이터를 가져오는 중 에러 발생:", error);
@@ -46,8 +56,8 @@ function ProductListComponent() {
         const fetchCreatorInfo = async () => {
             try {
                 if (customer?.customerId) {
-                    const data = await getCreatorList(customer.customerId); // customerId로 제작자 목록 가져오기
-                    const selectedCreator = data.find((c: ICreator) => c.creatorId === creatorId); // creatorId로 필터링
+                    const data = await getCreatorList(customer.customerId);
+                    const selectedCreator = data.find((c: ICreator) => c.creatorId === creatorId);
                     setCreator(selectedCreator || null);
                 } else {
                     console.error("customerId가 없습니다.");
@@ -59,63 +69,50 @@ function ProductListComponent() {
 
         fetchCreatorInfo();
         fetchProducts();
-    }, [creatorId]); // creatorId 변경 시 재호출
-
-    const handleLikeStatusChange = (productId: number, newStatus: boolean) => {
-        setProducts((prevProducts) =>
-            prevProducts.map((product) =>
-                product.productNo === productId ? { ...product, likeStatus: newStatus } : product
-            )
-        );
-        setVisibleProducts((prevVisibleProducts) =>
-            prevVisibleProducts.map((product) =>
-                product.productNo === productId ? { ...product, likeStatus: newStatus } : product
-            )
-        );
-    };
-
-    // "See More" / "Close" 버튼 클릭 핸들러
-    const toggleProductVisibility = () => {
-        if (expanded) {
-            setVisibleProducts(products.slice(0, productsPerPage)); // 처음 페이지로 되돌리기
-        } else {
-            setVisibleProducts(products); // 모든 상품 표시
-        }
-        setExpanded(!expanded); // 상태 토글
-    };
+    }, [creatorId]);
 
     // 장바구니에 상품 추가
     const handleAddToCart = (product: IProductList) => {
-        // IProduct로 변환, creatorId를 명시적으로 전달
         const productData: IProduct = {
             ...product,
-            productDescription: product.productDescription || "", // 필요시 기본값 설정
-            productImages: product.productImages || [], // 필요시 기본값 설정
+            productDescription: product.productDescription || "",
+            productImages: product.productImages || [],
         };
 
-        // creatorId가 없을 경우 대체값을 넣거나, 예외 처리를 할 수 있습니다.
-        const productCreatorId = creatorId || "unknown"; // creatorId를 명시적으로 설정
+        const productCreatorId = creatorId || "unknown";
 
-        // 장바구니에 추가
         addToCart({
             id: productData.productNo,
             img: product.productImageUrl || "https://via.placeholder.com/150",
             name: productData.productName,
             price: productData.productPrice,
             category: productData.categoryName || "기타",
-            quantity: 1, // 선택한 수량만큼 추가
-            creatorId: productCreatorId, // creatorId를 명시적으로 설정
+            quantity: 1,
+            creatorId: productCreatorId,
         });
-        alert(`${1}개가 장바구니에 추가되었습니다.`); // 수량 반영
+
+        setAlertOptions({
+            title: "장바구니 추가",
+            text: `${productData.productName} 1개가 장바구니에 추가되었습니다.`,
+            icon: "success",
+            confirmButtonText: "확인",
+        });
     };
 
-    // 데이터 로딩 중 상태
     if (!creator) {
         return <p className="text-center">제작자 정보를 불러오는 중입니다...</p>;
     }
 
     return (
         <div className="container mx-auto mb-20 px-5">
+
+            {alertOptions && (
+                <AlertComponent
+                    options={alertOptions}
+                    onClose={() => setAlertOptions(null)}
+                />
+            )}
+
             {/* 배너 */}
             <div className="relative w-full h-[300px] lg:h-[400px] rounded-xl overflow-hidden mb-5">
                 <img
@@ -145,74 +142,91 @@ function ProductListComponent() {
             </div>
 
             {/* 상품 리스트 */}
-            <div className="px-4">
+            <div className="px-4 relative">
                 <div className="flex justify-between items-center mb-5">
                     <div>
                         <h2 className="text-[15px]">당신의 취향을 저격할</h2>
                         <h1 className="text-[30px] font-bold">PRODUCTS</h1>
                     </div>
 
-                    {/* "See More" / "Close" 버튼 */}
-                    {products.length > productsPerPage && (
-                        <button
-                            className="px-6 py-2 text-gray-500 border border-gray-400 rounded-lg transition"
-                            onClick={toggleProductVisibility}
-                        >
-                            {expanded ? "Close" : "See More"}
-                        </button>
-                    )}
+                    <div>
+                        <button className="mt-2">전체보기</button>
+                    </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {visibleProducts.map((product, index) => (
-                        <div
-                            key={`${product.productNo}-${index}`}
-                            className="relative bg-white rounded-lg shadow-md hover:shadow-lg transition-all"
-                        >
-                            <Link to={`/product/${creatorId}/detail/${product.productNo}`}>
-                                {/* 상품 이미지 */}
-                                <div className="w-full h-48 overflow-hidden rounded-t-lg">
-                                    <img
-                                        src={
-                                            product.productImageUrl
-                                                ? product.productImageUrl
-                                                : "https://via.placeholder.com/150"
-                                        }
-                                        alt={product.productName}
-                                        className="w-full h-full object-cover"
-                                    />
-                                </div>
-
-                                {/* 상품 정보 */}
-                                <div className="p-4">
-                                    <h4 className="text-[14px] font-bold text-gray-800 truncate">
-                                        {product.productName}
-                                    </h4>
-                                    <p className="text-gray-600 text-sm mt-2">
-                                        {product.productPrice.toLocaleString()}원
-                                    </p>
-                                </div>
-                            </Link>
-
-                            {/* 하트 아이콘 */}
-
-                            <LikeButton
-                                customerId={customer?.customerId || ""}
-                                productId={product.productNo}
-                                currentStatus={product.likeStatus || false}
-                                onToggle={(newStatus) => handleLikeStatusChange(product.productNo, newStatus)}
-                            />
-
-                            {/* 장바구니 아이콘 */}
-                            <button
-                                className="absolute bottom-4 right-4 p-2 bg-white rounded-full shadow border hover:bg-gray-100"
-                                onClick={() => handleAddToCart(product)} // IProductList를 IProduct로 변환하여 사용
-                            >
-                                <img src={cart2} alt="장바구니" className="w-5 h-5" />
-                            </button>
-                        </div>
+                {/* 상품 리스트를 Swiper로 구현 */}
+                <Swiper
+                    modules={[Navigation, Autoplay]}
+                    spaceBetween={20}
+                    slidesPerView={4}
+                    navigation={{
+                        prevEl: ".swiper-button-prev",
+                        nextEl: ".swiper-button-next",
+                    }}
+                    autoplay={{
+                        delay: 5000, // 3초마다 자동으로 넘어감
+                        disableOnInteraction: false, // 사용자가 스와이프해도 autoplay 유지
+                    }}
+                    breakpoints={{
+                        320: { // 모바일 화면
+                            slidesPerView: 2, // 2개씩 표시
+                            spaceBetween: 10,
+                        },
+                        768: { // 태블릿 화면
+                            slidesPerView: 3, // 3개씩 표시
+                            spaceBetween: 15,
+                        },
+                        1024: { // 데스크톱 화면
+                            slidesPerView: 4, // 4개씩 표시
+                            spaceBetween: 20,
+                        },
+                    }}
+                    className="relative"
+                >
+                    {products.map((product) => (
+                        <SwiperSlide key={product.productNo}>
+                            <div className="relative bg-white rounded-lg shadow-md hover:shadow-lg transition-all p-2">
+                                <Link to={`/product/${creatorId}/detail/${product.productNo}`}>
+                                    <div className="w-full h-50 overflow-hidden rounded-t-lg">
+                                        <img
+                                            src={
+                                                product.productImageUrl
+                                                    ? product.productImageUrl
+                                                    : "https://via.placeholder.com/150"
+                                            }
+                                            alt={product.productName}
+                                            className="w-full h-full object-cover"
+                                        />
+                                    </div>
+                                    <div className="p-4">
+                                        <h4 className="text-[14px] font-bold text-gray-800 truncate">
+                                            {product.productName}
+                                        </h4>
+                                        <p className="text-gray-600 text-sm mt-2">
+                                            {product.productPrice.toLocaleString()}원
+                                        </p>
+                                    </div>
+                                </Link>
+                                <button
+                                    className="absolute bottom-4 right-4 p-2 bg-white rounded-full shadow border hover:bg-gray-100"
+                                    onClick={() => handleAddToCart(product)}
+                                >
+                                    <img src={cart2} alt="장바구니" className="w-5 h-5"/>
+                                </button>
+                            </div>
+                        </SwiperSlide>
                     ))}
-                </div>
+                </Swiper>
+
+                <div
+                    className="swiper-button-prev !absolute !top-[50%] !left-[-30px] z-10 hidden lg:block"
+                    style={{display: window.innerWidth >= 1024 ? "block" : "none"}}
+                ></div>
+                <div
+                    className="swiper-button-next !absolute !top-[50%] !right-[-30px] z-10 hidden lg:block"
+                    style={{display: window.innerWidth >= 1024 ? "block" : "none"}}
+                ></div>
+
             </div>
         </div>
     );

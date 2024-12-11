@@ -30,6 +30,8 @@ function QnAListComponent() {
         const fetchData = async () => {
             try {
                 const qnaList = await getQnAList(); // QnA 목록 가져오기
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-expect-error
                 setData(qnaList);
             } catch (error) {
                 console.error("QnA 목록을 가져오는 데 실패했습니다.", error);

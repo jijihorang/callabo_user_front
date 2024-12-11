@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import useCartStore from "../../stores/cart/cartStore.ts";
 import { useState } from "react";
+import cart2 from "../../assets/icons/shoppingcart.png";
 
 function CartComponent() {
     const {
@@ -35,6 +36,29 @@ function CartComponent() {
         }
     };
 
+    // 장바구니가 비었는지 확인
+    const isCartEmpty = cartGroups.length === 0 || cartGroups.every(group => group.products.length === 0);
+
+    if (isCartEmpty) {
+        return (
+            <div className="flex flex-col items-center justify-center h-96 mt-20">
+                <img
+                    src={cart2}
+                    alt="장바구니 아이콘"
+                    className="w-20 h-20 mb-6"
+                />
+                <p className="text-lg font-bold mb-2">장바구니에 상품이 없어요</p>
+                <p className="text-gray-600 mb-6">내 취향의 상품을 찾아보세요.</p>
+                <button
+                    className="px-6 py-2 bg-blue-500 text-white rounded-lg"
+                    onClick={() => navigate(`/creator/list`)}
+                >
+                    상품 구경하기
+                </button>
+            </div>
+        );
+    }
+
     return (
         <div className="container mx-auto px-4 py-8 flex flex-col md:flex-row">
             {/* 상품 목록 영역 */}
@@ -55,7 +79,7 @@ function CartComponent() {
                                 key={product.id}
                                 className="py-3 flex flex-col space-y-3 relative border rounded-lg p-4"
                             >
-                                {/* 삭제 버튼 (오른쪽 상단 X 버튼) */}
+                                {/* 삭제 버튼 */}
                                 <button
                                     onClick={() => removeProduct(groupIndex, productIndex)}
                                     className="absolute top-2 right-2 w-6 h-6 flex justify-center items-center text-gray-500 hover:text-red-600"
@@ -89,7 +113,7 @@ function CartComponent() {
                                         </div>
                                     </div>
                                 </div>
-                                {/* 수량 및 가격 정보 + 버튼 */}
+                                {/* 수량 및 가격 */}
                                 <div className="flex justify-between items-center bg-gray-100 p-3 rounded-md mb-4">
                                     <div className="flex items-center space-x-2">
                                         <span>수량 / {product.quantity}개</span>
