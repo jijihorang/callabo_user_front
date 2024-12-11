@@ -69,6 +69,7 @@ function HeaderComponent() {
                     isMenuOpen ? "translate-x-0" : "translate-x-full"
                 }`}
             >
+
                 {/* 메뉴 헤더 */}
                 <div className="bg-gray-200 flex items-center justify-center px-5 py-4 shadow-md relative">
                     <h1 className="text-xl font-bold text-gray-800">Menu</h1>
