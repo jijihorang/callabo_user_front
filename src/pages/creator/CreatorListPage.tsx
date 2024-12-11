@@ -1,4 +1,4 @@
-import CreatorListComponent from "../../components/creator/CreatorListComponent.tsx";
+import CreatorListComponent from "../../components/creator/list/CreatorListComponent.tsx";
 
 function CreatorListPage() {
     return (

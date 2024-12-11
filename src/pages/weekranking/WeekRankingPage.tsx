@@ -1,4 +1,4 @@
-import WeekRankingComponent from "../../components/weekranking/WeekRankingComponent.tsx";
+import WeekRankingComponent from "../../components/main/ranking/WeekRankingComponent.tsx";
 
 function WeekRankingPage() {
     return (

@@ -17,7 +17,7 @@ const productRouter = {
             element: <Suspense fallback={Loading}><ProductList/></Suspense>
         },
         {
-            path: "detail/:productNo",
+            path: ":creatorId/detail/:productNo",
             element: <Suspense fallback={Loading}><ProductDetail/></Suspense>
         },
         {

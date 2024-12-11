@@ -1,8 +1,11 @@
-import {IReview} from "../../types/review/ireview.ts";
+import { IReview } from "../../../types/review/ireview.ts";
+import star2 from "../../../assets/icons/star.png";
+import noStar2 from "../../../assets/icons/gstar.png";
 
 function CreatorReviewReadComponent({ review, closeModal }: { review: IReview; closeModal: () => void }) {
+
     return (
-        <div className="p-4 bg-white rounded-lg w-full max-w-2xl p-2 md:p-3 relative">
+        <div className="p-6 bg-white rounded-lg w-11/12 max-w-3xl mx-auto relative shadow-lg">
             {/* 닫기 버튼 */}
             <button
                 className="absolute top-2 right-2 text-gray-500 hover:text-black"
@@ -11,79 +14,78 @@ function CreatorReviewReadComponent({ review, closeModal }: { review: IReview; c
                 ✕
             </button>
 
-            {/* 이미지 섹션 */}
-            <div className="flex flex-col md:flex-row">
-                <img
-                    src={
-                        review.reviewImages && review.reviewImages.length > 0
-                            ? review.reviewImages[0].reviewImageUrl // 첫 번째 리뷰 이미지
-                            : "https://via.placeholder.com/150" // 기본 이미지
-                    }
-                    alt="리뷰 이미지"
-                    className="w-full md:w-1/2 h-auto rounded-lg mr-0 md:mr-4 mb-4 md:mb-0"
-                />
-                <div className="flex flex-col">
-                    {/* 유저 정보 */}
-                    <div className="flex items-center mb-2">
-                        <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
+            {/* 전체 컨테이너 */}
+            <div className="flex flex-col md:flex-row md:space-x-6">
+                {/* 왼쪽: 리뷰 이미지 */}
+                <div className="flex-shrink-0 w-full md:w-1/2 mb-4 md:mb-0">
+                    <img
+                        src={
+                            review.reviewImages && review.reviewImages.length > 0
+                                ? review.reviewImages[0].reviewImageUrl
+                                : "https://via.placeholder.com/150"
+                        }
+                        alt="리뷰 이미지"
+                        className="w-full h-auto rounded-lg shadow-md"
+                    />
+                </div>
+
+                {/* 오른쪽: 리뷰 및 상품 정보 */}
+                <div className="flex flex-col flex-grow space-y-4">
+                    {/* 사용자 정보 */}
+                    <div className="flex items-center space-x-4">
+                        <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
                             <span className="text-gray-500 font-bold">
                                 {review.customerName.charAt(0).toUpperCase()}
                             </span>
                         </div>
-                        <div className="ml-2">
+                        <div>
                             <div className="text-sm font-bold">{review.customerName}</div>
                             <div className="text-xs text-gray-500">{review.createdAt}</div>
                         </div>
                     </div>
 
                     {/* 별점 */}
-                    <div className="flex text-yellow-500 mb-2">
-                        {Array(review.rating)
+                    <div className="flex items-center space-x-1">
+                        {Array(5)
                             .fill(0)
                             .map((_, i) => (
-                                <span key={i}>★</span>
+                                <img
+                                    key={i}
+                                    src={i < review.rating ? star2 : noStar2}
+                                    alt={i < review.rating ? "별점 채움" : "별점 비움"}
+                                    className="w-4 h-4"
+                                />
                             ))}
                     </div>
 
                     {/* 리뷰 내용 */}
                     <div className="text-sm text-gray-800">{review.comment}</div>
-                </div>
-            </div>
 
-            {/* 제품 정보 */}
-            <div className="mt-2 pt-2 md:mt-3 md:pt-3">
-                <div className="bg-white border-2 border-gray-300 rounded-lg">
-                    <div className="flex flex-col md:flex-row items-center ml-4 mt-2 md:mt-3 mb-2 md:mb-3">
+                    {/* 상품 정보 */}
+                    <div className="mt-4 p-4 flex items-center space-x-4 border border-gray-200 rounded-lg shadow-sm">
                         <img
                             src={
-                                review.reviewImages && review.reviewImages.length > 0
-                                    ? review.reviewImages[0].reviewImageUrl // 첫 번째 리뷰 이미지
-                                    : "https://via.placeholder.com/150" // 기본 이미지
+                                review.productImages && review.productImages.length > 0
+                                    ? review.productImages[0].productImageUrl
+                                    : "https://via.placeholder.com/150"
                             }
                             alt="제품 이미지"
-                            className="w-16 h-16 rounded-lg mr-0 md:mr-4 mb-4 md:mb-0"
+                            className="w-16 h-16 rounded-lg object-cover shadow-sm"
                         />
                         <div>
-                            <div className="font-bold">{review.productName}</div>
-                            <div className="text-sm text-gray-500">{review.productDescription}</div>
+                            <div className="text-base font-bold">{review.productName}</div>
+                            <div className="text-sm text-gray-500 mt-1">
+                                {review.productPrice.toLocaleString()}원
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* 댓글 섹션 */}
-            <div className="mt-6 md:mt-12">
-                <div className="text-sm text-gray-500 mb-2">댓글 없음</div>
-                <div className="flex flex-col md:flex-row items-center border-t pt-2 md:pt-3">
-                    <input
-                        type="text"
-                        placeholder="크리에이터를 응원하는 댓글을 남겨주세요."
-                        className="flex-1 border rounded-lg px-2 py-1 text-sm mb-4 md:mb-0"
-                    />
-                    <button className="ml-0 md:ml-2 px-4 py-1 bg-blue-500 text-white rounded-lg text-sm">
-                        등록
-                    </button>
-                </div>
+            {/* 판매자 답변 */}
+            <div className="mt-6 bg-gray-100 border border-gray-300 rounded-lg px-4 py-2">
+                <span className="text-blue-600 font-bold">판매자 답변 </span>
+                <span className="text-gray-800">: {review.reply || "판매자의 답변이 없습니다."}</span>
             </div>
         </div>
     );

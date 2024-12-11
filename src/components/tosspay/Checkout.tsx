@@ -1,5 +1,6 @@
 import { loadTossPayments } from "@tosspayments/tosspayments-sdk";
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const CLIENT_KEY = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
 const CUSTOMER_KEY = "cvtmCtwf46RnuA58qXRAf";
@@ -10,7 +11,17 @@ interface Amount {
 }
 
 function CheckoutPage() {
-    const [amount, setAmount] = useState<Amount>({ currency: "KRW", value: 50_000 });
+    const { state } = useLocation();
+    const orderData = state?.orderData;
+
+    if (!orderData) {
+        return <div>결제 정보가 없습니다. 다시 시도해주세요.</div>;
+    }
+
+    const [amount, setAmount] = useState<Amount>({
+        currency: "KRW",
+        value: orderData.totalPrice || 0, // 결제 금액 초기화
+    });
     const [ready, setReady] = useState(false);
     const [widgets, setWidgets] = useState<any>(null);
 
@@ -55,23 +66,26 @@ function CheckoutPage() {
         renderPaymentWidgets();
     }, [widgets, amount]);
 
-    const handleAmountChange = (checked: boolean): void => {
-        const valueChange = checked ? -5_000 : 5_000;
-        setAmount((prev) => ({ ...prev, value: prev.value + valueChange }));
-    };
-
     const handlePayment = async (): Promise<void> => {
         if (!widgets) return;
 
+        console.log("orderData:", orderData);
+        console.log("items:", orderData.items);
+        console.log("items length:", orderData.items?.length);
+
+
         try {
             await widgets.requestPayment({
-                orderId: "OUTOFWs2VFZg0iFhWMMm3",
-                orderName: "토스 티셔츠 외 2건",
-                successUrl: `${window.location.origin}/success`,
-                failUrl: `${window.location.origin}/fail`,
-                customerEmail: "customer123@gmail.com",
-                customerName: "김토스",
-                customerMobilePhone: "01012341234",
+                orderId: orderData.orderId || "DEFAULT_ORDER_ID", // orderId는 전달받은 데이터 사용
+                orderName: orderData.items
+                    ?.map((item) => item.productName)
+                    .slice(0, 2)
+                    .join(", ") + " 외 " + (orderData.items.length - 2) + "건",
+                successUrl: `${window.location.origin}/tosspay/success`,
+                failUrl: `${window.location.origin}/tosspay/fail`,
+                customerEmail: orderData.customerEmail,
+                customerName: orderData.recipientName, // 주문자 이름 적용
+                customerMobilePhone: orderData.recipientPhone, // 주문자 연락처 적용
             });
         } catch (error) {
             console.error("결제 요청 중 오류 발생:", error);
@@ -81,27 +95,25 @@ function CheckoutPage() {
     return (
         <div className="wrapper">
             <div className="box_section">
+                <h2 className="text-xl font-bold mb-4">
+                    결제자: {orderData.recipientName}님
+                </h2>
+                <h3 className="text-lg mb-4">
+                    결제 금액: {amount.value.toLocaleString()}원
+                </h3>
                 <div id="payment-method" />
                 <div id="agreement" />
 
-                <div>
-                    <label htmlFor="coupon-box">
-                        <input
-                            id="coupon-box"
-                            type="checkbox"
-                            disabled={!ready}
-                            onChange={(e) => handleAmountChange(e.target.checked)}
-                        />
-                        <span>5,000원 쿠폰 적용</span>
-                    </label>
-                </div>
-
-                <button className="button" disabled={!ready} onClick={handlePayment}>
+                <button
+                    className="button"
+                    disabled={!ready}
+                    onClick={handlePayment}
+                >
                     결제하기
                 </button>
             </div>
         </div>
     );
-};
+}
 
 export default CheckoutPage;

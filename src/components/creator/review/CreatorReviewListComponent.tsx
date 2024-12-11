@@ -3,7 +3,8 @@ import { useParams } from "react-router-dom"; // useParams import 추가
 import CreatorReviewReadComponent from "./CreatorReviewReadComponent";
 import {IReview} from "../../../types/review/ireview.ts";
 import {getReviewList} from "../../../apis/review/reviewAPI.ts";
-
+import star1 from "../../../assets/icons/star.png";
+import noStar1 from "../../../assets/icons/gstar.png";
 
 function CreatorReviews() {
     const { creatorId } = useParams<{ creatorId: string }>(); // URL에서 creatorId 추출
@@ -65,7 +66,7 @@ function CreatorReviews() {
                     {/* "See More" / "Close" 버튼 */}
                     <div className="text-center mt-8">
                         <button
-                            className="px-6 py-2 text-gray-500 border border-gray-400 rounded-lg transition"
+                            className="px-3 py-2 text-gray-500 border border-gray-400 rounded-lg transition"
                             onClick={toggleReviews}
                         >
                             {expanded ? "Close" : "See More"}
@@ -91,13 +92,18 @@ function CreatorReviews() {
                             alt={`리뷰 이미지 ${index + 1}`}
                             className="w-full h-64 object-cover rounded-lg mb-4"
                         />
-                        <div className="flex items-center space-x-2 mb-2">
-                            {/* 별점 표시 */}
-                            <div className="flex text-blue-600">
-                                {Array(review.rating)
+                        <div className="flex justify-between space-x-2 mb-2">
+                            {/* 별점 */}
+                            <div className="flex items-center space-x-1">
+                                {Array(5)
                                     .fill(0)
                                     .map((_, i) => (
-                                        <span key={i} className="text-lg md:text-xl">★</span>
+                                        <img
+                                            key={i}
+                                            src={i < review.rating ? star1 : noStar1}
+                                            alt={i < review.rating ? "별점 채움" : "별점 비움"}
+                                            className="w-4 h-4"
+                                        />
                                     ))}
                             </div>
                             <span className="text-gray-400 text-sm md:text-base">{review.createdAt}</span>
@@ -106,9 +112,7 @@ function CreatorReviews() {
                         <div className="flex items-center">
                             <div>
                                 <div className="text-sm font-semibold md:text-base">{review.productName}</div>
-                                <div className="text-sm text-gray-500 md:text-base">
-                                    {review.productDescription}
-                                </div>
+                                <div>{review.productPrice}</div>
                             </div>
                         </div>
                     </div>

@@ -1,4 +1,4 @@
-import ProductListComponent from "../../components/product/ProductListComponent.tsx";
+import ProductListComponent from "../../components/product/list/ProductListComponent.tsx";
 import CreatorReviewListComponent from "../../components/creator/review/CreatorReviewListComponent.tsx";
 
 function ProductListPage() {

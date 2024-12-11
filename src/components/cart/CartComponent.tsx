@@ -1,6 +1,6 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import useCartStore from "../../stores/cart/cartStore.ts";
+import { useState } from "react";
 
 function CartComponent() {
     const {
@@ -11,11 +11,11 @@ function CartComponent() {
     } = useCartStore(); // Zustand에서 상태 가져오기
     const navigate = useNavigate();
 
-    const [isCollapsed, setIsCollapsed] = React.useState(true); // 슬라이드 상태 초기화
-    const [startY, setStartY] = React.useState(0); // 터치 시작 위치
+    const [isCollapsed, setIsCollapsed] = useState(true); // 슬라이드 상태 초기화
+    const [startY, setStartY] = useState(0); // 터치 시작 위치
 
     const moveToOrder = () => {
-        navigate(`/product/order`);
+        navigate(`/product/order`, { state: { cartGroups: cartGroups } });
     };
 
     // 터치 시작
@@ -43,7 +43,6 @@ function CartComponent() {
                 {cartGroups.map((group, groupIndex) => (
                     <div key={groupIndex}>
                         <div className="border-t-2 border-gray-400 pb-4 pt-3 flex items-center">
-                            <input type="checkbox" className="mr-4" />
                             <h3 className="text-lg font-bold flex items-center">
                                 {group.groupName}
                                 <span role="img" aria-label="배송" className="ml-2">
@@ -78,7 +77,6 @@ function CartComponent() {
                                     </svg>
                                 </button>
                                 <div className="flex items-center">
-                                    <input type="checkbox" className="mr-4" />
                                     <img
                                         src={product.img}
                                         alt={product.name}
@@ -86,9 +84,6 @@ function CartComponent() {
                                     />
                                     <div className="ml-5 flex-grow">
                                         <div className="font-semibold text-lg">{product.name}</div>
-                                        <div className="text-gray-400 text-sm mt-1">
-                                            {product.category}
-                                        </div>
                                         <div className="text-blue-600 font-bold mb-2">
                                             {(product.price ?? 0).toLocaleString()}원
                                         </div>
