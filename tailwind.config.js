@@ -6,21 +6,18 @@ export default {
   theme: {
     extend: {
       keyframes: {
-        heartBreak: {
-          "0%": { transform: "scale(1)" },
-          "30%": { transform: "scale(1.2) rotate(15deg)" },
-          "60%": { transform: "scale(0.8) rotate(-15deg)" },
-          "100%": { transform: "scale(1) rotate(0deg)" },
+        slideDown: {
+          "0%": { transform: "translateY(-100%)", opacity: 0 },
+          "100%": { transform: "translateY(0)", opacity: 1 },
         },
-        heartBeat: {
-          "0%": { transform: "scale(1)" },
-          "50%": { transform: "scale(1.1)" },
-          "100%": { transform: "scale(1)" },
+        fadeIn: {
+          "0%": { opacity: 0 },
+          "100%": { opacity: 1 },
         },
       },
       animation: {
-        heartBreak: "heartBreak 0.5s ease-in-out",
-        heartBeat: "heartBeat 0.5s ease-in-out",
+        slideDown: "slideDown 0.5s ease-in-out",
+        fadeIn: "fadeIn 0.3s ease-in",
       },
     },
   },
