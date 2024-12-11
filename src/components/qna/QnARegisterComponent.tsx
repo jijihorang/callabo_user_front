@@ -4,6 +4,8 @@ import { IQnaRequest } from "../../types/qna/iqna";
 import { uploadS3Images } from "../../apis/image/imageUploadAPI";
 import { addQnA } from "../../apis/qna/qnaAPI";
 import useAuthStore from "../../stores/customer/AuthStore.ts";
+import {SweetAlertOptions} from "sweetalert2";
+import AlertComponent from "../common/AlertComponent.tsx";
 
 const initialState: IQnaRequest = {
     qnaNo: 0,
@@ -26,6 +28,8 @@ function QnARegisterComponent() {
     const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
+
+    const [alertOptions, setAlertOptions] = useState<SweetAlertOptions | null>(null);
 
     const handleImageUpload = (file: File, index: number) => {
         const reader = new FileReader();
@@ -57,7 +61,11 @@ function QnARegisterComponent() {
         e.preventDefault();
 
         if (!question.trim()) {
-            alert("질문을 입력해주세요.");
+            setAlertOptions({
+                title: "질문을 입력해주세요.",
+                icon: "warning",
+                confirmButtonText: "확인",
+            });
             return;
         }
 
@@ -70,7 +78,11 @@ function QnARegisterComponent() {
             // 이미지 업로드
             const uploadedUrls = await uploadS3Images(validFiles);
             if (!uploadedUrls || uploadedUrls.length === 0) {
-                alert("이미지 업로드에 실패했습니다.");
+                setAlertOptions({
+                    title: "이미지 업로드 실패",
+                    icon: "error",
+                    confirmButtonText: "확인",
+                });
                 return;
             }
 
@@ -92,12 +104,20 @@ function QnARegisterComponent() {
             // QnA 등록 API 호출
             await addQnA(qnaData);
             navigate("/order/list")
-            alert("QnA가 성공적으로 등록되었습니다.");
+            setAlertOptions({
+                title: "QnA 등록 성공",
+                icon: "success",
+                confirmButtonText: "확인",
+            });
 
             resetForm();
         } catch (error) {
             console.error("QnA 등록 실패:", error);
-            alert("QnA 등록에 실패했습니다.");
+            setAlertOptions({
+                title: "QnA 등록 실페",
+                icon: "error",
+                confirmButtonText: "확인",
+            });
         } finally {
             setLoading(false);
         }
@@ -111,6 +131,14 @@ function QnARegisterComponent() {
 
     return (
         <div className="container mx-auto mt-5 pb-5 px-4 lg:px-8">
+
+            {alertOptions && (
+                <AlertComponent
+                    options={alertOptions}
+                    onClose={() => setAlertOptions(null)} // 알림 닫힐 때 초기화
+                />
+            )}
+
             <div className="bg-white p-6 rounded-lg max-w-2xl mx-auto">
                 <h1 className="text-2xl font-bold mb-4 text-center">QnA 작성</h1>
 

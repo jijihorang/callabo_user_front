@@ -42,19 +42,26 @@ const LikeButton: React.FC<LikeButtonProps> = ({ customerId, productId }) => {
 
     if (loading) {
         return (
-            <button className="absolute top-2 right-2 p-1" disabled>
-                <div className="w-5 h-5 bg-gray-300 rounded-full animate-pulse"></div>
+            <button className="absolute top-2 right-2 p-2" disabled>
+                <div className="w-8 h-8 bg-gray-300 rounded-full animate-pulse"></div>
             </button>
         );
     }
 
     return (
-        <button className="absolute top-2 right-2 p-1" onClick={handleLikeToggle} disabled={loading}>
+        <button
+            className="flex items-center justify-center p-2 bg-white border rounded-full"
+            onClick={handleLikeToggle}
+            disabled={loading}
+        >
             <img
                 src={isLiked ? redHeart : wheart}
-                alt={isLiked ? "좋아요 취소" : "좋아요"}
-                className="w-5 h-5"
+                alt={isLiked ? "좋아요 취소" : "찜하기"}
+                className="w-6 h-6 mr-2"
             />
+            <span className="text-sm font-medium text-gray-700">
+            {isLiked ? "취소하기" : "찜하기"}
+        </span>
         </button>
     );
 };

@@ -31,17 +31,18 @@ function ProductInfoComponent({
                 <p className="text-sm text-gray-500 mb-1">{product.categoryName || "카테고리 없음"}</p>
                 <div className="flex items-center justify-between relative">
                     <h1 className="text-3xl font-bold">{product.productName}</h1>
-                    <LikeButton
-                        customerId={customer?.customerId || ""}
-                        productId={product.productNo}
-                    />
+                    <div className="hidden md:block"> {/* 모바일에서 숨기기 */}
+                        <LikeButton
+                            customerId={customer?.customerId || ""}
+                            productId={product.productNo}
+                        />
+                    </div>
                 </div>
                 <p className="text-2xl font-bold text-gray-800 mt-4">{product.productPrice.toLocaleString()}원</p>
-                <p className="mt-2">19개 리뷰보기</p>
             </div>
 
             {/* 수량 선택 */}
-            <div className="mb-4 flex justify-between">
+            <div className="mb-4 flex justify-between hidden md:flex"> {/* 모바일에서 숨기기 */}
                 <div className="flex items-center">
                     <h3 className="text-lg font-medium">수량</h3>
                 </div>
@@ -65,7 +66,7 @@ function ProductInfoComponent({
             </div>
 
             {/* 총 상품 금액 */}
-            <div className="mb-6 border-t border-black pt-4 flex justify-between">
+            <div className="mb-6 border-t border-black pt-4 flex justify-between hidden md:flex"> {/* 모바일에서 숨기기 */}
                 <div className="flex items-center">
                     <h3 className="text-lg font-medium">총 상품 금액</h3>
                 </div>
@@ -75,7 +76,7 @@ function ProductInfoComponent({
             </div>
 
             {/* 버튼 */}
-            <div className="flex gap-4 mb-6">
+            <div className="flex gap-4 mb-6 hidden md:flex"> {/* 모바일에서 숨기기 */}
                 <button
                     className="flex-1 border border-gray-300 py-3 rounded-lg text-gray-700 hover:bg-gray-100"
                     onClick={onAddToCart}

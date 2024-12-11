@@ -5,6 +5,8 @@ import {useLocation, useNavigate} from "react-router-dom";
 import uuid from "react-uuid";
 import useAuthStore from "../../../stores/customer/AuthStore.ts";
 import {createOrders} from "../../../apis/order/orderAPI.ts";
+import {SweetAlertOptions} from "sweetalert2";
+import AlertComponent from "../../common/AlertComponent.tsx";
 
 function ProductOrderComponent() {
 
@@ -22,6 +24,8 @@ function ProductOrderComponent() {
     const [deliveryMemo, setDeliveryMemo] = useState("");
     const [isCollapsed, setIsCollapsed] = useState(true);
     const [startY, setStartY] = useState(0);
+
+    const [alertOptions, setAlertOptions] = useState<SweetAlertOptions | null>(null);
 
     const scriptUrl = "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
     const open = useDaumPostcodePopup(scriptUrl);
@@ -53,24 +57,41 @@ function ProductOrderComponent() {
     const handlePayment = async () => {
         try {
             if (!customerId) {
-                alert("로그인이 필요합니다.");
+
+                setAlertOptions({
+                    title: "로그인 필요",
+                    icon: "warning",
+                    confirmButtonText: "확인",
+                });
                 return;
             }
 
             if (!recipientName || !recipientPhone || !address) {
-                alert("모든 필드를 입력해주세요.");
+                setAlertOptions({
+                    title: "모든 필드를 입력해주세요.",
+                    icon: "warning",
+                    confirmButtonText: "확인",
+                });
+                return;
+            }
+
+            if (!cartGroups || cartGroups.length === 0) {
+                setAlertOptions({
+                    title: "장바구니가 비어 있습니다.",
+                    icon: "warning",
+                    confirmButtonText: "확인",
+                });
                 return;
             }
 
             // 전화번호 형식 검증
             const phoneRegex = /^010\d{8}$/; // 010으로 시작하고 숫자 8자리가 따라오는 형식
             if (!phoneRegex.test(recipientPhone)) {
-                alert("전화번호 형식이 잘못되었습니다. 01012341234 형식으로 입력해주세요.");
-                return;
-            }
-
-            if (!cartGroups || cartGroups.length === 0) {
-                alert("장바구니가 비어 있습니다.");
+                setAlertOptions({
+                    title: "전화번호 형식이 잘못되었습니다. 01012341234 형식으로 입력해주세요.",
+                    icon: "warning",
+                    confirmButtonText: "확인",
+                });
                 return;
             }
 
@@ -121,13 +142,26 @@ function ProductOrderComponent() {
             navigate("/tosspay/checkout", { state: { orderData: paymentData } });
         } catch (error: any) {
             console.error("Order creation failed:", error.message);
-            alert("주문 생성 중 오류가 발생했습니다.");
+            setAlertOptions({
+                title: "주문 생성 중 오류가 발생했습니다.",
+                icon: "warning",
+                confirmButtonText: "확인",
+            });
         }
     };
 
 
     return (
         <div className="container mx-auto px-4 py-12 flex flex-col lg:flex-row gap-8">
+
+            {alertOptions && (
+                <AlertComponent
+                    options={alertOptions}
+                    onClose={() => setAlertOptions(null)} // 알림 닫힐 때 초기화
+                />
+            )}
+
+
             {/* 주문자 정보 입력 폼 */}
             <div className="w-full lg:w-7/12 rounded-xl bg-white p-8">
                 <h2 className="text-3xl font-bold mb-8 text-gray-800">주문서 작성</h2>

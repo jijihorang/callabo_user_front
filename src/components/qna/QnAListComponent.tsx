@@ -3,6 +3,7 @@ import { IQna } from "../../types/qna/iqna.ts";
 import { getQnAList } from "../../apis/qna/qnaAPI.ts";
 import { getQnaRead } from "../../apis/qna/qnaAPI.ts";
 import QnAReadComponent from "./QnAReadComponent.tsx";
+
 import useAuthStore from "../../stores/customer/AuthStore.ts";
 import heart from "../../assets/icons/heart.png"
 import {useNavigate} from "react-router-dom";
@@ -34,7 +35,7 @@ function QnAListComponent() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const qnaList = await getQnAList(customer.customerId); // QnA 목록 가져오기
+                const qnaList = await getQnAList(customer?.customerId || ""); // QnA 목록 가져오기
                 setData(qnaList);
             } catch (error) {
                 console.error("QnA 목록을 가져오는 데 실패했습니다.", error);
@@ -48,7 +49,7 @@ function QnAListComponent() {
         <>
             <div className="container mx-auto mt-5 pb-5 px-4 lg:px-8">
                 <div className="flex justify-center mb-6">
-                    <h1 className="text-2xl font-bold">내 질문</h1>
+                    <h1 className="text-2xl font-bold">작성한 Q&A</h1>
                 </div>
 
                 {data.length === 0 ? (
