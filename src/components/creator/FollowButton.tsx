@@ -1,71 +1,80 @@
-import React, { useState } from "react";
-import { useQueryClient } from "react-query";
-import { toggleFollowStatusAPI } from "../../apis/creator/creatorAPI";
+import React, { useEffect, useState } from "react";
+import { toggleFollowStatusAPI, checkFollowStatusAPI } from "../../apis/creator/creatorAPI";
 import { FaHeart, FaHeartBroken } from "react-icons/fa";
 
 interface FollowButtonProps {
-    creatorId: string;
-    currentStatus: boolean;
     customerId: string;
-    onUnfollow?: () => void;
+    creatorId: string;
 }
 
-const FollowButton: React.FC<FollowButtonProps> = ({
-   creatorId,
-   currentStatus,
-   customerId,
-   onUnfollow,
-}) => {
-    const [isHovered, setIsHovered] = useState(false);
-    const queryClient = useQueryClient();
+const FollowButton: React.FC<FollowButtonProps> = ({ customerId, creatorId }) => {
+    const [isFollowed, setIsFollowed] = useState(false); // 팔로우 상태
+    const [loading, setLoading] = useState(true); // 로딩 상태
+    const [isHovered, setIsHovered] = useState(false); // 호버 상태
 
+    // 초기 팔로우 상태 가져오기
+    useEffect(() => {
+        const fetchFollowStatus = async () => {
+            try {
+                const status = await checkFollowStatusAPI(customerId, creatorId);
+                setIsFollowed(status);
+            } catch (error) {
+                console.error("팔로우 상태 확인 중 오류 발생:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchFollowStatus();
+    }, [customerId, creatorId]);
+
+    // 팔로우 상태 토글
     const handleToggleFollow = async () => {
         try {
-            await toggleFollowStatusAPI(customerId, creatorId, !currentStatus);
-
-            queryClient.invalidateQueries(["likedCreators", customerId]);
-            queryClient.invalidateQueries(["creatorList", customerId]);
-
-            if (!currentStatus && onUnfollow) {
-                onUnfollow();
-            }
+            setLoading(true); // 로딩 시작
+            await toggleFollowStatusAPI(customerId, creatorId);
+            setIsFollowed((prev) => !prev); // 상태 반전
         } catch (error) {
             console.error("팔로우 상태 변경 중 오류 발생:", error);
+        } finally {
+            setLoading(false); // 로딩 종료
         }
     };
 
-    return (
-        <div className="relative group">
-            {/* 버튼 */}
+    // 로딩 상태 표시
+    if (loading) {
+        return (
             <button
-                onClick={handleToggleFollow}
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
-                className={`flex items-center justify-center gap-2 px-4 py-2 rounded-full font-semibold text-white transition-colors duration-300 shadow-md ${
-                    currentStatus
-                        ? "bg-blue-500 hover:bg-blue-300"
-                        : "bg-gray-500 hover:bg-gray-300"
-                }`}
+                className="flex items-center justify-center px-4 py-2 bg-gray-300 rounded-full cursor-wait"
+                disabled
             >
-                <span className="relative">
-                    {isHovered && currentStatus ? (
-                        <FaHeartBroken size={16} />
-                    ) : (
-                        <FaHeart size={16} />
-                    )}
-                </span>
-                <span className="text-sm md:text-base whitespace-nowrap">
-                    {currentStatus ? "언팔로우" : "팔로잉"}
-                </span>
+                <div className="w-4 h-4 border-2 border-t-transparent border-white rounded-full animate-spin"></div>
             </button>
+        );
+    }
 
-            {/*/!* 툴팁 *!/*/}
-            {/*{isHovered && (*/}
-            {/*    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1 bg-gray-700 text-white text-xs rounded-md shadow-lg whitespace-nowrap">*/}
-            {/*        {currentStatus ? "팔로우 취소" : "팔로우 추가"}*/}
-            {/*    </div>*/}
-            {/*)}*/}
-        </div>
+    // 버튼 UI
+    return (
+        <button
+            onClick={handleToggleFollow}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            className={`flex items-center justify-center gap-2 px-4 py-2 rounded-full font-semibold text-white transition-all duration-300 shadow-md ${
+                isFollowed
+                    ? "bg-gray-500 hover:bg-gray-400" // 팔로우 취소하기 버튼 색상
+                    : "bg-blue-500 hover:bg-blue-400" // 팔로우 하기 버튼 색상
+            }`}
+        >
+            {/* 아이콘: 팔로우/언팔로우 상태 및 호버에 따라 변경 */}
+            <span className="relative">
+                {isHovered && isFollowed ? <FaHeartBroken size={16} /> : <FaHeart size={16} />}
+            </span>
+
+            {/* 텍스트: 팔로우/언팔로우 상태에 따라 변경 */}
+            <span className="text-sm md:text-base whitespace-nowrap">
+                {isFollowed ? "팔로우 취소하기" : "팔로우 하기"}
+            </span>
+        </button>
     );
 };
 
