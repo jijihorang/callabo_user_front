@@ -35,7 +35,7 @@ function QnAListComponent() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const qnaList = await getQnAList(customer.customerId); // QnA 목록 가져오기
+                const qnaList = await getQnAList(customer?.customerId || ""); // QnA 목록 가져오기
                 setData(qnaList);
             } catch (error) {
                 console.error("QnA 목록을 가져오는 데 실패했습니다.", error);
