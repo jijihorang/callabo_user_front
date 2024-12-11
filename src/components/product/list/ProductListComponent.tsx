@@ -10,8 +10,6 @@ import { ICreator } from "../../../types/creator/icreator.ts";
 import { getProductList } from "../../../apis/product/productAPI.ts";
 import { getCreatorList } from "../../../apis/creator/creatorAPI.ts";
 
-import LikeButton from "../ProductLikeButton.tsx";
-
 function ProductListComponent() {
     const { creatorId } = useParams(); // URL에서 creatorId 추출
     const { customer } = useAuthStore();
@@ -60,19 +58,6 @@ function ProductListComponent() {
         fetchCreatorInfo();
         fetchProducts();
     }, [creatorId]); // creatorId 변경 시 재호출
-
-    const handleLikeStatusChange = (productId: number, newStatus: boolean) => {
-        setProducts((prevProducts) =>
-            prevProducts.map((product) =>
-                product.productNo === productId ? { ...product, likeStatus: newStatus } : product
-            )
-        );
-        setVisibleProducts((prevVisibleProducts) =>
-            prevVisibleProducts.map((product) =>
-                product.productNo === productId ? { ...product, likeStatus: newStatus } : product
-            )
-        );
-    };
 
     // "See More" / "Close" 버튼 클릭 핸들러
     const toggleProductVisibility = () => {
@@ -193,15 +178,6 @@ function ProductListComponent() {
                                     </p>
                                 </div>
                             </Link>
-
-                            {/* 하트 아이콘 */}
-
-                            <LikeButton
-                                customerId={customer?.customerId || ""}
-                                productId={product.productNo}
-                                currentStatus={product.likeStatus || false}
-                                onToggle={(newStatus) => handleLikeStatusChange(product.productNo, newStatus)}
-                            />
 
                             {/* 장바구니 아이콘 */}
                             <button

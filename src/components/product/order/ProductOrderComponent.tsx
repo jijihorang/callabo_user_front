@@ -57,8 +57,15 @@ function ProductOrderComponent() {
                 return;
             }
 
-            if (!recipientName || !recipientPhone || !address || !addressDetail) {
+            if (!recipientName || !recipientPhone || !address) {
                 alert("모든 필드를 입력해주세요.");
+                return;
+            }
+
+            // 전화번호 형식 검증
+            const phoneRegex = /^010\d{8}$/; // 010으로 시작하고 숫자 8자리가 따라오는 형식
+            if (!phoneRegex.test(recipientPhone)) {
+                alert("전화번호 형식이 잘못되었습니다. 01012341234 형식으로 입력해주세요.");
                 return;
             }
 
