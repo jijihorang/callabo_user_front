@@ -10,13 +10,3 @@ export interface ICreator {
 
     followStatus ?: boolean;
 }
-
-export interface IOfflineStore {
-    storeNo ?: number;
-    storeImage ?: string;
-    storeName ?: string;
-    storeLocation ?: string;
-
-    latitude ?: string;
-    longitude ?: string;
-}

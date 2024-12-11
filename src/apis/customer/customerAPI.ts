@@ -1,6 +1,6 @@
 import axios from "axios";
 import {ILikedCreators, ILikedProducts} from "../../types/wishlist/iwishlist.ts";
-import { UpdateCustomerDTO} from "../../types/customer/icustomer.ts";
+import {IUpdateCustomer} from "../../types/customer/icustomer.ts";
 
 const host = 'http://localhost:8080/api2/customer';
 
@@ -20,7 +20,7 @@ export const getLikedProducts = async (customerId: string): Promise<ILikedProduc
    const mappedData = response.data.map((item: any) => ({
       id: item.productId,
       name: item.productName,
-      img: item.productImageUrl || '', // 이미지가 null인 경우 빈 문자열로 대체
+      img: item.productImageUrl || 'default-product-image-url', // 이미지가 null인 경우 빈 문자열로 대체
       price: item.productPrice ?? 0,  // price가 undefined인 경우 기본값 0 설정
    }));
 
@@ -48,12 +48,40 @@ export const getLikedCreators = async (customerId: string): Promise<ILikedCreato
 
 export const updateCustomer = async (
     customerId: string,
-    customerData: UpdateCustomerDTO ): Promise<void> => {
+    customerData: IUpdateCustomer ): Promise<void> => {
     try {
         const res = await axios.put(`${host}/${customerId}`, customerData);
         return res.data;
     } catch (error) {
         console.error("사용자 정보 업데이트 중 오류 발생:", error);
         throw error;
+    }
+};
+
+export const toggleProductLikeAPI = async (
+    customerId: string,
+    productId: string
+): Promise<void> => {
+    await axios.post(`${host}/like`, {
+        customerId,
+        productId,
+    });
+};
+
+export const checkProductLikeStatusAPI = async (
+    customerId: string,
+    productId: string
+): Promise<boolean> => {
+    try {
+        const response = await axios.get(`${host}/like/status`, {
+            params: {
+                customerId,
+                productId,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error("좋아요 상태 확인 중 오류 발생:", error);
+        throw new Error("좋아요 상태 확인에 실패했습니다.");
     }
 };

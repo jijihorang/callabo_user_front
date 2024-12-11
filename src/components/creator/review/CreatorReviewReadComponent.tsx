@@ -3,7 +3,6 @@ import star2 from "../../../assets/icons/star.png";
 import noStar2 from "../../../assets/icons/gstar.png";
 
 function CreatorReviewReadComponent({ review, closeModal }: { review: IReview; closeModal: () => void }) {
-    const maxStars = 5; // 별점 최대값
 
     return (
         <div className="p-6 bg-white rounded-lg w-11/12 max-w-3xl mx-auto relative shadow-lg">
@@ -47,14 +46,16 @@ function CreatorReviewReadComponent({ review, closeModal }: { review: IReview; c
 
                     {/* 별점 */}
                     <div className="flex items-center space-x-1">
-                        {Array.from({ length: maxStars }).map((_, i) => (
-                            <img
-                                key={i}
-                                src={i < review.rating ? star2 : noStar2}
-                                alt={i < review.rating ? "별점 채움" : "별점 비움"}
-                                className="w-4 h-4"
-                            />
-                        ))}
+                        {Array(5)
+                            .fill(0)
+                            .map((_, i) => (
+                                <img
+                                    key={i}
+                                    src={i < review.rating ? star2 : noStar2}
+                                    alt={i < review.rating ? "별점 채움" : "별점 비움"}
+                                    className="w-4 h-4"
+                                />
+                            ))}
                     </div>
 
                     {/* 리뷰 내용 */}

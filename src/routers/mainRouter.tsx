@@ -8,6 +8,9 @@ import BasicLayout from "../layouts/BasicLayout.tsx";
 import headerRouter from "./headerRouter.tsx";
 import eventRouter from "./eventRouter.tsx";
 import reviewRouter from "./reviewRouter.tsx";
+import tosspayRouter from "./tosspayRouter.tsx";
+import qnaRouter from "./qnaRouter.tsx";
+import orderRouter from "./orderRouter.tsx";
 
 const MainPage = lazy(() => import("../pages/MainPage.tsx"))
 
@@ -52,7 +55,10 @@ const mainRouter = createBrowserRouter([
             creatorRouter,
             customerRouter,
             productRouter,
-            reviewRouter
+            reviewRouter,
+            tosspayRouter,
+            qnaRouter,
+            orderRouter
         ]
     }
 ])

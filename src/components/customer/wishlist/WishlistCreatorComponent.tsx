@@ -1,5 +1,4 @@
 import profileImg from "../../../assets/img/pro1.png";
-import heartIcon from "../../../assets/icons/redheart.png";
 import heart from "../../../assets/icons/redheart.png";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
@@ -7,12 +6,14 @@ import { getLikedCreators } from "../../../apis/customer/customerAPI.ts";
 import useAuthStore from "../../../stores/customer/AuthStore.ts";
 import {ILikedCreators} from "../../../types/wishlist/iwishlist.ts";
 
+import FollowButton from "../../creator/FollowButton.tsx";
+
 function WishlistCreatorComponent() {
     const navigate = useNavigate();
     const customerId = useAuthStore((state) => state.customer?.customerId); // Zustand에서 customerId 가져오기
 
     // React Query로 좋아요한 크리에이터 가져오기
-    const { data: creators = [], isLoading } = useQuery<ILikedCreators[]>({
+    const { data: creators = [], isLoading, refetch } = useQuery<ILikedCreators[]>({
         queryKey: ["likedCreators", customerId],
         queryFn: async () => {
             if (!customerId) {
@@ -33,6 +34,11 @@ function WishlistCreatorComponent() {
         }
     };
 
+    // 언팔로우 후 새로고침
+    const handleAfterUnfollow = () => {
+        refetch(); // 언팔로우 후 데이터를 새로 가져오기
+    };
+
     return (
         <div className="container mx-auto px-4 py-8">
             {isLoading ? (
@@ -41,7 +47,7 @@ function WishlistCreatorComponent() {
                 </div>
             ) : creators.length > 0 ? (
                 <>
-                    <h2 className="text-xl font-bold mb-6">제작자 {creators.length}</h2>
+                    <h2 className="text-xl font-bold mb-6">좋아요한 제작자 ({creators.length})</h2>
                     {/* 반응형 그리드: 웹 4개, 앱 2개 */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         {creators.map((creator) => (
@@ -54,29 +60,21 @@ function WishlistCreatorComponent() {
                                     src={creator.profileImg || profileImg} // 기본 이미지 처리
                                     alt={creator.name}
                                     className="w-20 h-20 object-cover rounded-full mb-4 border-4 border-white shadow-md"
+                                    onClick={() => moveToProductList(creator.creatorId)}
                                 />
 
                                 {/* 이름 */}
                                 <h3 className="text-base font-semibold">{creator.name}</h3>
 
-                                {/* 찜 수 */}
-                                <div className="flex items-center mt-2">
-                                    <img
-                                        src={heartIcon}
-                                        alt="좋아요"
-                                        className="w-5 h-5 mr-1"
+                                {/* FollowButton 컴포넌트 */}
+                                <div className="mt-4">
+                                    <FollowButton
+                                        creatorId={creator.creatorId}
+                                        currentStatus={true} // 현재 팔로우 상태
+                                        customerId={customerId || ""}
+                                        onUnfollow={handleAfterUnfollow} // 언팔로우 후 새로고침
                                     />
-                                    <span className="text-blue-600 text-base font-medium">
-                                        {(creator.likes || 0).toLocaleString()}
-                                    </span>
                                 </div>
-
-                                <button
-                                    className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg"
-                                    onClick={() => moveToProductList(creator.creatorId)}
-                                >
-                                    상품 보기
-                                </button>
                             </div>
                         ))}
                     </div>

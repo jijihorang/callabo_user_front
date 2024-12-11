@@ -1,6 +1,7 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import useCartStore from "../../stores/cart/cartStore.ts";
+import { useState } from "react";
+import cart2 from "../../assets/icons/shoppingcart.png";
 
 function CartComponent() {
     const {
@@ -11,11 +12,11 @@ function CartComponent() {
     } = useCartStore(); // Zustand에서 상태 가져오기
     const navigate = useNavigate();
 
-    const [isCollapsed, setIsCollapsed] = React.useState(true); // 슬라이드 상태 초기화
-    const [startY, setStartY] = React.useState(0); // 터치 시작 위치
+    const [isCollapsed, setIsCollapsed] = useState(true); // 슬라이드 상태 초기화
+    const [startY, setStartY] = useState(0); // 터치 시작 위치
 
     const moveToOrder = () => {
-        navigate(`/product/order`);
+        navigate(`/product/order`, { state: { cartGroups: cartGroups } });
     };
 
     // 터치 시작
@@ -35,6 +36,29 @@ function CartComponent() {
         }
     };
 
+    // 장바구니가 비었는지 확인
+    const isCartEmpty = cartGroups.length === 0 || cartGroups.every(group => group.products.length === 0);
+
+    if (isCartEmpty) {
+        return (
+            <div className="flex flex-col items-center justify-center h-96 mt-20">
+                <img
+                    src={cart2}
+                    alt="장바구니 아이콘"
+                    className="w-20 h-20 mb-6"
+                />
+                <p className="text-lg font-bold mb-2">장바구니에 상품이 없어요</p>
+                <p className="text-gray-600 mb-6">내 취향의 상품을 찾아보세요.</p>
+                <button
+                    className="px-6 py-2 bg-blue-500 text-white rounded-lg"
+                    onClick={() => navigate(`/creator/list`)}
+                >
+                    상품 구경하기
+                </button>
+            </div>
+        );
+    }
+
     return (
         <div className="container mx-auto px-4 py-8 flex flex-col md:flex-row">
             {/* 상품 목록 영역 */}
@@ -43,7 +67,6 @@ function CartComponent() {
                 {cartGroups.map((group, groupIndex) => (
                     <div key={groupIndex}>
                         <div className="border-t-2 border-gray-400 pb-4 pt-3 flex items-center">
-                            <input type="checkbox" className="mr-4" />
                             <h3 className="text-lg font-bold flex items-center">
                                 {group.groupName}
                                 <span role="img" aria-label="배송" className="ml-2">
@@ -56,7 +79,7 @@ function CartComponent() {
                                 key={product.id}
                                 className="py-3 flex flex-col space-y-3 relative border rounded-lg p-4"
                             >
-                                {/* 삭제 버튼 (오른쪽 상단 X 버튼) */}
+                                {/* 삭제 버튼 */}
                                 <button
                                     onClick={() => removeProduct(groupIndex, productIndex)}
                                     className="absolute top-2 right-2 w-6 h-6 flex justify-center items-center text-gray-500 hover:text-red-600"
@@ -78,7 +101,6 @@ function CartComponent() {
                                     </svg>
                                 </button>
                                 <div className="flex items-center">
-                                    <input type="checkbox" className="mr-4" />
                                     <img
                                         src={product.img}
                                         alt={product.name}
@@ -86,15 +108,12 @@ function CartComponent() {
                                     />
                                     <div className="ml-5 flex-grow">
                                         <div className="font-semibold text-lg">{product.name}</div>
-                                        <div className="text-gray-400 text-sm mt-1">
-                                            {product.category}
-                                        </div>
                                         <div className="text-blue-600 font-bold mb-2">
                                             {(product.price ?? 0).toLocaleString()}원
                                         </div>
                                     </div>
                                 </div>
-                                {/* 수량 및 가격 정보 + 버튼 */}
+                                {/* 수량 및 가격 */}
                                 <div className="flex justify-between items-center bg-gray-100 p-3 rounded-md mb-4">
                                     <div className="flex items-center space-x-2">
                                         <span>수량 / {product.quantity}개</span>
