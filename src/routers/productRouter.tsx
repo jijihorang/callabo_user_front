@@ -5,6 +5,8 @@ const ProductList = lazy(() => import("../pages/product/ProductListPage.tsx"));
 
 const ProductDetail = lazy(() => import("../pages/product/ProductDetailPage.tsx"));
 
+const ProductOrderPage = lazy(() => import("../pages/product/order/ProductOrderPage.tsx"))
+
 export const Loading = <LoadingPage></LoadingPage>
 
 const productRouter = {
@@ -15,8 +17,12 @@ const productRouter = {
             element: <Suspense fallback={Loading}><ProductList/></Suspense>
         },
         {
-            path: "detail/:productNo",
+            path: ":creatorId/detail/:productNo",
             element: <Suspense fallback={Loading}><ProductDetail/></Suspense>
+        },
+        {
+            path: "order",
+            element: <Suspense fallback={Loading}><ProductOrderPage/></Suspense>
         },
     ]
 }

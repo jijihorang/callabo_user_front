@@ -1,4 +1,4 @@
-import OfflineStoreComponent from "../../components/offlinestore/OfflineStoreComponent.tsx";
+import OfflineStoreComponent from "../../components/creator/offlinestore/OfflineStoreComponent.tsx";
 
 function OfflineStorePage() {
     return (

@@ -15,25 +15,21 @@ function KakaoCallbackComponent() {
         if (authCode != null) {
             getAccessToken(authCode)
                 .then((accessToken) => {
-                    // 로컬 스토리지에 액세스 토큰 저장
-                    localStorage.setItem("kakao_access_token", accessToken);
-
-                    // 사용자 정보 가져오기
-                    return getMemberWithAccessToken(accessToken).then((userData) => {
-                        console.log("Setting Zustand State with:", {
-                            customerName: userData.customerName,
-                            customerId: userData.customerId,
-                            customerProfileImage: userData.customerProfileImage,
-                            accessToken,
-                        });
-                        setUser(userData.customerName, userData.customerId,userData.customerProfileImage, accessToken);// 값 전달
-                    });
+                    return getMemberWithAccessToken(accessToken).then((userData) => ({
+                        accessToken,
+                        userData,
+                    }));
                 })
-                .then(() => {
+                .then(({ accessToken, userData }) => {
+                    console.log("User Data:", userData);
+                    // 토큰과 사용자 정보를 상태에 저장
+                    const refreshToken = "generated-refresh-token"; // 백엔드에서 받아온 refresh token
+                    setUser(userData, accessToken, refreshToken);
                     setStatus("success");
                     navigate("/");
                 })
-                .catch(() => {
+                .catch((err) => {
+                    console.error("Login Error:", err);
                     setStatus("error");
                 });
         }

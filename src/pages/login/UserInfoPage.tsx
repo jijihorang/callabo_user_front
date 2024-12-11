@@ -1,4 +1,4 @@
-import UserInfoComponent from "../../components/customer/UserInfoComponent.tsx";
+import UserInfoComponent from "../../components/customer/info/UserInfoComponent.tsx";
 
 function UserInfoPage() {
     return (
