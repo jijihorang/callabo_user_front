@@ -15,12 +15,16 @@ function CheckoutPage() {
     const orderData = state?.orderData;
 
     if (!orderData) {
-        return <div>결제 정보가 없습니다. 다시 시도해주세요.</div>;
+        return (
+            <div className="flex items-center justify-center h-screen text-center">
+                <p className="text-lg font-bold text-gray-700">결제 정보가 없습니다. 다시 시도해주세요.</p>
+            </div>
+        );
     }
 
     const [amount, setAmount] = useState<Amount>({
         currency: "KRW",
-        value: orderData.totalPrice || 0, // 결제 금액 초기화
+        value: orderData.totalPrice || 0,
     });
     const [ready, setReady] = useState(false);
     const [widgets, setWidgets] = useState<any>(null);
@@ -69,14 +73,9 @@ function CheckoutPage() {
     const handlePayment = async (): Promise<void> => {
         if (!widgets) return;
 
-        console.log("orderData:", orderData);
-        console.log("items:", orderData.items);
-        console.log("items length:", orderData.items?.length);
-
-
         try {
             await widgets.requestPayment({
-                orderId: orderData.orderId || "DEFAULT_ORDER_ID", // orderId는 전달받은 데이터 사용
+                orderId: orderData.orderId || "DEFAULT_ORDER_ID",
                 orderName: orderData.items
                     ?.map((item) => item.productName)
                     .slice(0, 2)
@@ -84,8 +83,8 @@ function CheckoutPage() {
                 successUrl: `${window.location.origin}/tosspay/success`,
                 failUrl: `${window.location.origin}/tosspay/fail`,
                 customerEmail: orderData.customerEmail,
-                customerName: orderData.recipientName, // 주문자 이름 적용
-                customerMobilePhone: orderData.recipientPhone, // 주문자 연락처 적용
+                customerName: orderData.recipientName,
+                customerMobilePhone: orderData.recipientPhone,
             });
         } catch (error) {
             console.error("결제 요청 중 오류 발생:", error);
@@ -93,19 +92,22 @@ function CheckoutPage() {
     };
 
     return (
-        <div className="wrapper">
-            <div className="box_section">
-                <h2 className="text-xl font-bold mb-4">
-                    결제자: {orderData.recipientName}님
+        <div className="flex items-center justify-center min-h-screen">
+            <div className="w-full max-w-xl bg-white rounded-lg p-6">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                    결제자: <span className="text-blue-600">{orderData.recipientName}님</span>
                 </h2>
-                <h3 className="text-lg mb-4">
-                    결제 금액: {amount.value.toLocaleString()}원
+                <h3 className="text-xl font-semibold text-gray-700 mb-6">
+                    결제 금액: <span className="text-blue-600">{amount.value.toLocaleString()}원</span>
                 </h3>
-                <div id="payment-method" />
-                <div id="agreement" />
+
+                <div id="payment-method" className="mb-6" />
+                <div id="agreement" className="mb-6" />
 
                 <button
-                    className="button"
+                    className={`w-full py-3 rounded-lg text-white font-bold ${
+                        ready ? "bg-blue-500 hover:bg-blue-600" : "bg-gray-300 cursor-not-allowed"
+                    }`}
                     disabled={!ready}
                     onClick={handlePayment}
                 >

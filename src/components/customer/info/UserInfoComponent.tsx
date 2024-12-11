@@ -60,7 +60,7 @@ function UserInfoComponent() {
                     <img src={shoopringcart} alt="장바구니" className="w-16 h-16 mx-auto"/>
                     <p className="text-sm mt-2 font-semibold">장바구니</p>
                 </Link>
-                <Link to="" className="text-center">
+                <Link to="/review/list" className="text-center">
                     <img src={review} alt="리뷰" className="w-16 h-16 mx-auto"/>
                     <p className="text-sm mt-2 font-semibold">작성한 리뷰</p>
                 </Link>
