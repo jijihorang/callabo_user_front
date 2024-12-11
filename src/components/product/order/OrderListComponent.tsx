@@ -39,8 +39,15 @@ function OrderListComponent() {
         loadOrders();
     }, [customerId]);
 
-    const moveToRegister = () => {
-        navigate("/review/register");
+    const moveToRegister = (product: IOrderItem, order: IOrderList) => {
+        navigate("/review/register", {
+            state: {
+                productNo: product.productNo,
+                productName: product.productName,
+                creatorId: order.creatorId,
+                customerId: customer?.customerId,
+            }
+        });
     };
 
     const moveToQnARegister = (product: IOrderItem, order: IOrderList) => {
@@ -86,7 +93,7 @@ function OrderListComponent() {
                             <div className="flex space-x-2">
                                 <button
                                     className="px-4 py-2 border border-gray-400 rounded text-sm hover:bg-gray-100"
-                                    onClick={() => moveToRegister()}
+                                    onClick={() => moveToRegister(product, order)}
                                 >
                                     리뷰 쓰기
                                 </button>

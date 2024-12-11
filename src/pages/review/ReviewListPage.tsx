@@ -1,9 +1,9 @@
-import ReviewListComponent from "../../components/review/ReviewListComponent.tsx";
+import MyReviewListComponent from "../../components/review/MyReviewListComponent.tsx";
 
 function ReviewListPage() {
     return (
         <div>
-            <ReviewListComponent></ReviewListComponent>
+            <MyReviewListComponent></MyReviewListComponent>
         </div>
     );
 }

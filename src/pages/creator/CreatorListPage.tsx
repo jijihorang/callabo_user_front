@@ -1,3 +1,4 @@
+
 import CreatorListComponent from "../../components/creator/list/CreatorListComponent.tsx";
 
 function CreatorListPage() {

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { IQnaRequest } from "../../types/qna/iqna";
 import { uploadS3Images } from "../../apis/image/imageUploadAPI";
 import { addQnA } from "../../apis/qna/qnaAPI";
+import useAuthStore from "../../stores/customer/AuthStore.ts";
 import {SweetAlertOptions} from "sweetalert2";
 import AlertComponent from "../common/AlertComponent.tsx";
 
@@ -19,6 +20,7 @@ function QnARegisterComponent() {
     const location = useLocation();
     const { state } = location as { state: { productNo: number; creatorId: string; customerId: string } };
     const { productNo, creatorId, customerId } = state;
+    const { customer } = useAuthStore();
 
     const [question, setQuestion] = useState(initialState.question);
     const [imageFiles, setImageFiles] = useState<(File | undefined)[]>([undefined, undefined, undefined]);
@@ -160,7 +162,7 @@ function QnARegisterComponent() {
                     <label className="text-sm font-medium text-gray-700">사용자명</label>
                     <div
                         className="w-full p-3 border rounded bg-gray-100 focus-within:ring-2 focus-within:ring-blue-500">
-                        <span>{customerId}</span>
+                        <span>{customer?.customerName}</span>
                     </div>
                 </div>
 

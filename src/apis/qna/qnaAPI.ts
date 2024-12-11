@@ -52,10 +52,18 @@ export const qnaImageUpload = async (
 };
 
 // qna 리스트
-export const getQnAList = async (): Promise<IQna> => {
-    const res = await axios.get(`${host}/list`);
-    return res.data;
-}
+export const getQnAList = async (customerId: string): Promise<IQna[]> => {
+    try {
+        const res = await axios.get(`${host}/customer`, {
+            params: { customerId }, // customerId를 쿼리 파라미터로 전달
+        });
+        return res.data;
+    } catch (error) {
+        console.error("QnA 목록을 가져오는 데 실패했습니다:", error);
+        throw new Error("Unable to fetch QnA list. Please try again later.");
+    }
+};
+
 
 // qna 조회
 export const getQnaRead = async (qnaNo: number): Promise<IQna> => {

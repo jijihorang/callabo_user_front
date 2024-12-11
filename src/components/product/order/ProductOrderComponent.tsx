@@ -66,7 +66,7 @@ function ProductOrderComponent() {
                 return;
             }
 
-            if (!recipientName || !recipientPhone || !address || !addressDetail) {
+            if (!recipientName || !recipientPhone || !address) {
                 setAlertOptions({
                     title: "모든 필드를 입력해주세요.",
                     icon: "warning",
@@ -78,6 +78,17 @@ function ProductOrderComponent() {
             if (!cartGroups || cartGroups.length === 0) {
                 setAlertOptions({
                     title: "장바구니가 비어 있습니다.",
+                    icon: "warning",
+                    confirmButtonText: "확인",
+                });
+                return;
+            }
+
+            // 전화번호 형식 검증
+            const phoneRegex = /^010\d{8}$/; // 010으로 시작하고 숫자 8자리가 따라오는 형식
+            if (!phoneRegex.test(recipientPhone)) {
+                setAlertOptions({
+                    title: "전화번호 형식이 잘못되었습니다. 01012341234 형식으로 입력해주세요.",
                     icon: "warning",
                     confirmButtonText: "확인",
                 });
