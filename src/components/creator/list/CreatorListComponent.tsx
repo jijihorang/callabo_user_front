@@ -1,20 +1,29 @@
-import { useNavigate } from "react-router-dom";
-import { useQuery } from "react-query";
+import {useNavigate} from "react-router-dom";
+import {useQuery} from "react-query";
 import useCreatorStore from "../../../stores/creator/CreatorStore.ts";
-import { getCreatorList } from "../../../apis/creator/creatorAPI.ts";
+import {getCreatorList} from "../../../apis/creator/creatorAPI.ts";
 import click from "../../../assets/icons/click.png";
-import { ICreator } from "../../../types/creator/icreator.ts";
+import {ICreator} from "../../../types/creator/icreator.ts";
 import useAuthStore from "../../../stores/customer/AuthStore.ts";
 
 import FollowButton from "../FollowButton";
 
 function CreatorListComponent() {
-    const { creators, selectedCreator, searchQuery, isInitialized, setCreators, setSelectedCreator, setSearchQuery, setInitialized } = useCreatorStore();
+    const {
+        creators,
+        selectedCreator,
+        searchQuery,
+        isInitialized,
+        setCreators,
+        setSelectedCreator,
+        setSearchQuery,
+        setInitialized
+    } = useCreatorStore();
     const customerId = useAuthStore((state) => state.customer?.customerId); // Zustand에서 customerId 가져오기
     const navigate = useNavigate();
 
     // React Query로 데이터 가져오기
-    const { isLoading } = useQuery<ICreator[]>({
+    const {isLoading} = useQuery<ICreator[]>({
         queryKey: ["creatorList", customerId], // queryKey에 customerId 포함
         queryFn: () => {
             if (!customerId) {
@@ -58,7 +67,7 @@ function CreatorListComponent() {
     );
 
     return (
-        <div className="container mx-auto mb-20">
+        <div className="container mx-auto mb-20 px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col md:flex-row gap-6 mt-10">
                 {/* 제작자 목록 */}
                 <div className="w-full md:w-1/4 p-6 shadow-md rounded-lg h-full">
@@ -94,8 +103,13 @@ function CreatorListComponent() {
                                                         className="w-full h-full object-cover"
                                                     />
                                                 </div>
-                                                <span className="text-lg font-semibold text-gray-700">
-                                                    {creator.creatorName}
+                                                <span
+                                                    className="text-lg font-semibold text-gray-700 text-ellipsis overflow-hidden whitespace-nowrap"
+                                                    title={creator.creatorName} // 풀 네임을 툴팁으로 표시
+                                                >
+                                                    {creator.creatorName.length > 6
+                                                        ? `${creator.creatorName.slice(0, 6)}...`
+                                                        : creator.creatorName}
                                                 </span>
                                             </div>
                                             {/* 팔로우 버튼 */}
@@ -113,7 +127,7 @@ function CreatorListComponent() {
                 </div>
 
                 {/* 제작자 상세 정보 */}
-                <div className="w-full md:w-3/4 p-8 bg-white shadow-lg rounded-xl h-auto border border-gray-200">
+                <div className="w-full md:w-3/4 p-6 bg-white shadow-lg rounded-xl h-auto border border-gray-200">
                     {selectedCreator ? (
                         <div className="space-y-6">
                             <div className="relative w-full h-[480px] rounded-xl overflow-hidden mb-8 shadow-lg">
@@ -124,7 +138,8 @@ function CreatorListComponent() {
                                 />
                             </div>
                             <div className="text-center mb-10">
-                                <div className="relative inline-block w-28 h-28 rounded-full overflow-hidden border-4 border-gray-200 shadow-xl -mt-14">
+                                <div
+                                    className="relative inline-block w-28 h-28 rounded-full overflow-hidden border-4 border-gray-200 shadow-xl -mt-14">
                                     <img
                                         src={selectedCreator.logoImg}
                                         alt="제작자 프로필"
@@ -148,10 +163,11 @@ function CreatorListComponent() {
                             </div>
                         </div>
                     ) : (
-                        <div className="flex flex-col justify-center items-center min-h-full text-gray-500 space-y-4 rounded-lg p-6">
+                        <div
+                            className="flex flex-col justify-center items-center min-h-full text-gray-500 space-y-4 rounded-lg p-6">
                             {/* 아이콘 */}
                             <div className="w-20 h-20 flex items-center justify-center rounded-full">
-                                <img src={click} alt="클릭 이미지" className="w-12 h-12" />
+                                <img src={click} alt="클릭 이미지" className="w-12 h-12"/>
                             </div>
                             {/* 메인 텍스트 */}
                             <p className="text-lg font-semibold text-gray-700">제작자를 선택해주세요</p>

@@ -1,5 +1,5 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import {Autoplay, Navigation} from "swiper/modules";
+import {Autoplay, Navigation, Pagination} from "swiper/modules";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
 import "swiper/css";
@@ -25,6 +25,10 @@ import { SweetAlertOptions } from "sweetalert2";
 import AlertComponent from "../../common/AlertComponent.tsx";
 
 import FollowButton from "../../creator/FollowButton.tsx";
+import DropdownComponent from "../../common/DropdownComponent.tsx";
+
+import prev from "../../../assets/icons/prev.png"
+import next from "../../../assets/icons/next.png"
 
 function ProductListComponent() {
     const { creatorId } = useParams(); // URL에서 creatorId 추출
@@ -33,6 +37,26 @@ function ProductListComponent() {
     const [products, setProducts] = useState<IProductList[]>([]);
     const [creator, setCreator] = useState<ICreator | null>(null);
     const [alertOptions, setAlertOptions] = useState<SweetAlertOptions | null>(null);
+
+    const [sortOption, setSortOption] = useState("최신순"); // 정렬 옵션 상태
+
+    // 정렬 함수
+    const sortProducts = (option: string) => {
+        const sortedProducts = [...products];
+        if (option === "최신순") {
+            sortedProducts.sort((a, b) => b.productNo - a.productNo); // 최신순 로직
+        } else if (option === "인기순") {
+            sortedProducts.sort((a, b) => a.productNo - b.productNo); // 인기순 로직
+        }
+        setProducts(sortedProducts);
+    };
+
+    // Dropdown 변경 시 정렬 적용
+    const handleDropdownChange = (option: string) => {
+        setSortOption(option);
+        sortProducts(option);
+    };
+
 
     // 데이터 로드
     useEffect(() => {
@@ -148,50 +172,50 @@ function ProductListComponent() {
             </div>
 
             {/* 상품 리스트 */}
-            <div className="px-4 relative">
-                <div className="flex justify-between items-center mb-5">
-                    <div>
+            <div className="px-6 relative">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-5">
+                    <div className="mb-3 sm:mb-0">
                         <h2 className="text-[15px]">당신의 취향을 저격할</h2>
                         <h1 className="text-[30px] font-bold">PRODUCTS</h1>
                     </div>
 
-                    <div>
-                        <button className="mt-2">전체보기</button>
+                    {/* Dropdown Component */}
+                    <div className="sm:ml-4">
+                        <DropdownComponent
+                            selectedOption={sortOption}
+                            setSelectedOption={handleDropdownChange}
+                        />
                     </div>
                 </div>
 
                 {/* 상품 리스트를 Swiper로 구현 */}
                 <Swiper
-                    modules={[Navigation, Autoplay]}
+                    modules={[Navigation, Pagination, Autoplay]}
                     spaceBetween={20}
                     slidesPerView={4}
                     navigation={{
-                        prevEl: ".swiper-button-prev",
-                        nextEl: ".swiper-button-next",
+                        prevEl: ".custom-prev",
+                        nextEl: ".custom-next",
+                    }}
+                    pagination={{
+                        type: "fraction",
+                        clickable: true, // Pagination 클릭 가능 설정
+                        el: ".custom-pagination",
                     }}
                     autoplay={{
                         delay: 5000, // 3초마다 자동으로 넘어감
                         disableOnInteraction: false, // 사용자가 스와이프해도 autoplay 유지
                     }}
                     breakpoints={{
-                        320: { // 모바일 화면
-                            slidesPerView: 2, // 2개씩 표시
-                            spaceBetween: 10,
-                        },
-                        768: { // 태블릿 화면
-                            slidesPerView: 3, // 3개씩 표시
-                            spaceBetween: 15,
-                        },
-                        1024: { // 데스크톱 화면
-                            slidesPerView: 4, // 4개씩 표시
-                            spaceBetween: 20,
-                        },
+                        320: {slidesPerView: 2, spaceBetween: 10},
+                        768: {slidesPerView: 3, spaceBetween: 15},
+                        1024: {slidesPerView: 4, spaceBetween: 20},
                     }}
                     className="relative"
                 >
                     {products.map((product) => (
                         <SwiperSlide key={product.productNo}>
-                            <div className="relative bg-white rounded-lg shadow-md hover:shadow-lg transition-all p-2">
+                            <div className="relative bg-white rounded-lg hover:shadow-lg transition-all p-4">
                                 <Link to={`/product/${creatorId}/detail/${product.productNo}`}>
                                     <div className="w-full h-50 overflow-hidden rounded-t-lg">
                                         <img
@@ -214,7 +238,7 @@ function ProductListComponent() {
                                     </div>
                                 </Link>
                                 <button
-                                    className="absolute bottom-4 right-4 p-2 bg-white rounded-full shadow border hover:bg-gray-100"
+                                    className="absolute bottom-2 right-4 p-1 bg-white rounded-full shadow border hover:bg-gray-100"
                                     onClick={() => handleAddToCart(product)}
                                 >
                                     <img src={cart2} alt="장바구니" className="w-5 h-5"/>
@@ -225,13 +249,19 @@ function ProductListComponent() {
                 </Swiper>
 
                 <div
-                    className="swiper-button-prev !absolute !top-[50%] !left-[-30px] z-10 hidden lg:block"
-                    style={{display: window.innerWidth >= 1024 ? "block" : "none"}}
-                ></div>
+                    className="custom-pagination absolute bottom-[-30px] left-0 right-0 flex justify-center gap-1 z-10">
+                </div>
+
                 <div
-                    className="swiper-button-next !absolute !top-[50%] !right-[-30px] z-10 hidden lg:block"
-                    style={{display: window.innerWidth >= 1024 ? "block" : "none"}}
-                ></div>
+                    className="custom-prev absolute top-[60%] left-[-24px] transform -translate-y-1/2 z-10 flex items-center justify-center w-10 h-10 cursor-pointer"
+                >
+                    <img src={prev} alt="이전" className="w-4 h-4"/>
+                </div>
+                <div
+                    className="custom-next absolute top-[60%] right-[-24px] transform -translate-y-1/2 z-10 flex items-center justify-center w-10 h-10 cursor-pointer"
+                >
+                    <img src={next} alt="다음" className="w-4 h-4"/>
+                </div>
 
             </div>
         </div>
