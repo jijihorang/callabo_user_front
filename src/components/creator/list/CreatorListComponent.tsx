@@ -5,8 +5,7 @@ import {getCreatorList} from "../../../apis/creator/creatorAPI.ts";
 import click from "../../../assets/icons/click.png";
 import {ICreator} from "../../../types/creator/icreator.ts";
 import useAuthStore from "../../../stores/customer/AuthStore.ts";
-
-import FollowButton from "../FollowButton";
+import heart from "../../../assets/icons/redheart.png";
 
 function CreatorListComponent() {
     const {
@@ -70,7 +69,7 @@ function CreatorListComponent() {
         <div className="container mx-auto mb-20 px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col md:flex-row gap-6 mt-10">
                 {/* 제작자 목록 */}
-                <div className="w-full md:w-1/4 p-6 shadow-md rounded-lg h-full">
+                <div className="w-full md:w-1/4 p-6 shadow-md rounded-lg h-[300px] md:h-full"> {/* 모바일에서 높이 줄이기 */}
                     {isLoading ? (
                         <p className="text-center text-gray-500">제작자 로딩 중...</p>
                     ) : (
@@ -86,7 +85,7 @@ function CreatorListComponent() {
                                 />
                             </div>
                             {/* 제작자 목록 */}
-                            <div className="h-[500px] md:h-[700px] overflow-y-auto space-y-4">
+                            <div className="h-[200px] md:h-[500px] md:h-[700px] overflow-y-auto space-y-4"> {/* 모바일에서 높이 줄이기 */}
                                 <ul>
                                     {filteredCreators.map((creator, index) => (
                                         <li
@@ -112,12 +111,13 @@ function CreatorListComponent() {
                                                         : creator.creatorName}
                                                 </span>
                                             </div>
-                                            {/* 팔로우 버튼 */}
-                                            <FollowButton
-                                                creatorId={creator.creatorId || ""}
-                                                currentStatus={creator.followStatus ?? false}
-                                                customerId={customerId || ""}
-                                            />
+                                            {/* 팔로워 수 */}
+                                            <div className="flex items-center gap-2 text-sm font-medium text-gray-600 bg-gray-100 px-3 py-1 rounded-lg shadow-sm">
+                                                <img src={heart} alt="팔로워 아이콘" className="w-4 h-4" />
+                                                <span>
+                                                    <span className="font-bold text-gray-800">{creator.followerCount || 0}</span>명
+                                                </span>
+                                            </div>
                                         </li>
                                     ))}
                                 </ul>

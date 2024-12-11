@@ -178,6 +178,11 @@ function AccountSettingsPage() {
                     </div>
                 </div>
 
+                {/* 배송지 추가하기 텍스트 */}
+                <div className="mt-4 text-gray-400 text-sm cursor-pointer">
+                    + 배송지 추가하기
+                </div>
+
                 {/* 버튼 */}
                 <div className="flex justify-center mt-8 gap-3">
                     <button

@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-
-import heart from "../../../assets/icons/heart.png";
 import close from "../../../assets/icons/close.png";
 import useCartStore from "../../../stores/cart/cartStore.ts";
 import {IProduct} from "../../../types/product/iproduct.ts";
@@ -14,9 +12,11 @@ import ProductFAQComponent from "./ProductFAQComponent.tsx";
 import ProductReviewComponent from "./ProductReviewComponent.tsx";
 import {SweetAlertOptions} from "sweetalert2";
 import AlertComponent from "../../common/AlertComponent.tsx";
-
+import LikeButton from "../ProductLikeButton.tsx";
+import useAuthStore from "../../../stores/customer/AuthStore.ts";
 
 function ProductDetailComponent() {
+    const { customer } = useAuthStore();
     const { creatorId, productNo } = useParams<{ creatorId: string; productNo: string }>();
     const [activeTab, setActiveTab] = useState("description"); // 탭 상태 관리
     const [showPurchasePopup, setShowPurchasePopup] = useState(false); // 구매 팝업 상태
@@ -171,9 +171,10 @@ function ProductDetailComponent() {
             {/* 하단 고정 구매 영역 (모바일에서만 표시) */}
             {isMobile && (
                 <div className="fixed bottom-0 left-0 w-full bg-white flex justify-between items-center px-4 py-3 z-50">
-                    <button className="text-gray-500 font-bold flex items-center" onClick={() => console.log("찜하기 클릭됨")}>
-                        <img src={heart} alt="찜하기" className="w-5 h-5 mr-2" />
-                    </button>
+                    <LikeButton
+                        customerId={customer?.customerId || ""}
+                        productId={product?.productNo || 0}
+                    />
                     <div className="flex gap-4">
                         <button className="bg-blue-600 text-white px-10 py-2 rounded-lg hover:bg-blue-700" onClick={handlePurchaseClick}>
                             구매하기
