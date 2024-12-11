@@ -2,7 +2,7 @@
 import axios from "axios";
 import {IOfflineStore} from "../../types/offlinestore/iofflinestore.ts";
 
-const host = "http://localhost:8080/api2/offlinestore";
+const host = "/api2/offlinestore";
 
 export const getOfflineStoreList = async (): Promise<IOfflineStore[]> => {
     try {
