@@ -68,6 +68,7 @@ function HeaderComponent() {
                         </Link>
                     </h1>
 
+
                     {/* 네비게이션 메뉴 (데스크톱 전용) */}
                     <nav className="hidden lg:flex items-center space-x-6 text-[18px] font-medium ml-8">
                         <Link to="/creator" className="hover:text-blue-500">
@@ -173,15 +174,6 @@ function HeaderComponent() {
                             <span className="text-lg font-medium text-gray-800">찜한 상품</span>
                         </Link>
 
-                        {/* 장바구니 */}
-                        <Link
-                            to="/header/cart"
-                            className="flex items-center space-x-6 hover:text-blue-500 transition"
-                            onClick={() => setIsMenuOpen(false)}
-                        >
-                            <img src="/src/assets/icons/cart.png" alt="장바구니" className="w-8 h-8" />
-                            <span className="text-lg font-medium text-gray-800">장바구니</span>
-                        </Link>
                     </nav>
                 </div>
             </div>

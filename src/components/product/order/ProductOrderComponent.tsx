@@ -7,12 +7,15 @@ import useAuthStore from "../../../stores/customer/AuthStore.ts";
 import {createOrders} from "../../../apis/order/orderAPI.ts";
 import {SweetAlertOptions} from "sweetalert2";
 import AlertComponent from "../../common/AlertComponent.tsx";
+import {CartGroup} from "../../../stores/cart/cartStore.ts";
 
 function ProductOrderComponent() {
 
     const { customer } = useAuthStore();
-    const { state } = useLocation();
-    const { cartGroups } = state || {};
+
+    const location = useLocation();
+    const { state } = location as { state?: { cartGroups?: CartGroup[] } };
+    const cartGroups = state?.cartGroups || [];
 
     const navigate = useNavigate();
     const [customerId] = useState(customer?.customerId || "");

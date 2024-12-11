@@ -11,7 +11,7 @@ interface ReviewReadProps {
         productImages: { productImageNo: number; productImageUrl: string }[];
         productName: string;
         productPrice: number;
-        reply?: string;
+        reply: string;
     };
     closeModal: () => void;
 }

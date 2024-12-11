@@ -85,7 +85,7 @@ function CreatorListComponent() {
                                 />
                             </div>
                             {/* 제작자 목록 */}
-                            <div className="h-[200px] md:h-[500px] md:h-[700px] overflow-y-auto space-y-4"> {/* 모바일에서 높이 줄이기 */}
+                            <div className="h-[200px] md:h-[500px] overflow-y-auto space-y-4"> {/* 모바일에서 높이 줄이기 */}
                                 <ul>
                                     {filteredCreators.map((creator, index) => (
                                         <li
