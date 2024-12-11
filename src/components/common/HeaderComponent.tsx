@@ -6,7 +6,8 @@ import heart from "../../assets/icons/heart.png";
 import cart from "../../assets/icons/cart.png";
 import info from "../../assets/icons/info.png";
 import menu from "../../assets/icons/menu.png";
-import closeIcon from "../../assets/icons/close.png"; // 닫기 버튼 아이콘
+import closeIcon from "../../assets/icons/close.png";
+import useCartStore from "../../stores/cart/cartStore.ts"; // 닫기 버튼 아이콘
 
 function HeaderComponent() {
     const navigate = useNavigate();
@@ -14,6 +15,14 @@ function HeaderComponent() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isHeaderVisible, setIsHeaderVisible] = useState(true); // 헤더 표시 상태
     const [lastScrollY, setLastScrollY] = useState(0); // 이전 스크롤 위치
+
+    const totalQuantity = useCartStore((state) =>
+        state.cartGroups.reduce(
+            (total, group) =>
+                total + group.products.reduce((groupTotal, product) => groupTotal + product.quantity, 0),
+            0
+        )
+    ); // 장바구니 총 상품 갯수 계산
 
     const handleUserIconClick = () => {
         if (isLoggedIn) {
@@ -70,10 +79,22 @@ function HeaderComponent() {
                     </nav>
                 </div>
 
-                {/* 모바일 메뉴 아이콘 */}
-                <button className="lg:hidden" onClick={() => setIsMenuOpen(true)}>
-                    <img src={menu} alt="메뉴" className="w-7 h-7 cursor-pointer" />
-                </button>
+                {/* 모바일 메뉴 아이콘 + Cart 아이콘 */}
+                <div className="lg:hidden flex items-center space-x-4 relative">
+                    <Link to="/header/cart" className="relative">
+                        <img src={cart} alt="장바구니" className="w-7 h-7 cursor-pointer" />
+                        {totalQuantity > 0 && (
+                            <span
+                                className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center"
+                            >
+                        {totalQuantity}
+                            </span>
+                        )}
+                    </Link>
+                    <button onClick={() => setIsMenuOpen(true)}>
+                        <img src={menu} alt="메뉴" className="w-7 h-7 cursor-pointer" />
+                    </button>
+                </div>
 
                 {/* 오른쪽 아이콘 (데스크톱 전용) */}
                 <div className="hidden lg:flex items-center space-x-5">
@@ -125,13 +146,6 @@ function HeaderComponent() {
                         onClick={() => setIsMenuOpen(false)}
                     >
                         Wishlist
-                    </Link>
-                    <Link
-                        to="/header/cart"
-                        className="hover:text-blue-500"
-                        onClick={() => setIsMenuOpen(false)}
-                    >
-                        Cart
                     </Link>
                     <button
                         onClick={() => {
