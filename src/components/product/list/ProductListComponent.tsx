@@ -125,7 +125,8 @@ function ProductListComponent() {
 
             {/* 제작자 정보 */}
             <div className="text-center mb-8">
-                <div className="relative inline-block w-24 h-24 lg:w-28 lg:h-28 rounded-full overflow-hidden border-4 border-white shadow-md -mt-12">
+                <div
+                    className="relative inline-block w-24 h-24 lg:w-28 lg:h-28 rounded-full overflow-hidden border-4 border-white shadow-md -mt-12">
                     <img
                         src={creator.logoImg}
                         alt="제작자 프로필"
@@ -135,11 +136,15 @@ function ProductListComponent() {
                 <h2 className="text-2xl lg:text-3xl font-bold mt-4">
                     {creator.creatorName || "제작자 이름 없음"}
                 </h2>
-                <FollowButton
-                    creatorId={creator?.creatorId || ""}
-                    currentStatus={creator.followStatus ?? false}
-                    customerId={customer?.customerId || ""}
-                />
+                <div
+                    className="flex items-center justify-center transition-shadow max-w-max mx-auto mt-4"
+                >
+                    <FollowButton
+                        creatorId={creator?.creatorId || ""}
+                        currentStatus={creator.followStatus ?? false}
+                        customerId={customer?.customerId || ""}
+                    />
+                </div>
             </div>
 
             {/* 상품 리스트 */}
