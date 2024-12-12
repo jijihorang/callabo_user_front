@@ -60,7 +60,7 @@ function AccountSettingsPage() {
         try {
             // API 호출
             await axios.put(
-                `http://localhost:8080/api2/customer/${customer?.customerId}`,
+                `/api2/customer/${customer?.customerId}`,
                 payload
             );
             setAlertOptions({
