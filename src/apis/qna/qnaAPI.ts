@@ -1,7 +1,7 @@
 import axios from "axios";
 import {IQna, IQnaRequest} from "../../types/qna/iqna.ts";
 
-const host = "http://localhost:8080/api2/qna";
+const host = "/api2/qna";
 
 export const addQnA = async ( qnaData : IQnaRequest): Promise<void> => {
     try {
