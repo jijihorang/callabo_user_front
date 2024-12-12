@@ -4,14 +4,14 @@ import { Autoplay } from "swiper/modules";
 // @ts-expect-error
 import "swiper/css";
 
-import img01 from "../../../assets/slider/special/limited1.jpg";
-import img02 from "../../../assets/slider/special/limited2.jpeg";
-import img03 from "../../../assets/slider/special/limited3.jpeg";
-import img04 from "../../../assets/slider/special/limited5.jpg";
-import img05 from "../../../assets/slider/special/img12.jpg";
-import img06 from "../../../assets/slider/special/img13.jpg";
-import img07 from "../../../assets/slider/special/img14.jpg";
-import img08 from "../../../assets/slider/special/img15.jpg";
+import img01 from "../../../../public/slider/special/limited1.jpg";
+import img02 from "../../../../public/slider/special/limited2.jpeg";
+import img03 from "../../../../public/slider/special/limited3.jpeg";
+import img04 from "../../../../public/slider/special/limited5.jpg";
+import img05 from "../../../../public/slider/special/img12.jpg";
+import img06 from "../../../../public/slider/special/img13.jpg";
+import img07 from "../../../../public/slider/special/img14.jpg";
+import img08 from "../../../../public/slider/special/img15.jpg";
 
 
 const SpecialOfferComponent = () => {

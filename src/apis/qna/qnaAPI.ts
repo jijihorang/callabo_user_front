@@ -20,37 +20,6 @@ export const addQnA = async ( qnaData : IQnaRequest): Promise<void> => {
     }
 };
 
-export const qnaImageUpload = async (
-    qnaNo: number,
-    imageDTOs: { qnaImageUrl: string; qnaImageOrd: number }[]
-): Promise<{ qnaImageUrl: string; qnaImageOrd: number }[]> => {
-    try {
-        const result = await axios.post<{ qnaImageUrl: string; qnaImageOrd: number }[]>(
-            `${host}/qna/images`,
-            imageDTOs,
-            {
-                params: { qnaNo },
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }
-        );
-
-        if (result.status !== 200) {
-            throw new Error("Failed to upload QnA images");
-        }
-
-        return result.data;
-    } catch (error) {
-        if (error) {
-            console.error("Axios Error:", error);
-        } else {
-            console.error("Unexpected Error:", error);
-        }
-        throw new Error("An error occurred while uploading the QnA images.");
-    }
-};
-
 // qna 리스트
 export const getQnAList = async (customerId: string): Promise<IQna[]> => {
     try {

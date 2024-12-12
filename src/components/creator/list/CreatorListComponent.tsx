@@ -2,10 +2,9 @@ import {useNavigate} from "react-router-dom";
 import {useQuery} from "react-query";
 import useCreatorStore from "../../../stores/creator/CreatorStore.ts";
 import {getCreatorList} from "../../../apis/creator/creatorAPI.ts";
-import click from "../../../assets/icons/click.png";
+import click from "../../../../public/icons/click.png";
 import {ICreator} from "../../../types/creator/icreator.ts";
-import useAuthStore from "../../../stores/customer/AuthStore.ts";
-import heart from "../../../assets/icons/redheart.png";
+import heart from "../../../../public/icons/redheart.png";
 
 function CreatorListComponent() {
     const {
@@ -18,21 +17,15 @@ function CreatorListComponent() {
         setSearchQuery,
         setInitialized
     } = useCreatorStore();
-    const customerId = useAuthStore((state) => state.customer?.customerId); // Zustand에서 customerId 가져오기
     const navigate = useNavigate();
 
     // React Query로 데이터 가져오기
     const {isLoading} = useQuery<ICreator[]>({
-        queryKey: ["creatorList", customerId], // queryKey에 customerId 포함
         queryFn: () => {
-            if (!customerId) {
-                return Promise.reject(new Error("Customer ID is null")); // customerId가 없을 경우 명시적으로 에러 발생
-            }
-            return getCreatorList(customerId); // customerId 전달
+            return getCreatorList(); // customerId 전달
         },
         staleTime: 0,
         refetchInterval: 0,
-        enabled: !!customerId, // customerId가 있을 때만 활성화
         initialData: creators,
         onSuccess: (data: ICreator[]) => {
             if (!isInitialized) {
@@ -85,7 +78,7 @@ function CreatorListComponent() {
                                 />
                             </div>
                             {/* 제작자 목록 */}
-                            <div className="h-[200px] md:h-[500px] md:h-[700px] overflow-y-auto space-y-4"> {/* 모바일에서 높이 줄이기 */}
+                            <div className="h-[200px] md:h-[500px] overflow-y-auto space-y-4"> {/* 모바일에서 높이 줄이기 */}
                                 <ul>
                                     {filteredCreators.map((creator, index) => (
                                         <li

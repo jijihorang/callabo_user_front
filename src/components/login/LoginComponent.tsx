@@ -1,6 +1,6 @@
-import close from "../../assets/icons/close.png";
-import kakao_logo from "../../assets/login/kakao.png";
-import profile from "../../assets/login/profile.png";
+import close from "../../../public/icons/close.png";
+import kakao_logo from "../../../public/login/kakao.png";
+import profile from "../../../public/login/profile.png";
 import { Link, useNavigate } from "react-router-dom";
 import { getKakaoLoginLink } from "../../apis/login/KakaoLoginAPI.ts";
 

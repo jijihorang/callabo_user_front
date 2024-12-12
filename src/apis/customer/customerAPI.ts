@@ -1,14 +1,7 @@
 import axios from "axios";
 import {ILikedCreators, ILikedProducts} from "../../types/wishlist/iwishlist.ts";
-import {IUpdateCustomer} from "../../types/customer/icustomer.ts";
 
 const host = 'http://localhost:8080/api2/customer';
-
-// 팔로우 상태 변경
-export const toggleFollow = async (customerId: string, creatorId: string): Promise<void> => {
-   const res =  await axios.post(`${host}/follow`, { customerId, creatorId });
-   return res.data;
-};
 
 export const getLikedProducts = async (customerId: string): Promise<ILikedProducts[]> => {
    const response = await axios.get(`${host}/likedproducts`, {
@@ -21,7 +14,7 @@ export const getLikedProducts = async (customerId: string): Promise<ILikedProduc
       id: item.productId,
       name: item.productName,
       img: item.productImageUrl || 'default-product-image-url', // 이미지가 null인 경우 빈 문자열로 대체
-      price: item.productPrice ?? 0,  // price가 undefined인 경우 기본값 0 설정
+      price: item.productPrice ?? 0,  // price가 undefined인 경우 기본값 설정
    }));
 
    console.log("매핑된 데이터:", mappedData);
@@ -44,18 +37,6 @@ export const getLikedCreators = async (customerId: string): Promise<ILikedCreato
 
    console.log("매핑된 데이터:", mappedData);
    return mappedData;
-};
-
-export const updateCustomer = async (
-    customerId: string,
-    customerData: IUpdateCustomer ): Promise<void> => {
-    try {
-        const res = await axios.put(`${host}/${customerId}`, customerData);
-        return res.data;
-    } catch (error) {
-        console.error("사용자 정보 업데이트 중 오류 발생:", error);
-        throw error;
-    }
 };
 
 export const toggleProductLikeAPI = async (
