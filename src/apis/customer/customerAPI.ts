@@ -1,6 +1,5 @@
 import axios from "axios";
 import {ILikedCreators, ILikedProducts} from "../../types/wishlist/iwishlist.ts";
-import {IUpdateCustomer} from "../../types/customer/icustomer.ts";
 
 const host = 'http://localhost:8080/api2/customer';
 
@@ -38,18 +37,6 @@ export const getLikedCreators = async (customerId: string): Promise<ILikedCreato
 
    console.log("매핑된 데이터:", mappedData);
    return mappedData;
-};
-
-export const updateCustomer = async (
-    customerId: string,
-    customerData: IUpdateCustomer ): Promise<void> => {
-    try {
-        const res = await axios.put(`${host}/${customerId}`, customerData);
-        return res.data;
-    } catch (error) {
-        console.error("사용자 정보 업데이트 중 오류 발생:", error);
-        throw error;
-    }
 };
 
 export const toggleProductLikeAPI = async (
