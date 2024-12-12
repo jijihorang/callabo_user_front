@@ -1,4 +1,4 @@
-import {IProduct, IProductList} from "../../types/product/iproduct.ts";
+import {IProduct, IProductList, IProductRanking} from "../../types/product/iproduct.ts";
 import axios from "axios";
 
 const host = 'http://localhost:8080/api2/product';
@@ -18,3 +18,9 @@ export const getProductRead = async (creatorId : string, productNo : number) : P
     const res = await axios.get(`${host}/${creatorId}/detail/${productNo}`);
     return res.data;
 }
+
+// 주문이 많은 상품 상위 10개 가져오기
+export const getTopOrderedProducts = async (): Promise<IProductRanking[]> => {
+    const res = await axios.get(`${host}/ranking`);
+    return res.data;
+};
