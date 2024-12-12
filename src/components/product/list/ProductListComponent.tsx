@@ -31,7 +31,7 @@ import prev from "../../../../public/icons/prev.png"
 import next from "../../../../public/icons/next.png"
 
 function ProductListComponent() {
-    const { creatorId } = useParams(); // URL에서 creatorId 추출
+    const { creatorId } = useParams(); // URL creatorId 추출
     const { customer } = useAuthStore();
     const { addToCart } = useCartStore(); // Zustand 상태 가져오기
     const [products, setProducts] = useState<IProductList[]>([]);
@@ -77,15 +77,13 @@ function ProductListComponent() {
             }
         };
 
+
         const fetchCreatorInfo = async () => {
             try {
-                if (customer?.customerId) {
                     const data = await getCreatorList();
                     const selectedCreator = data.find((c: ICreator) => c.creatorId === creatorId);
                     setCreator(selectedCreator || null);
-                } else {
-                    console.error("customerId가 없습니다.");
-                }
+
             } catch (error) {
                 console.error("제작자 정보를 가져오는 중 에러 발생:", error);
             }
