@@ -9,4 +9,5 @@ export interface ICreator {
     logoImg ?: string;
 
     followStatus ?: boolean;
+    followerCount ?: number;
 }
