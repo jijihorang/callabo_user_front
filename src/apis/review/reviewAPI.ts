@@ -1,7 +1,7 @@
 import axios from "axios";
 import {IReview, IReviewRequest} from "../../types/review/ireview.ts";
 
-const host = "http://localhost:8080/api2/review";
+const host = "/api2/review";
 
 export const addReview = async ( reviewData: IReviewRequest ): Promise<void> => {
     try {
