@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 
 import useAuthStore from "../../../stores/customer/AuthStore.ts";
@@ -6,23 +6,78 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {SweetAlertOptions} from "sweetalert2";
 import AlertComponent from "../../common/AlertComponent.tsx";
+import LoadingComponent from "../../common/LoadingComponent.tsx";
+
+const getCookieValue = (cookieName: string): string | null => {
+    const cookies = document.cookie.split("; ").reduce((acc: Record<string, string>, cookie) => {
+        const [name, value] = cookie.split("=");
+        acc[name] = decodeURIComponent(value);
+        return acc;
+    }, {});
+    return cookies[cookieName] || null;
+};
 
 function AccountSettingsPage() {
 
-    const { customer } = useAuthStore();
+    const { customer } = useAuthStore()
 
-    const [phone, setPhone] = useState("");
-    const [zipcode, setZipcode] = useState("");
-    const [address, setAddress] = useState("");
-    const [detailAddress, setDetailAddress] = useState("");
+    const [phone, setPhone] = useState("")
+    const [zipcode, setZipcode] = useState("")
+    const [address, setAddress] = useState("")
+    const [detailAddress, setDetailAddress] = useState("")
+    const [loading, setLoading] = useState(true)
 
     const navigate = useNavigate();
 
-    const [alertOptions, setAlertOptions] = useState<SweetAlertOptions | null>(null);
+    const [alertOptions, setAlertOptions] = useState<SweetAlertOptions | null>(null)
 
     const scriptUrl =
-        "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
-    const open = useDaumPostcodePopup(scriptUrl);
+        "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"
+    const open = useDaumPostcodePopup(scriptUrl)
+
+    useEffect(() => {
+        const fetchCustomerData = async () => {
+            if (customer) {
+                try {
+                    console.log("Fetching data for customerId:", customer.customerId);
+
+                    const response = await axios.get(`http://localhost:8080/api2/customer/account`, {
+                        params: { customerId: customer.customerId },
+                    });
+
+                    console.log("API Response Data:", response.data);
+
+                    // 배열의 첫 번째 요소로 접근
+                    const data = response.data[0];
+
+                    if (data) {
+                        setPhone(data.customerPhone || "");
+                        setZipcode(data.customerZipcode || "");
+                        setAddress(data.customerAddr || "");
+                        setDetailAddress(data.customerAddrDetail || "");
+
+                        console.log("Phone:", data.customerPhone);
+                        console.log("Zipcode:", data.customerZipcode);
+                        console.log("Address:", data.customerAddr);
+                        console.log("Detail Address:", data.customerAddrDetail);
+                    } else {
+                        console.warn("No customer data found in response");
+                    }
+                } catch (error) {
+                    console.error("Error fetching customer data:", error);
+                } finally {
+                    setLoading(false);
+                }
+            } else {
+                console.warn("No customer object found!");
+                setLoading(false);
+            }
+        };
+
+        fetchCustomerData();
+    }, [customer]);
+
+
 
     const handleAddressSelect = (data: any) => {
         let fullAddress = data.address;
@@ -57,6 +112,20 @@ function AccountSettingsPage() {
             customerAddr: address,
             customerAddrDetail: detailAddress,
         }
+
+        const accessToken = getCookieValue("accessToken");
+        const refreshToken = getCookieValue("refreshToken");
+
+        if (!accessToken || !refreshToken) {
+            setAlertOptions({
+                title: "로그인 만료",
+                text: `로그인 정보가 없습니다.`,
+                icon: "error",
+                confirmButtonText: "확인",
+            });
+            return;
+        }
+
         try {
             // API 호출
             await axios.put(
@@ -69,6 +138,7 @@ function AccountSettingsPage() {
                 icon: "success",
                 confirmButtonText: "확인",
             });
+            console.log(customer);
         } catch (error) {
             console.error("저장 중 오류:", error);
             setAlertOptions({
@@ -79,6 +149,10 @@ function AccountSettingsPage() {
             });
         }
     };
+
+    if (loading) {
+        return <LoadingComponent/>
+    }
 
     return (
         <div className="container mx-auto py-8 px-4">
@@ -95,7 +169,7 @@ function AccountSettingsPage() {
                 <div className="flex justify-center">
                     <div className="relative">
                         <img
-                            src={customer?.customerProfileImage}
+                            src={customer?.customerProfileImage || ""}
                             alt="프로필"
                             className="w-32 h-32 md:w-40 md:h-40 rounded-full"
                         />
@@ -105,12 +179,12 @@ function AccountSettingsPage() {
                 {/* 이메일 */}
                 <div>
                     <label className="block text-sm font-medium mb-1">
-                        이메일(아이디) <span className="text-blue-500">*</span>
+                        <span className="text-red-500">*</span> 이메일(아이디)
                     </label>
                     <div className="flex space-x-4">
                         <input
                             type="email"
-                            value={customer?.customerId}
+                            value={customer?.customerId || ""}
                             className="flex-1 border rounded-lg px-4 py-2 text-sm"
                             disabled
                         />
@@ -120,10 +194,11 @@ function AccountSettingsPage() {
 
                 {/* 닉네임 */}
                 <div>
-                    <label className="block text-sm font-medium mb-1">이름</label>
+                    <label className="block text-sm font-medium mb-1">
+                        <span className="text-red-500">*</span> 이름</label>
                     <input
                         type="text"
-                        value={customer?.customerName}
+                        value={customer?.customerName || ""}
                         className="w-full border rounded-lg px-4 py-2 text-sm"
                         disabled
                     />
@@ -176,6 +251,11 @@ function AccountSettingsPage() {
                             className="w-full border rounded-lg px-4 py-2 text-sm"
                         />
                     </div>
+                </div>
+
+                {/* 배송지 추가하기 텍스트 */}
+                <div className="mt-4 text-gray-400 text-sm cursor-pointer">
+                    + 배송지 추가하기
                 </div>
 
                 {/* 버튼 */}
