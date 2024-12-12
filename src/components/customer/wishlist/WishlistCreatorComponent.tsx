@@ -1,5 +1,5 @@
-import profileImg from "../../../assets/img/pro1.png";
-import heart from "../../../assets/icons/redheart.png";
+import profileImg from "../../../../public/img/pro1.png";
+import heart from "../../../../public/icons/redheart.png";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getLikedCreators } from "../../../apis/customer/customerAPI.ts";
@@ -13,7 +13,7 @@ function WishlistCreatorComponent() {
     const customerId = useAuthStore((state) => state.customer?.customerId); // Zustand에서 customerId 가져오기
 
     // React Query로 좋아요한 크리에이터 가져오기
-    const { data: creators = [], isLoading, refetch } = useQuery<ILikedCreators[]>({
+    const { data: creators = [], isLoading } = useQuery<ILikedCreators[]>({
         queryKey: ["likedCreators", customerId],
         queryFn: async () => {
             if (!customerId) {
@@ -32,11 +32,6 @@ function WishlistCreatorComponent() {
         if (creatorId) {
             navigate(`/product/list/${creatorId}`);
         }
-    };
-
-    // 언팔로우 후 새로고침
-    const handleAfterUnfollow = () => {
-        refetch(); // 언팔로우 후 데이터를 새로 가져오기
     };
 
     return (
@@ -70,9 +65,7 @@ function WishlistCreatorComponent() {
                                 <div className="mt-4">
                                     <FollowButton
                                         creatorId={creator.creatorId}
-                                        currentStatus={true} // 현재 팔로우 상태
                                         customerId={customerId || ""}
-                                        onUnfollow={handleAfterUnfollow} // 언팔로우 후 새로고침
                                     />
                                 </div>
                             </div>

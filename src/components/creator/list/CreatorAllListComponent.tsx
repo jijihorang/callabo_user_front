@@ -1,5 +1,3 @@
-import heartIcon from "../../../assets/icons/whiteheart.png";
-
 import {useEffect, useState} from "react";
 import {ICreator} from "../../../types/creator/icreator.ts";
 import {getCreatorList} from "../../../apis/creator/creatorAPI.ts";
@@ -37,41 +35,31 @@ function CreatorAllListComponent() {
     }
 
     return (
-        <div className="container mx-auto mb-20">
-            <div className="px-4 mt-10">
-                <h2 className="text-[15px] mb-1">모든 크리에이터가 모였다!</h2>
-                <h1 className="text-[30px] font-bold mb-5">All Creators</h1>
+        <div className="container mx-auto mb-20 px-4 sm:px-6 lg:px-8">
+            <div className="mt-10">
+                <h2 className="text-sm text-gray-500 mb-1">모든 크리에이터가 모였다!</h2>
+                <h1 className="text-2xl font-bold mb-5">All Creators</h1>
             </div>
 
             {/* 제작자 카드 리스트 */}
-            <div className="grid grid-cols-4 gap-6 px-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6">
                 {creators.map((creator) => (
                     <div
                         key={creator.creatorId}
-                        className="rounded-lg bg-gradient-to-b from-gray-100 to-gray-200 p-5 shadow-md flex flex-col items-center relative"
+                        className="rounded-lg bg-gradient-to-b from-gray-100 to-gray-200 p-4 sm:p-5 shadow-md flex flex-col items-center relative"
                     >
                         {/* 프로필 이미지 */}
                         <img
                             src={creator.logoImg}
                             alt={creator.creatorName}
-                            className="w-20 h-20 object-cover rounded-full mb-4 border-4 border-white shadow-md"
+                            className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-full mb-3 border-4 border-white shadow-md"
                         />
 
                         {/* 이름 */}
-                        <h3 className="text-base font-semibold">{creator.creatorName}</h3>
-
-                        {/* 팔로우 상태 */}
-                        <div className="absolute top-4 right-4 flex items-center">
-                            <img
-                                src={heartIcon}
-                                alt="좋아요"
-                                className="w-5 h-5 mr-1"
-                            />
-                        </div>
-
+                        <h3 className="text-sm sm:text-base font-semibold text-center">{creator.creatorName}</h3>
                         <button
-                            className="px-6 py-2 bg-blue-500 text-white rounded-lg mt-3"
-                            onClick={() => navigate(`/creator/read/${creator.creatorId}`)}>
+                            className="px-4 py-2 sm:px-6 sm:py-2 bg-blue-500 text-white text-sm sm:text-base rounded-lg mt-3"
+                            onClick={() => navigate(`/product/list/${creator.creatorId}`)}>
                             스토어 구경
                         </button>
                     </div>

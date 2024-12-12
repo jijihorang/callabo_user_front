@@ -1,7 +1,7 @@
 import {IProductImage} from "../product/iproduct.ts";
 
 export interface IReviewImage {
-    reviewImageNo?: number;
+    reviewImageNo: number;
     reviewImageUrl: string;
     reviewImageOrd: number;
 }

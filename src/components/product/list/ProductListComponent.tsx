@@ -13,7 +13,7 @@ import "swiper/css/pagination";
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-import cart2 from "../../../assets/icons/cart.png";
+import cart2 from "../../../../public/icons/cart.png";
 import useAuthStore from "../../../stores/customer/AuthStore.ts";
 import useCartStore from "../../../stores/cart/cartStore.ts";
 import { IProduct, IProductList } from "../../../types/product/iproduct.ts";
@@ -27,8 +27,8 @@ import AlertComponent from "../../common/AlertComponent.tsx";
 import FollowButton from "../../creator/FollowButton.tsx";
 import DropdownComponent from "../../common/DropdownComponent.tsx";
 
-import prev from "../../../assets/icons/prev.png"
-import next from "../../../assets/icons/next.png"
+import prev from "../../../../public/icons/prev.png"
+import next from "../../../../public/icons/next.png"
 
 function ProductListComponent() {
     const { creatorId } = useParams(); // URL에서 creatorId 추출
@@ -57,7 +57,6 @@ function ProductListComponent() {
         sortProducts(option);
     };
 
-
     // 데이터 로드
     useEffect(() => {
         const fetchProducts = async () => {
@@ -81,7 +80,7 @@ function ProductListComponent() {
         const fetchCreatorInfo = async () => {
             try {
                 if (customer?.customerId) {
-                    const data = await getCreatorList(customer.customerId);
+                    const data = await getCreatorList();
                     const selectedCreator = data.find((c: ICreator) => c.creatorId === creatorId);
                     setCreator(selectedCreator || null);
                 } else {

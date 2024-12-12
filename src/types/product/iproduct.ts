@@ -35,3 +35,13 @@ export interface IProductImage {
     productImageUrl: string;
     productImageOrd: number;
 }
+
+export interface IProductRanking {
+    productNo: number;
+    prodcutName: string;
+    creatorId: string;
+    productImageUrl: string;
+    productDescription: string;
+    productPrice: number;
+    orderCount: number;
+}

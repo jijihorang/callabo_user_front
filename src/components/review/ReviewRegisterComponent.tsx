@@ -78,6 +78,7 @@ function ReviewRegisterComponent() {
                 productNo,
                 rating,
                 reviewImages: uploadedUrls.map((url, index) => ({
+                    reviewImageNo: index + 1,
                     reviewImageUrl: url,
                     reviewImageOrd: index,
                 })),

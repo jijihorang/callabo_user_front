@@ -14,7 +14,11 @@ const getCookieValue = (cookieName: string): string | null => {
 interface AuthState {
     customer: ICustomer | null;
     isLoggedIn: boolean;
-    setUser: (customer: ICustomer, accessToken: string, refreshToken: string) => void;
+    setUser: (
+        customer: ICustomer,
+        accessToken: string,
+        refreshToken: string,
+    ) => void;
     logout: () => void;
 }
 

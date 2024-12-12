@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import close from "../../../assets/icons/close.png";
+import close from "../../../../public/icons/close.png";
 import useCartStore from "../../../stores/cart/cartStore.ts";
 import {IProduct} from "../../../types/product/iproduct.ts";
 import {getProductRead} from "../../../apis/product/productAPI.ts";

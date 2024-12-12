@@ -1,14 +1,14 @@
 import {Link, useNavigate} from "react-router-dom";
 import useAuthStore from "../../../stores/customer/AuthStore.ts";
 
-import faq from "../../../assets/icons/faq.png";
-import qa from "../../../assets/icons/q&a.png"
-import like from "../../../assets/icons/like.png"
-import order from "../../../assets/icons/order.png"
-import shoopringcart from "../../../assets/icons/shoppingcart.png"
-import review from "../../../assets/icons/review.png"
+import faq from "../../../../public/icons/faq.png";
+import qa from "../../../../public/icons/q&a.png"
+import like from "../../../../public/icons/like.png"
+import order from "../../../../public/icons/order.png"
+import shoopringcart from "../../../../public/icons/shoppingcart.png"
+import review from "../../../../public/icons/review.png"
 
-import user from "../../../assets/icons/userprofile.png"
+import user from "../../../../public/icons/userprofile.png"
 import {useState} from "react";
 import {SweetAlertOptions} from "sweetalert2";
 import AlertComponent from "../../common/AlertComponent.tsx";

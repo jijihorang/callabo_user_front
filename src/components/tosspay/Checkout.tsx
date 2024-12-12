@@ -1,4 +1,4 @@
-import { loadTossPayments } from "@tosspayments/tosspayments-sdk";
+import {loadTossPayments, TossPaymentsWidgets} from "@tosspayments/tosspayments-sdk";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
@@ -10,24 +10,36 @@ interface Amount {
     value: number;
 }
 
+interface OrderItem {
+    productName: string;
+    quantity: number;
+    unitPrice: number;
+}
+
+interface OrderData {
+    orderId: string;
+    totalPrice: number;
+    items: OrderItem[];
+    recipientName: string;
+    recipientPhone: string;
+    customerEmail?: string;
+}
+
 function CheckoutPage() {
-    const { state } = useLocation();
-    const orderData = state?.orderData;
 
-    if (!orderData) {
-        return (
-            <div className="flex items-center justify-center h-screen text-center">
-                <p className="text-lg font-bold text-gray-700">결제 정보가 없습니다. 다시 시도해주세요.</p>
-            </div>
-        );
-    }
+    const location = useLocation(); // 타입 파라미터 제거
+    const orderData = (location.state as { orderData: OrderData })?.orderData; // 타입 단언 사용
 
-    const [amount, setAmount] = useState<Amount>({
+    // const { state } =useLocation<{ orderData: OrderData }>();
+    // const orderData = state?.orderData;
+
+    const [amount] = useState<Amount>({
         currency: "KRW",
         value: orderData.totalPrice || 0,
     });
+
     const [ready, setReady] = useState(false);
-    const [widgets, setWidgets] = useState<any>(null);
+    const [widgets, setWidgets] = useState<TossPaymentsWidgets | null>(null);
 
     useEffect(() => {
         const fetchPaymentWidgets = async (): Promise<void> => {
@@ -90,6 +102,15 @@ function CheckoutPage() {
             console.error("결제 요청 중 오류 발생:", error);
         }
     };
+
+    if (!orderData) {
+        return (
+            <div className="flex items-center justify-center h-screen text-center">
+                <p className="text-lg font-bold text-gray-700">결제 정보가 없습니다. 다시 시도해주세요.</p>
+            </div>
+        );
+    }
+
 
     return (
         <div className="flex items-center justify-center min-h-screen">

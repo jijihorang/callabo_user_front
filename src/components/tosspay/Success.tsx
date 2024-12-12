@@ -14,7 +14,7 @@ function SuccessPage() {
 
         const confirmPayment = async (): Promise<void> => {
             try {
-                const response = await fetch("http://localhost:8080/api2/confirm", {
+                const response = await fetch("/api2/confirm", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

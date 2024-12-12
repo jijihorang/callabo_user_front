@@ -1,5 +1,5 @@
-import star2 from "../../assets/icons/star.png";
-import noStar2 from "../../assets/icons/gstar.png";
+import star2 from "../../../public/icons/star.png";
+import noStar2 from "../../../public/icons/gstar.png";
 
 interface ReviewReadProps {
     review: {
@@ -11,7 +11,7 @@ interface ReviewReadProps {
         productImages: { productImageNo: number; productImageUrl: string }[];
         productName: string;
         productPrice: number;
-        reply?: string;
+        reply: string;
     };
     closeModal: () => void;
 }

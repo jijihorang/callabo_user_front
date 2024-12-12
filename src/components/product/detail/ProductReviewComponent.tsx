@@ -1,6 +1,6 @@
 import { IReview } from "../../../types/review/ireview.ts";
-import star3 from "../../../assets/icons/star.png";
-import noStar3 from "../../../assets/icons/gstar.png";
+import star3 from "../../../../public/icons/star.png";
+import noStar3 from "../../../../public/icons/gstar.png";
 import { useEffect, useState } from "react";
 import {getReviewList} from "../../../apis/review/reviewAPI.ts";
 
