@@ -3,10 +3,9 @@ import { ICreator } from "../../types/creator/icreator";
 
 const host = "http://localhost:8080/api2/creator";
 
-export const getCreatorList = async (customerId: string): Promise<ICreator[]> => {
-    const res = await axios.get(`${host}/list`, {
-        params: { customerId },
-    });
+export const getCreatorList = async (): Promise<ICreator[]> => {
+    const res = await axios.get(`${host}/list`);
+
     return res.data;
 };
 

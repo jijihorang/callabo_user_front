@@ -10,7 +10,7 @@ function MainPage() {
                 <MainFractionSlider></MainFractionSlider>
             </div>
 
-            <div className="mt-20">
+            <div className="mt-10">
                 <WeekRankingComponent/>
             </div>
 
