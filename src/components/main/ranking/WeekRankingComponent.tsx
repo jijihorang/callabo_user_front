@@ -35,7 +35,7 @@ function WeeklyRanking() {
     };
 
     return (
-        <div className="container mx-auto p-4 mb-20">
+        <div className="container mx-auto p-4 mb-10">
             {/* 제목 */}
             <div className="flex items-center justify-between mb-6">
                 <div>
