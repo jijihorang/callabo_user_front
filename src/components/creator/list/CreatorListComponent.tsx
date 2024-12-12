@@ -4,7 +4,6 @@ import useCreatorStore from "../../../stores/creator/CreatorStore.ts";
 import {getCreatorList} from "../../../apis/creator/creatorAPI.ts";
 import click from "../../../../public/icons/click.png";
 import {ICreator} from "../../../types/creator/icreator.ts";
-import useAuthStore from "../../../stores/customer/AuthStore.ts";
 import heart from "../../../../public/icons/redheart.png";
 
 function CreatorListComponent() {
@@ -18,21 +17,15 @@ function CreatorListComponent() {
         setSearchQuery,
         setInitialized
     } = useCreatorStore();
-    const customerId = useAuthStore((state) => state.customer?.customerId); // Zustand에서 customerId 가져오기
     const navigate = useNavigate();
 
     // React Query로 데이터 가져오기
     const {isLoading} = useQuery<ICreator[]>({
-        queryKey: ["creatorList", customerId], // queryKey에 customerId 포함
         queryFn: () => {
-            if (!customerId) {
-                return Promise.reject(new Error("Customer ID is null")); // customerId가 없을 경우 명시적으로 에러 발생
-            }
-            return getCreatorList(customerId); // customerId 전달
+            return getCreatorList(); // customerId 전달
         },
         staleTime: 0,
         refetchInterval: 0,
-        enabled: !!customerId, // customerId가 있을 때만 활성화
         initialData: creators,
         onSuccess: (data: ICreator[]) => {
             if (!isInitialized) {

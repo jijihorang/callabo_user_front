@@ -1,7 +1,7 @@
 import axios from "axios";
 import {ILikedCreators, ILikedProducts} from "../../types/wishlist/iwishlist.ts";
 
-const host = '/api2/customer';
+const host = 'http://localhost:8080/api2/customer';
 
 export const getLikedProducts = async (customerId: string): Promise<ILikedProducts[]> => {
    const response = await axios.get(`${host}/likedproducts`, {

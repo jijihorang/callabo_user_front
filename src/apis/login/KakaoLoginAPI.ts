@@ -5,7 +5,7 @@ const REDIRECT_URI = import.meta.env.VITE_REDIRECT_URI;
 const kakao_auth_path = import.meta.env.VITE_KAKAO_AUTH_PATH;
 const access_token_url = import.meta.env.VITE_ACCESS_TOKEN_URL;
 
-const host = '/api2/customer/kakao'
+const host = 'http://localhost:8080/api2/customer/kakao'
 
 // 인가 코드 받기
 export const getKakaoLoginLink = () => {
