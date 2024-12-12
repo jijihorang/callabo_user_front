@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const host = "/api2/images";
+const host = "http://localhost:8080/api2/images";
 
 export const uploadS3Images = async (imageFiles: File[]): Promise<string[]> => {
     const formData = new FormData();
