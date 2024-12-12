@@ -4,75 +4,82 @@ import { Autoplay } from "swiper/modules";
 // @ts-expect-error
 import "swiper/css";
 
-import img01 from "../../../../public/slider/special/limited1.jpg";
-import img02 from "../../../../public/slider/special/limited2.jpeg";
-import img03 from "../../../../public/slider/special/limited3.jpeg";
-import img04 from "../../../../public/slider/special/limited5.jpg";
-import img05 from "../../../../public/slider/special/img12.jpg";
-import img06 from "../../../../public/slider/special/img13.jpg";
-import img07 from "../../../../public/slider/special/img14.jpg";
-import img08 from "../../../../public/slider/special/img15.jpg";
+import img1 from "../../../../public/slider/special/limited1.jpg";
+import img2 from "../../../../public/slider/special/limited2.jpeg";
+import img3 from "../../../../public/slider/special/limited3.jpeg";
 
-
-const SpecialOfferComponent = () => {
-    const products = [
-        { id: 1, title: "부산 텀블러", price: "7,900원", imageUrl: img01 },
-        { id: 2, title: "부산광역시 텀블러", price: "7,900원", imageUrl: img02 },
-        { id: 3, title: "부산 특별한 술", price: "9,900원", imageUrl: img03 },
-        { id: 4, title: "자갈치 미피", price: "8,900원", imageUrl: img04 },
-        { id: 5, title: "자갈치 미피", price: "8,900원", imageUrl: img05 },
-        { id: 6, title: "자갈치 미피", price: "8,900원", imageUrl: img06 },
-        { id: 7, title: "자갈치 미피", price: "8,900원", imageUrl: img07 },
-        { id: 8, title: "자갈치 미피", price: "8,900원", imageUrl: img08 },
+const MarppleShopSlider = () => {
+    const slides = [
+        {
+            id: 1,
+            title: "LOGOSHOP PRODUCT",
+            description: "특별한 제품을 지금 만나보세요!",
+            image: img1,
+            overlayImage: img1, // 추가 이미지
+        },
+        {
+            id: 2,
+            title: "LOGOSHOP PRODUCT",
+            description: "유니크한 디자인을 만나보세요!",
+            image: img2,
+            overlayImage: img2,
+        },
+        {
+            id: 3,
+            title: "LOGOSHOP PRODUCT",
+            description: "오직 로고샵에서만!",
+            image: img3,
+            overlayImage: img3,
+        },
     ];
 
     return (
-        <div className="inset-0 bg-gray-300 bg-opacity-70">
-            <div className="container mx-auto p-20">
-                <Swiper
-                    modules={[Autoplay]}
-                    autoplay={{delay: 3000, disableOnInteraction: false}}
-                    centeredSlides={true} // 가운데 정렬
-                    spaceBetween={20} // 슬라이드 간 간격
-                    slidesPerView={1.5} // 기본 한 번에 1.5개 표시
-                    loop={true} // 무한 반복
-                    breakpoints={{
-                        640: {slidesPerView: 2, spaceBetween: 30},
-                        1024: {slidesPerView: 3, spaceBetween: 40},
-                    }}
-                    onSlideChangeTransitionStart={(swiper) => {
-                        // 각 슬라이드의 크기 조정
-                        swiper.slides.forEach((slide, index) => {
-                            if (index === swiper.activeIndex) {
-                                slide.style.transform = "scale(1)"; // 중앙 슬라이드 확대
-                                slide.style.opacity = "1"; // 중앙 슬라이드 완전 표시
-                            } else {
-                                slide.style.transform = "scale(0.8)"; // 양쪽 슬라이드 축소
-                                slide.style.opacity = "0.5"; // 양쪽 슬라이드 흐리게
-                            }
-                        });
-                    }}
-                >
-                    {products.map((product) => (
-                        <SwiperSlide key={product.id} className="flex justify-center">
-                            <div
-                                className="bg-white rounded-lg shadow-lg overflow-hidden p-5 transform transition-transform duration-500">
-                                <img
-                                    src={product.imageUrl}
-                                    alt={product.title}
-                                    className="w-full h-65 object-cover rounded-md mb-4"
-                                />
-                                <div className="text-center">
-                                    <h4 className="text-sm font-semibold">{product.title}</h4>
-                                    <p className="text-lg font-bold mt-2">{product.price}</p>
-                                </div>
+        <div className="relative w-full bg-black">
+            <Swiper
+                modules={[Autoplay]}
+                autoplay={{ delay: 3000, disableOnInteraction: false }}
+                loop={true}
+                slidesPerView={1}
+                className="w-full"
+            >
+                {slides.map((slide) => (
+                    <SwiperSlide key={slide.id}>
+                        <div
+                            className="relative w-full h-[400px] flex flex-col items-center bg-cover bg-center rounded-lg overflow-hidden"
+                            style={{
+                                backgroundImage: `url(${slide.image})`,
+                            }}
+                        >
+                            {/* 오버레이 */}
+                            <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/90"></div>
+
+                            {/* 텍스트 콘텐츠 */}
+                            <div className="relative z-10 text-center text-white px-6 max-w-lg mt-10 md:mt-20 space-y-4">
+                                <p className="text-sm">{slide.description}</p>
+                                <h1 className="text-xl md:text-2xl font-bold">
+                                    {slide.title}
+                                </h1>
                             </div>
-                        </SwiperSlide>
-                    ))}
-                </Swiper>
-            </div>
+
+                            {/* 오버레이 이미지 */}
+                            <div className="relative z-10 mt-6 md:mt-8">
+                                <img
+                                    src={slide.overlayImage}
+                                    alt={slide.title}
+                                    className="w-48 h-48 object-cover rounded-lg shadow-md"
+                                />
+                            </div>
+
+                            {/* 버튼 */}
+                            <button className="relative z-10 mt-6 px-6 py-2 text-sm md:text-base bg-white text-black font-semibold rounded-full shadow-lg hover:bg-gray-200 transition">
+                                See More
+                            </button>
+                        </div>
+                    </SwiperSlide>
+                ))}
+            </Swiper>
         </div>
     );
 };
 
-export default SpecialOfferComponent;
+export default MarppleShopSlider;
