@@ -41,7 +41,7 @@ function AccountSettingsPage() {
                 try {
                     console.log("Fetching data for customerId:", customer.customerId);
 
-                    const response = await axios.get(`http://localhost:8080/api2/customer/account`, {
+                    const response = await axios.get(`/api2/customer/account`, {
                         params: { customerId: customer.customerId },
                     });
 
