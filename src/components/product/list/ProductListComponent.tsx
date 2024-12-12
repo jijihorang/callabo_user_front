@@ -57,7 +57,6 @@ function ProductListComponent() {
         sortProducts(option);
     };
 
-
     // 데이터 로드
     useEffect(() => {
         const fetchProducts = async () => {
@@ -81,7 +80,7 @@ function ProductListComponent() {
         const fetchCreatorInfo = async () => {
             try {
                 if (customer?.customerId) {
-                    const data = await getCreatorList(customer.customerId);
+                    const data = await getCreatorList();
                     const selectedCreator = data.find((c: ICreator) => c.creatorId === creatorId);
                     setCreator(selectedCreator || null);
                 } else {
