@@ -10,14 +10,14 @@ import rank9 from "../../../../public/img/rank9.png";
 
 function WeeklyRanking() {
     const creators = [
-        { rank: "Top2", name: "차린건쥐뿔도없지만", img: rank2, change: "-" },
-        { rank: "Top3", name: "싸이코드 감제이", img: rank3, change: "▲1" },
-        { rank: "Top4", name: "러끼", img: rank4, change: "▼1" },
-        { rank: "Top5", name: "약국 2025 캘린더", img: rank5, change: "NEW" },
-        { rank: "Top6", name: "토심이", img: rank6, change: "NEW" },
-        { rank: "Top7", name: "토마토", img: rank7, change: "NEW" },
-        { rank: "Top8", name: "칠보기", img: rank8, change: "NEW" },
-        { rank: "Top9", name: "49", img: rank9, change: "NEW" },
+        { rank: "Top2", name: "차린건쥐뿔도없지만", img: rank2 },
+        { rank: "Top3", name: "싸이코드 감제이", img: rank3},
+        { rank: "Top4", name: "러끼", img: rank4},
+        { rank: "Top5", name: "약국 2025 캘린더", img: rank5 },
+        { rank: "Top6", name: "토심이", img: rank6},
+        { rank: "Top7", name: "토마토", img: rank7 },
+        { rank: "Top8", name: "칠보기", img: rank8 },
+        { rank: "Top9", name: "49", img: rank9 },
     ];
 
     return (
@@ -54,17 +54,6 @@ function WeeklyRanking() {
                             >
                                 <div className="text-center mb-2">
                                     <div className="font-bold">{creator.rank}</div>
-                                    <div
-                                        className={`text-sm font-bold ${
-                                            creator.change.includes("▲")
-                                                ? "text-green-500"
-                                                : creator.change.includes("▼")
-                                                    ? "text-red-500"
-                                                    : "text-blue-500"
-                                        }`}
-                                    >
-                                        {creator.change}
-                                    </div>
                                 </div>
                                 <img
                                     src={creator.img}

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import useAuthStore from "../../stores/customer/AuthStore.ts"; // Zustand Store
 import useCartStore from "../../stores/cart/cartStore.ts"; // Zustand Store
-import logo from "../../../public/icons/atom.png";
+import logo from "../../../public/img/collabori.png";
 import heart from "../../../public/icons/heart.png";
 import cart from "../../../public/icons/cart.png";
 import menu from "../../../public/icons/menu.png";
@@ -61,32 +61,24 @@ function HeaderComponent() {
                 {/* 로고 + 네비게이션 메뉴 */}
                 <div className="flex items-center">
                     {/* 로고 */}
-                    <h1 className="text-[30px] font-bold">
                         <Link to="/main">
-                            <img src={logo} alt="로고 이미지" className="w-12 h-12 cursor-pointer" />
+                            <img src={logo} alt="로고 이미지" className="w-25 h-20 cursor-pointer" />
                         </Link>
-                    </h1>
 
                     {/* 네비게이션 메뉴 (데스크톱 전용) */}
-                    <nav className="hidden lg:flex items-center space-x-6 text-[18px] font-medium ml-8">
+                    <nav className="lg:flex items-center space-x-6 text-[18px] font-medium ml-8">
                         <Link to="/creator" className="hover:text-blue-500 flex items-center space-x-2">
-                            <img
-                                src="/icons/creator.png"
-                                alt="크리에이터"
-                                className="w-8 h-8 object-contain"
-                            />
                             <span>크리에이터</span>
                         </Link>
                         <Link to="/event/offlineStore" className="hover:text-blue-500 flex items-center space-x-2">
-                            <img
-                                src="/icons/offlinestore.png"
-                                alt="오프라인 매장"
-                                className="w-8 h-8 object-contain"
-                            />
                             <span>오프라인 매장</span>
+                        </Link>
+                        <Link to="/faq" className="hover:text-blue-500 flex items-center space-x-2">
+                            <span>FAQ</span>
                         </Link>
                     </nav>
                 </div>
+                <header></header>
 
                 {/* 모바일 메뉴 아이콘 + Cart 아이콘 */}
                 <div className="lg:hidden flex items-center space-x-4 relative">
@@ -106,10 +98,12 @@ function HeaderComponent() {
                 </div>
 
                 {/* 오른쪽 아이콘 (데스크톱 전용) */}
-                <div className="hidden lg:flex items-center space-x-5">
+                <div className="lg:flex items-center space-x-5">
+                    {isLoggedIn &&(
                     <Link to="/header/wishlist">
                         <img src={heart} alt="찜하기" className="w-6 h-6 cursor-pointer" />
                     </Link>
+                    )}
                     <Link to="/header/cart" className="relative">
                         <img src={cart} alt="장바구니" className="w-7 h-7 cursor-pointer" />
                         {totalQuantity > 0 && (
