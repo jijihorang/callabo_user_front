@@ -115,7 +115,7 @@ function CreatorListComponent() {
                                             <div className="flex items-center gap-2 text-sm font-medium text-gray-600 bg-gray-100 px-3 py-1 rounded-lg shadow-sm">
                                                 <img src={heart} alt="팔로워 아이콘" className="w-4 h-4" />
                                                 <span>
-                                                    {/*<span className="font-bold text-gray-800">{creator.followerCount || 0}</span>명*/}
+                                                    <span className="font-bold text-gray-800">{creator.followerCount || 0}</span>명
                                                 </span>
                                             </div>
                                         </li>
