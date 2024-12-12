@@ -4,11 +4,9 @@ import {useEffect, useState} from "react";
 import {ICreator} from "../../../types/creator/icreator.ts";
 import {getCreatorList} from "../../../apis/creator/creatorAPI.ts";
 import {useNavigate} from "react-router-dom";
-import useAuthStore from "../../../stores/customer/AuthStore.ts";
 
 function CreatorAllListComponent() {
     const [creators, setCreators] = useState<ICreator[]>([]);
-    const { customer } = useAuthStore();
 
     // 데이터 로딩 상태 관리
     const [isLoading, setIsLoading] = useState(true);
@@ -19,7 +17,7 @@ function CreatorAllListComponent() {
     useEffect (() => {
         const fetchCreators = async () => {
             try {
-                const data = await getCreatorList(customer?.customerId || "");
+                const data = await getCreatorList();
                 setCreators(data);
             } catch (error) {
                 console.error("제작자 데이터를 불러오는 데 실패했습니다.", error);
