@@ -1,5 +1,3 @@
-import heartIcon from "../../../../public/icons/whiteheart.png";
-
 import {useEffect, useState} from "react";
 import {ICreator} from "../../../types/creator/icreator.ts";
 import {getCreatorList} from "../../../apis/creator/creatorAPI.ts";
@@ -61,7 +59,7 @@ function CreatorAllListComponent() {
                         <h3 className="text-sm sm:text-base font-semibold text-center">{creator.creatorName}</h3>
                         <button
                             className="px-4 py-2 sm:px-6 sm:py-2 bg-blue-500 text-white text-sm sm:text-base rounded-lg mt-3"
-                            onClick={() => navigate(`/creator/read/${creator.creatorId}`)}>
+                            onClick={() => navigate(`/product/list/${creator.creatorId}`)}>
                             스토어 구경
                         </button>
                     </div>
