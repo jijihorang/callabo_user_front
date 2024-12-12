@@ -14,7 +14,7 @@ export const getLikedProducts = async (customerId: string): Promise<ILikedProduc
       id: item.productId,
       name: item.productName,
       img: item.productImageUrl || 'default-product-image-url', // 이미지가 null인 경우 빈 문자열로 대체
-      price: item.productPrice ?? 0,  // price가 undefined인 경우 기본값 0 설정
+      price: item.productPrice ?? 0,  // price가 undefined인 경우 기본값 설정
    }));
 
    console.log("매핑된 데이터:", mappedData);
