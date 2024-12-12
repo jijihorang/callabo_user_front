@@ -165,7 +165,6 @@ function ProductListComponent() {
                 >
                     <FollowButton
                         creatorId={creator?.creatorId || ""}
-                        currentStatus={creator.followStatus ?? false}
                         customerId={customer?.customerId || ""}
                     />
                 </div>
