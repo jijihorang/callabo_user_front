@@ -218,7 +218,7 @@ function ProductListComponent() {
                         <SwiperSlide key={product.productNo}>
                             <div className="relative bg-white rounded-lg hover:shadow-lg transition-all p-4">
                                 <Link to={`/product/${creatorId}/detail/${product.productNo}`}>
-                                    <div className="w-full h-[200px] overflow-hidden rounded-t-lg">
+                                    <div className="w-full h-[250px] overflow-hidden rounded-t-lg">
                                         <img
                                             src={
                                                 product.productImageUrl

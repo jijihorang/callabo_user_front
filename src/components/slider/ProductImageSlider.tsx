@@ -23,7 +23,6 @@ function ProductImageSlider({ productImages }: { productImages: ProductImage[] }
         <div className="w-full max-w-[500px] mx-auto">
             <Swiper
                 modules={[Navigation, Pagination]}
-                navigation
                 pagination={{ clickable: true }}
                 loop={slides.length > 3} // 슬라이드가 충분할 경우에만 loop 활성화
                 spaceBetween={10}
