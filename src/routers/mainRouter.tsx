@@ -65,4 +65,4 @@ const mainRouter = createBrowserRouter([
     }
 ])
 
-export default mainRouter
+export default mainRouter;
