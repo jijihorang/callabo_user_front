@@ -184,7 +184,12 @@ function ProductListComponent() {
                     </div>
                 </div>
 
-                {/* 상품 리스트를 Swiper로 구현 */}
+                {/* 상품이 없을 경우 메시지 표시 */}
+                {products.length === 0 ? (
+                        <div className="text-center py-10">
+                            <p className="text-gray-500 text-lg">등록된 상품이 없습니다.</p>
+                        </div>
+                    ) : (
                 <Swiper
                     modules={[Navigation, Pagination, Autoplay]}
                     spaceBetween={20}
@@ -213,7 +218,7 @@ function ProductListComponent() {
                         <SwiperSlide key={product.productNo}>
                             <div className="relative bg-white rounded-lg hover:shadow-lg transition-all p-4">
                                 <Link to={`/product/${creatorId}/detail/${product.productNo}`}>
-                                    <div className="w-full h-50 overflow-hidden rounded-t-lg">
+                                    <div className="w-full h-[200px] overflow-hidden rounded-t-lg">
                                         <img
                                             src={
                                                 product.productImageUrl
@@ -243,6 +248,7 @@ function ProductListComponent() {
                         </SwiperSlide>
                     ))}
                 </Swiper>
+            )}
 
                 <div
                     className="custom-pagination absolute bottom-[-30px] left-0 right-0 flex justify-center gap-1 z-10">

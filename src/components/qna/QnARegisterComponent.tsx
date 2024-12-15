@@ -114,7 +114,7 @@ function QnARegisterComponent() {
         } catch (error) {
             console.error("QnA 등록 실패:", error);
             setAlertOptions({
-                title: "QnA 등록 실페",
+                title: "QnA 등록 실패",
                 icon: "error",
                 confirmButtonText: "확인",
             });
