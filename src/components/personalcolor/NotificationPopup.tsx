@@ -32,7 +32,7 @@ const NotificationPopup = () => {
     return (
         <div style={popupStyles.overlay}>
             <div style={popupStyles.popup}>
-                <h2 style={popupStyles.title}>📩 {`${customerName}님에게 알림이 도착했습니다!`}</h2>
+                <h2 style={popupStyles.title}>📩 {`${customerName}님에게 보내는 제안`}</h2>
                 <p style={popupStyles.description}>
                     {`${message?.notification?.title || "제목 없음"}`}
                 </p>
