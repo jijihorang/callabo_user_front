@@ -33,7 +33,7 @@ function BasicLayout({ children }: { children: React.ReactNode }) {
     return (
         <div className="flex flex-col min-h-screen">
             <header
-                className={`bg-white fixed top-0 w-full z-50 transition-transform duration-300 ${
+                className={` top-0 w-full z-50 transition-transform duration-300 ${
                     isHeaderVisible ? "translate-y-0" : "-translate-y-full"
                 }`}
             >
@@ -42,7 +42,7 @@ function BasicLayout({ children }: { children: React.ReactNode }) {
 
 
             {/* Main Content */}
-            <main className="flex-1 bg-white mt-[50px]">{children}</main>
+            <main className="flex-1 bg-white mt-[125px]">{children}</main>
 
 
            <footer>

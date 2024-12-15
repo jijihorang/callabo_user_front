@@ -60,7 +60,11 @@ function CreatorListComponent() {
 
     return (
         <div className="container mx-auto mb-20 px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col md:flex-row gap-6 mt-10">
+            <div className="mt-10 text-center">
+                <h2 className="text-lg text-gray-600">지역의 감성을 담은</h2>
+                <h1 className="text-4xl font-extrabold text-gray-900">Creator List</h1>
+            </div>
+            <div className="flex flex-col md:flex-row gap-6">
                 {/* 제작자 목록 */}
                 <div className="w-full md:w-1/4 p-6 shadow-md rounded-lg h-[300px] md:h-full"> {/* 모바일에서 높이 줄이기 */}
                     {isLoading ? (
@@ -105,10 +109,12 @@ function CreatorListComponent() {
                                                 </span>
                                             </div>
                                             {/* 팔로워 수 */}
-                                            <div className="flex items-center gap-2 text-sm font-medium text-gray-600 bg-gray-100 px-3 py-1 rounded-lg shadow-sm">
-                                                <img src={heart} alt="팔로워 아이콘" className="w-4 h-4" />
+                                            <div
+                                                className="flex items-center gap-2 text-sm font-medium text-gray-600 bg-gray-100 px-3 py-1 rounded-lg shadow-sm">
+                                                <img src={heart} alt="팔로워 아이콘" className="w-4 h-4"/>
                                                 <span>
-                                                    <span className="font-bold text-gray-800">{creator.followerCount || 0}</span>명
+                                                    <span
+                                                        className="font-bold text-gray-800">{creator.followerCount || 0}</span>명
                                                 </span>
                                             </div>
                                         </li>
