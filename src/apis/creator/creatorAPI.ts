@@ -1,12 +1,16 @@
 import axios from "axios";
 import { ICreator } from "../../types/creator/icreator";
 
-const host = "/api2/creator";
-
 export const getCreatorList = async (): Promise<ICreator[]> => {
-    const res = await axios.get(`${host}/list`);
-
-    return res.data;
+    try {
+        console.log("[API 요청]: /api2/creator/list"); // 요청 URL 로그
+        const res = await axios.get("/api2/creator/list");
+        console.log("[API 응답]:", res.data); // 응답 데이터 로그
+        return res.data;
+    } catch (error) {
+        console.error("[API 요청 에러]:", error);
+        throw error;
+    }
 };
 
 // 제작자 팔로우 상태 변경
@@ -15,7 +19,7 @@ export const toggleFollowStatusAPI = async (
     creatorId: string
 ): Promise<void> => {
     try {
-        await axios.post(`${host}/follow`, {
+        await axios.post(`/api2/creator/follow`, {
             customerId,
             creatorId,
         });
@@ -32,7 +36,7 @@ export const checkFollowStatusAPI = async (
     creatorId: string
 ): Promise<boolean> => {
     try {
-        const res = await axios.get(`${host}/follow/status`, {
+        const res = await axios.get(`/api2/creator/follow/status`, {
             params: {
                 customerId,
                 creatorId,

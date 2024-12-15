@@ -1,12 +1,10 @@
-
 import axios from "axios";
 import {IOfflineStore} from "../../types/offlinestore/iofflinestore.ts";
 
-const host = "/api2/offlinestore";
 
 export const getOfflineStoreList = async (): Promise<IOfflineStore[]> => {
     try {
-        const result = await axios.get(`${host}/list`);
+        const result = await axios.get(`/api2/offlinestore/list`);
         return result.data;
     } catch (error: any) {
         console.error("Failed to fetch all offline stores:", error.message);

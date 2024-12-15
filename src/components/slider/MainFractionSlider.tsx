@@ -4,11 +4,11 @@ import { Autoplay } from "swiper/modules";
 // @ts-expect-error
 import "swiper/css";
 
-import img1 from "../../../public/slider/main/001.png";
-import img2 from "../../../public/slider/main/002.png";
-import img3 from "../../../public/slider/main/003.png";
-import img4 from "../../../public/slider/main/004.png";
-import img5 from "../../../public/slider/main/005.png";
+import img1 from "/slider/main/001.png";
+import img2 from "/slider/main/002.png";
+import img3 from "/slider/main/003.png";
+import img4 from "/slider/main/004.png";
+import img5 from "/slider/main/005.png";
 
 
 function MainFractionSlider() {

@@ -1,12 +1,10 @@
 import axios from "axios";
 import {IQna, IQnaRequest} from "../../types/qna/iqna.ts";
 
-const host = "/api2/qna";
-
 export const addQnA = async ( qnaData : IQnaRequest): Promise<void> => {
     try {
         // QnARegisterDTO 매핑되는 요청 데이터
-        const result = await axios.post(`${host}/register`, qnaData, {
+        const result = await axios.post(`/api2/qna/register`, qnaData, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -23,7 +21,7 @@ export const addQnA = async ( qnaData : IQnaRequest): Promise<void> => {
 // qna 리스트
 export const getQnAList = async (customerId: string): Promise<IQna[]> => {
     try {
-        const res = await axios.get(`${host}/customer`, {
+        const res = await axios.get(`/api2/qna/customer`, {
             params: { customerId }, // customerId를 쿼리 파라미터로 전달
         });
         return res.data;
@@ -36,6 +34,6 @@ export const getQnAList = async (customerId: string): Promise<IQna[]> => {
 
 // qna 조회
 export const getQnaRead = async (qnaNo: number): Promise<IQna> => {
-    const res = await axios.get(`${host}/read/${qnaNo}`);
+    const res = await axios.get(`/api2/qna/read/${qnaNo}`);
     return res.data;
 }
