@@ -1,11 +1,9 @@
 import axios from "axios";
 import {IReview, IReviewRequest} from "../../types/review/ireview.ts";
 
-const host = "/api2/review";
-
 export const addReview = async ( reviewData: IReviewRequest ): Promise<void> => {
     try {
-        const result = await axios.post(`${host}/register`, reviewData, {
+        const result = await axios.post(`/api2/review/register`, reviewData, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -20,7 +18,7 @@ export const addReview = async ( reviewData: IReviewRequest ): Promise<void> => 
 };
 
 export const getReviewList = async (creatorId?: string, productNo?: number): Promise<IReview[]> => {
-    const res = await axios.get(`${host}/list`, {
+    const res = await axios.get(`/api2/review/list`, {
         params: { creatorId, productNo },
     });
     return res.data;
@@ -28,7 +26,7 @@ export const getReviewList = async (creatorId?: string, productNo?: number): Pro
 
 export const getMyReviews = async (customerId: string): Promise<IReview[]> => {
     try {
-        const res = await axios.get(`${host}/customer`, {
+        const res = await axios.get(`/api2/review/customer`, {
             params: { customerId },
         });
         return res.data;

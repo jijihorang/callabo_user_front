@@ -2,10 +2,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import useAuthStore from "../../stores/customer/AuthStore.ts"; // Zustand Store
 import useCartStore from "../../stores/cart/cartStore.ts"; // Zustand Store
-import logo from "../../../public/img/collabori.png";
-import cart from "../../../public/icons/cart.png";
-import menu from "../../../public/icons/menu.png";
-import closeIcon from "../../../public/icons/close.png";
+import logo from "/img/collabori.png";
+import cart from "/icons/cart.png";
+import menu from "/icons/menu.png";
+import closeIcon from "/icons/close.png";
 
 function HeaderComponent() {
     const { isLoggedIn, logout } = useAuthStore(); // 로그인 상태 및 로그아웃 함수 가져오기

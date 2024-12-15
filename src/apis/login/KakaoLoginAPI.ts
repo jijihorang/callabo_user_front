@@ -5,8 +5,6 @@ const REDIRECT_URI = import.meta.env.VITE_REDIRECT_URI;
 const kakao_auth_path = import.meta.env.VITE_KAKAO_AUTH_PATH;
 const access_token_url = import.meta.env.VITE_ACCESS_TOKEN_URL;
 
-const host = '/api2/customer/kakao'
-
 // 인가 코드 받기
 export const getKakaoLoginLink = () => {
     const KakaoURL = `${kakao_auth_path}?client_id=${REST_API}&redirect_uri=${REDIRECT_URI}&response_type=code`;
@@ -17,7 +15,7 @@ export const getKakaoLoginLink = () => {
 export const getMemberWithAccessToken = async (accessToken:string)  => {
 
     try {
-        const res = await axios.get(`${host}?accessToken=${accessToken}`);
+        const res = await axios.get(`/api2/customer/kakao?accessToken=${accessToken}`);
 
         console.log("User Data Response:", res.data); // API 응답 디버깅
         return res.data;

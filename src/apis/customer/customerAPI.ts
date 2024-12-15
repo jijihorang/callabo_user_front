@@ -1,10 +1,8 @@
 import axios from "axios";
 import {ILikedCreators, ILikedProducts} from "../../types/wishlist/iwishlist.ts";
 
-const host = '/api2/customer';
-
 export const getLikedProducts = async (customerId: string): Promise<ILikedProducts[]> => {
-   const response = await axios.get(`${host}/likedproducts`, {
+   const response = await axios.get(`/api2/customer/likedproducts`, {
       params: { customerId },
    });
 
@@ -22,7 +20,7 @@ export const getLikedProducts = async (customerId: string): Promise<ILikedProduc
 };
 
 export const getLikedCreators = async (customerId: string): Promise<ILikedCreators[]> => {
-   const response = await axios.get(`${host}/likedcreators`, {
+   const response = await axios.get(`/api2/customer/likedcreators`, {
       params: { customerId },
    });
 
@@ -43,7 +41,7 @@ export const toggleProductLikeAPI = async (
     customerId: string,
     productId: string
 ): Promise<void> => {
-    await axios.post(`${host}/like`, {
+    await axios.post(`/api2/customer/like`, {
         customerId,
         productId,
     });
@@ -54,7 +52,7 @@ export const checkProductLikeStatusAPI = async (
     productId: string
 ): Promise<boolean> => {
     try {
-        const response = await axios.get(`${host}/like/status`, {
+        const response = await axios.get(`/api2/customer/like/status`, {
             params: {
                 customerId,
                 productId,
