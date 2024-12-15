@@ -216,9 +216,9 @@ function ProductListComponent() {
                 >
                     {products.map((product) => (
                         <SwiperSlide key={product.productNo}>
-                            <div className="relative bg-white rounded-lg hover:shadow-lg transition-all p-4">
+                            <div className="relative bg-white transition-all p-2">
                                 <Link to={`/product/${creatorId}/detail/${product.productNo}`}>
-                                    <div className="w-full h-[190px] overflow-hidden rounded-t-lg">
+                                    <div className="w-full h-[200px] overflow-hidden rounded-t-lg">
                                         <img
                                             src={
                                                 product.productImageUrl
