@@ -59,10 +59,10 @@ const mainRouter = createBrowserRouter([
             reviewRouter,
             tosspayRouter,
             qnaRouter,
-            orderRouter
+            orderRouter,
+            personalcolorRouter
         ]
-    },
-    personalcolorRouter
+    }
 ])
 
 export default mainRouter
