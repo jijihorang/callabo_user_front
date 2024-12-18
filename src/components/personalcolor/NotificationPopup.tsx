@@ -16,11 +16,11 @@ const NotificationPopup = () => {
     const customerName = useAuthStore((state) => state.customer?.customerName || "알 수 없음"); // Zustand에서 customerName 가져오기
 
     useEffect(() => {
-        // Foreground 메시지 수신
         onMessageListener()
-            .then((payload: unknown) => {
-                console.log("Message received: ", payload);
-                setMessage(payload); // 메시지 상태 업데이트
+            .then((payload) => {
+                const notificationPayload = payload as NotificationPayload; // 타입 단언
+                console.log("Message received: ", notificationPayload);
+                setMessage(notificationPayload); // 메시지 상태 업데이트
             })
             .catch((err) => console.error("Error receiving message: ", err));
     }, []);
