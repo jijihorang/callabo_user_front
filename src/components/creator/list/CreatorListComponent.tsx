@@ -6,8 +6,8 @@ import click from "../../../../public/icons/click.png";
 import {ICreator} from "../../../types/creator/icreator.ts";
 import heart from "../../../../public/icons/redheart.png";
 
-import lg from "../../../../public/img/기본 로고 이미지.jpeg";
-import bg from "../../../../public/img/기본 배경 이미지.png"
+import lg from "../../../../public/img/logoimg.png";
+import bg from "../../../../public/img/bgimg.png"
 
 function CreatorListComponent() {
     const {
