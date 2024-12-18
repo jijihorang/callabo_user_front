@@ -6,9 +6,6 @@ import click from "../../../../public/icons/click.png";
 import {ICreator} from "../../../types/creator/icreator.ts";
 import heart from "../../../../public/icons/redheart.png";
 
-import lg from "../../../../public/img/logoimg.png";
-import bg from "../../../../public/img/bgimg.png"
-
 function CreatorListComponent() {
     const {
         creators,
@@ -98,7 +95,7 @@ function CreatorListComponent() {
                                                 <div className="w-12 h-12 bg-gray-200 rounded-full overflow-hidden">
                                                     <img
                                                         src={creator.logoImg}
-                                                        alt={lg}
+                                                        alt="로고 이미지"
                                                         className="w-full h-full object-cover"
                                                     />
                                                 </div>
@@ -135,7 +132,7 @@ function CreatorListComponent() {
                             <div className="relative w-full h-[480px] rounded-xl overflow-hidden mb-8 shadow-lg">
                                 <img
                                     src={selectedCreator.backgroundImg}
-                                    alt={bg}
+                                    alt="배너 이미지"
                                     className="w-full h-full object-cover"
                                 />
                             </div>
@@ -144,7 +141,7 @@ function CreatorListComponent() {
                                     className="relative inline-block w-28 h-28 rounded-full overflow-hidden border-4 border-gray-200 shadow-xl -mt-14">
                                     <img
                                         src={selectedCreator.logoImg}
-                                        alt={lg}
+                                        alt="로고 이미지"
                                         className="w-full h-full object-cover"
                                     />
                                 </div>
