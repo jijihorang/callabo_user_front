@@ -11,6 +11,7 @@ import reviewRouter from "./reviewRouter.tsx";
 import tosspayRouter from "./tosspayRouter.tsx";
 import qnaRouter from "./qnaRouter.tsx";
 import orderRouter from "./orderRouter.tsx";
+import personalcolorRouter from "./personalcolorRouter.tsx";
 
 const MainPage = lazy(() => import("../pages/MainPage.tsx"))
 
@@ -58,9 +59,10 @@ const mainRouter = createBrowserRouter([
             reviewRouter,
             tosspayRouter,
             qnaRouter,
-            orderRouter
+            orderRouter,
+            personalcolorRouter
         ]
     }
 ])
 
-export default mainRouter
+export default mainRouter;
