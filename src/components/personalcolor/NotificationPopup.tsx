@@ -18,7 +18,7 @@ const NotificationPopup = () => {
     useEffect(() => {
         // Foreground 메시지 수신
         onMessageListener()
-            .then((payload: NotificationPayload) => {
+            .then((payload: unknown) => {
                 console.log("Message received: ", payload);
                 setMessage(payload); // 메시지 상태 업데이트
             })
