@@ -136,7 +136,7 @@ function CartComponent() {
                                 </div>
                             </div>
                         ))}
-                        <div className="text-center mt-5 font-semibold border-t-2 border-gray-400 pt-5">
+                        <div className="text-center mt-5 font-semibold border-t-2 border-gray-400 py-5">
                             상품금액{" "}
                             {group.products
                                 .reduce((acc, p) => acc + p.price * p.quantity, 0)
